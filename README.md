@@ -1,2 +1,7 @@
-# express-starter
-This is a starter project for Express. It was created with the express project generator and then modified to be a module type (uses imports instead of requires, based on this tutorial), and with VSCode launch settings.
+# Group 1's Project Proposal
+By: Yenmy Vo, Celestine Le, Lindsy Marroquin, and Bella Gatzemeier
+
+# Project Description 
+
+## Who is our target audience?
+dlrkgn dng
