@@ -29,8 +29,17 @@ insert diagram
 ## Summary Tables for User Stories
 |   Priority    |      User     |  Description  |  Technical Implementation  |
 | ------------- | ------------- | ------------- | -------------------------- |
-|      P0       |   As a user   | I want to be able to create an account/profile and log in/out of it | When logging in, use Azure Authentication to verify users, and add them into our database
-| Content Cell  | Content Cell  | Content Cell  | 
+|      P0       |   As a user   | I want to be able to create an account/profile and log in/out of it | When logging in, use Azure Authentication to verify users, and add them into our database.
+|      P0       |   As a user   | I want to be able to upload a product that is not already on the website | When uploading a product, add the product to MongoDB with attributes such as name, category, description, and hyperlink to an image of the product.
+|      P0       |   As a user   | I want to be able to view beauty products | When loading the homepage, retrieve a JSON of product previews that include name, category, image, and description for each product.
+|      P1       |   As a user   | I want to be able to search beauty products | When searching for products, retrieve all product names that contain the user input.
+|      P1       |   As a user   | I want to be able to view reviews on products | When loading a specific product page, retrieve the product’s name, category, image, description, and reviews.
+|      P1       |   As a user   | I want to be able to leave reviews on products | When leaving a review on a product, add the review to the reviews database on Mongo DB with attributes such as ID of the user, product ID, review text, and an integer between 1-5 representing the product rating.
+|      P1       |   As a user   | I want to be able to sort and filter products according to {skin type, cost, rating, include/exclude products} | Filter and order results according to the applied tags from the products database.
+|      P2       |   As a user   | Content Cell  |
+|      P2       |   As a user   | Content Cell  |
+|      P2       |   As a user   | Content Cell  |
+|      P2       |   As a user   | Content Cell  |
 
 ## API Endpoints
 insert content
