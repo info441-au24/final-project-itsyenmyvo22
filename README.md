@@ -21,10 +21,9 @@ We all have struggled with beauty products that fit our hair or skin. Overall, o
 # Technical Description
 
 ## Architectural Diagrams
-insert diagram
+![info441-userFlow](info441-userFlow.jpg)
 
 ## Data Flow
-insert diagram
 ![info441-dataFlow](info441-dataFlow.jpg)
 
 ## Summary Tables for User Stories
