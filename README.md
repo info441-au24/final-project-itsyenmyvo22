@@ -36,13 +36,53 @@ insert diagram
 |      P1       |   As a user   | I want to be able to view reviews on products | When loading a specific product page, retrieve the product’s name, category, image, description, and reviews.
 |      P1       |   As a user   | I want to be able to leave reviews on products | When leaving a review on a product, add the review to the reviews database on Mongo DB with attributes such as ID of the user, product ID, review text, and an integer between 1-5 representing the product rating.
 |      P1       |   As a user   | I want to be able to sort and filter products according to {skin type, cost, rating, include/exclude products} | Filter and order results according to the applied tags from the products database.
-|      P2       |   As a user   | Content Cell  |
-|      P2       |   As a user   | Content Cell  |
-|      P2       |   As a user   | Content Cell  |
-|      P2       |   As a user   | Content Cell  |
+|      P2       |   As a user   | I want to be able to comment on reviews | When commenting on a review, retrieve the specific review from the database and add the comment to the associated review in the database.
+|      P2       |   As a user   | I want to create new product collections/routines | When creating a new collection/routine, add collection to MongoDB using a unique ID connected to current user.
+|      P2       |   As a user   | I want to add an existing product to my collection/routine | When adding products to a collection/routine, add selected product to MongoDB and add its unique ID to the corresponding collection.
+|      P2       |   As a user   | I want to be able to view my profile | Retrieve all collections in the database related to the specific user and display the collections.
 
 ## API Endpoints
-insert content
+GET /user/login - Allows users to log into their account.
+
+GET /products - Allows users to view previews of existing products
+
+POST /products - Allows users to upload a product 
+
+GET /products/:id - Allows users to view all information about a specific product, including name, category, description, and image.
+
+GET /products/:id/reviews - Allows users to view reviews on a specific product.
+
+POST /products/:id/reviews - Allows users to upload one review to a specific product.
+
+GET /user/profile - Allows users to view their account name, uploaded products, and review history.
+
+GET /user/profile/collections - Allows users to view their collections
+
+POST /user/profile/collections - Allows users to create a new collection
+
+POST /users/profile/collections/:id/products - Allows users to add certain products to a specific collection
+
+GET /user/profile/collections/:id - Allows users to view products within their collection
+
+DELETE /user/profile/collections - Allows users to delete a collection
+
+DELETE /users/profile/collections/:id/product/:id - Allows users to remove a product from a specific collection
 
 ## Database Schemas
-insert content
+Users
+- User ID (String)
+- Product Collections (Array of Product IDs)
+Products
+Product ID (Number)
+Name of product (String)
+Reviews (Array of Review IDs)
+Image (String representing a hyperlink)
+Skin type tag (Array of strings)
+Reviews
+Review ID (Number)
+Review Text (String)
+Product ID (Number)
+User ID (String)
+Rating (Number)
+Comments (Array of Comment Objects)
+
