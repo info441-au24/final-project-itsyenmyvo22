@@ -72,14 +72,15 @@ DELETE /users/profile/collections/:id/product/:id - Allows users to remove a pro
 Users
 - <ins>User ID (String)</ins>
 - Product Collections (Array of Product IDs)
+
 Products
-- Product ID (Number)
+- <ins>Product ID (Number)</ins>
 - Name of product (String)
 - Reviews (Array of Review IDs)
 - Image (String representing a hyperlink)
 - Skin type tag (Array of strings)
 Reviews
-- Review ID (Number)
+- <ins>Review ID (Number)</ins>
 - Review Text (String)
 - Product ID (Number)
 - User ID (String)
