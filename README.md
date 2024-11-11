@@ -70,19 +70,19 @@ DELETE /users/profile/collections/:id/product/:id - Allows users to remove a pro
 
 ## Database Schemas
 Users
-- User ID (String)
+- <ins>User ID (String)</ins>
 - Product Collections (Array of Product IDs)
 Products
-Product ID (Number)
-Name of product (String)
-Reviews (Array of Review IDs)
-Image (String representing a hyperlink)
-Skin type tag (Array of strings)
+- Product ID (Number)
+- Name of product (String)
+- Reviews (Array of Review IDs)
+- Image (String representing a hyperlink)
+- Skin type tag (Array of strings)
 Reviews
-Review ID (Number)
-Review Text (String)
-Product ID (Number)
-User ID (String)
-Rating (Number)
-Comments (Array of Comment Objects)
+- Review ID (Number)
+- Review Text (String)
+- Product ID (Number)
+- User ID (String)
+- Rating (Number)
+- Comments (Array of Comment Objects)
 
