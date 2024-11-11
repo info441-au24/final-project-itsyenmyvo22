@@ -24,7 +24,8 @@ We all have struggled with beauty products that fit our hair or skin. Overall, o
 insert diagram
 
 ## Data Flow
-insert diagram 
+insert diagram
+![info441-dataFlow](info441-dataFlow.jpg)
 
 ## Summary Tables for User Stories
 |   Priority    |      User     |  Description  |  Technical Implementation  |
