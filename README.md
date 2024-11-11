@@ -79,6 +79,7 @@ Products
 - Reviews (Array of Review IDs)
 - Image (String representing a hyperlink)
 - Skin type tag (Array of strings)
+
 Reviews
 - <ins>Review ID (Number)</ins>
 - Review Text (String)
