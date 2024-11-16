@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './stylesheets/App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Home from './screens/home'
+import Home from './Home.js'
 import Profile from './screens/profile'
 import UploadProduct from './screens/uploadProduct';
 import Product from './screens/product';
@@ -9,12 +9,26 @@ import Product from './screens/product';
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/uploadProduct" element={<UploadProduct />} />
-        <Route path="/product" element={<Product />} />
-      </Routes>
+      <div>
+        <nav className="navbar">
+          <div className="navbar-left">
+            <Link to="/" className="navbar-logo">Clé</Link>
+          </div>
+
+          <div className="nav-buttons">
+            <Link to="/uploadProduct" className="nav-button">Upload Product</Link>
+            <Link to="/profile" className="nav-button">Profile</Link>
+          </div>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/uploadProduct" element={<UploadProduct />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/search" element={<Home />} />
+        </Routes>
+      </div>
     </Router>
   );
 };
@@ -41,3 +55,23 @@ const App = () => {
 // }
 
 export default App;
+
+/////////////////////////////////////
+
+// import React from 'react';
+// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import Home from './Home'; // Import your Home component
+
+// function App() {
+//   return (
+//     <Router>
+//       <div>
+//         <Routes>
+//           <Route path="/" element={<Home />} />
+//         </Routes>
+//       </div>
+//     </Router>
+//   );
+// }
+
+// export default App;
