@@ -54,6 +54,152 @@ body {
   background-color: #3f2f3b;
 }
 
+/*          PRODUCT PAGE           */
+
+
+/*          PRODUCT INFO           */
+.product-container {
+  display: flex;
+  padding: 0 40px;
+}
+
+/* flex styling for both columns */
+.product-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* image column */
+.product-col:first-of-type {
+  max-width: 30%;
+}
+
+/* product info column */
+.product-col:nth-of-type(2) {
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 70%;
+}
+
+/* vertical arrangement of product information */
+.product-col div {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 20px;
+}
+
+/* turn img div into flexbox */
+.product-img {
+  display: flex;
+}
+
+/* fix sizing issue on laptop */
+.product-img img {
+  width: 100%;
+  height: auto;
+}
+
+
+.product-head h2 {
+  margin-bottom: 0;
+}
+
+.product-head > p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.product-head > p:nth-of-type(2) {
+  margin: 0;
+  font-weight: 200;
+}
+
+.product-tags span {
+  display: inline-block;
+  border: solid lightgray 1px;
+  padding: 2px 8px;
+  margin: 4px;
+  font-size: 12px;
+}
+
+.product-descr {
+  border: solid lightgray 1px;
+  border-radius: 10px;
+}
+
+hr {
+  margin: 10px 0px 30px 0px;
+  border-top: solid lightgray 1px;
+}
+
+#product-reviews {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 40px;
+}
+
+.review {
+  padding: 0px;
+  border: solid lightgray 1px;
+  border-radius: 10px;
+}
+
+.review > * {
+  padding: 0px 15px;
+}
+
+.review-head {
+  display: flex;
+  justify-content: space-between;
+}
+.clicked { 
+  color: #bc9e6a; 
+} 
+
+.date {
+  color: gray;
+}
+
+.date > p {
+  margin: 0px; 
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.comment {
+  padding-left: 15px;
+  border-left: 3px solid lightgray;
+  margin-left: 10px;
+  margin-bottom: 15px;
+}
+
+.comment-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-head h4 {
+  margin-top: 5px;
+}
+
+#product-reviews h3 {
+  margin-top: 30px 0px 0px 0px;
+}
+
+.reply-box {
+  margin: 10px;
+  margin-bottom: 15px;
+}
+
+.reply-box input {
+  width: 100%;
+}
 /* #60495A
 #3f2f3b */
 
