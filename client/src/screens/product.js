@@ -5,49 +5,37 @@ const Product = () => {
     return (
         <div>
             <div class="product-container">
-                <div class="product-col">
-                    <div class="product-img">
+                <div class="product-col product-img">
                         <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
-                    </div>
-                    
                 </div>
-                <div class="product-col">
+                <div class="product-col product-info">
                     <div class="product-head">
-                        <div>
-                            <h2>Product Name</h2>
-                            <button>Save</button>
-                        </div>
-                        
-                        
+                        <h2>Product Name</h2>
                         <p>Product Category</p>
                         <p>Brand Name</p>
+                        <button>Add to Collection</button>
                     </div>
-                    
+                    <hr/>
                     <div class="product-tags">
                         <span>Normal Skin</span>
                         <span>Ceramides</span>
-                        <span>Dermatologist-Approved</span>
+                        <span>Moisturizing</span>
                     </div>
-                    <div>
-                        <div class="product-descr">
+                    <hr />
+                    <div class="product-descr">
                         <h3>DESCRIPTION</h3>
-                    <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
+                        <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                     </div>
-                    </div>
-                    
-                    
+                    <hr />
                 </div>
                 
             </div>
-           
             <div id="product-reviews">
-                <div>
+                <div class="product-reviews-head">
                     <h3>### REVIEWS</h3>
-                    <button>Write a Review</button>
-                    <button>Sort</button>
+                    <button>Filter</button>
                 </div>
-                
-                <hr/>
+                <button>Write a Review</button>
                 {/* reviews should be handled in a separate component */}
                 <div id='reviews'>
                     <div class='review'>
@@ -71,10 +59,13 @@ const Product = () => {
                         </div>
 
                         <div class="review-btns">
-                           <button>Like ###</button>
-                           <button>Reply</button>
+                            <div>
+                                <i class="fa fa-regular fa-thumbs-up"></i>
+                                <i class="fa fa-regular fa-reply"></i>
+                            </div>
+                        
                            {/* render view/hide only if there are replies */}
-                            <button>Show/Hide Replies (###)</button> 
+                        <button>Show/Hide Replies (###)</button> 
                         </div>
 
                             {/* comments */}
