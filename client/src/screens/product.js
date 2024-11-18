@@ -13,8 +13,11 @@ const Product = () => {
                 </div>
                 <div class="product-col">
                     <div class="product-head">
-                        <h2>Product Name</h2>
-                        <button>Save</button>
+                        <div>
+                            <h2>Product Name</h2>
+                            <button>Save</button>
+                        </div>
+                        
                         
                         <p>Product Category</p>
                         <p>Brand Name</p>
