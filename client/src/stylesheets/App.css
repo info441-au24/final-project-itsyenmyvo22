@@ -198,6 +198,44 @@ h3 {
   margin: 0px;
 }
 
+.filter-overlay {
+  background-color: #333;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 50%;
+  z-index: 0;
+}
+
+.filter-popup {
+  background: #bc9e6a;
+  color: white;
+  border-radius: 30px;
+  width: 80%;
+  max-height: min-content;
+  margin: auto;
+  padding: 10px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 100%;
+  z-index: 1;
+}
+
+.filter-popup > div{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+}
+
+.filter-popup > div > h4{
+  margin: 0;
+}
+
 .review-text {
   margin: 15px 0px;
 }
