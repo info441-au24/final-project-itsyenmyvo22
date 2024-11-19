@@ -105,10 +105,6 @@ body {
   font-weight: 200;
 }
 
-.product-head > button {
-  margin-top: 20px;
-}
-
 hr {
   border-top: solid lightgray 1px;
   margin: 0px;
@@ -129,11 +125,16 @@ hr {
   padding: 15px 0px;
 }
 
-#product-reviews > button {
-  margin: 15px 200px;
-  padding: 10px;
+.add-review {
+  margin: 20px 0px;
   width: auto;
-  border-radius: 30px;
+  align-self: center;
+}
+
+#add-to-collection {
+  margin-bottom: 20px;
+  width: auto;
+  align-self: center;
 }
 
 .product-reviews-head {
@@ -157,10 +158,25 @@ h3 {
 .review-btns {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.review-btns > div > * {
-  margin: 10px;
+.helpful {
+  display: flex;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  font-size: 16px;;
+}
+
+.like-btn > div > * {
+  padding: 3px;
+}
+
+.comments-toggle {
+  max-height: 20px;
 }
 
 /* .product-info > div {
@@ -208,6 +224,12 @@ h3 {
   display: flex;
   justify-content: space-between;
 }
+
+.review-head p {
+  margin: 20px 5px;
+  text-align: end;
+}
+
 .clicked { 
   color: #bc9e6a; 
 } 
@@ -220,11 +242,11 @@ h3 {
   margin: 0px; 
 }
 
-.comments {
+#comments {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .comment {
@@ -237,10 +259,12 @@ h3 {
 .comment-head {
   display: flex;
   justify-content: space-between;
+  padding-top: 5px;
 }
 
-.comment-head h4 {
-  margin-top: 5px;
+.comment-head p {
+  margin: 20px 5px;
+  text-align:end;
 }
 
 #product-reviews h3 {

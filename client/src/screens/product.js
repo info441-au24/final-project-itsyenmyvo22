@@ -1,7 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
 const Product = () => {
+    const [commentsDisplay, setCommentsDisplay] = useState(false);
+    const [liked, setLiked] = useState(false);
+    const toggleComments = () => {
+        setCommentsDisplay(!commentsDisplay)
+    }
+
+    /* determined by user so implement persistence later */
+    const toggleLike = () => {
+        setLiked(!liked)
+    }
     return (
         <div>
             <div class="product-container">
@@ -13,7 +23,6 @@ const Product = () => {
                         <h2>Product Name</h2>
                         <p>Product Category</p>
                         <p>Brand Name</p>
-                        <button>Add to Collection</button>
                     </div>
                     <hr/>
                     <div class="product-tags">
@@ -26,6 +35,7 @@ const Product = () => {
                         <h3>DESCRIPTION</h3>
                         <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                     </div>
+                    <button id="add-to-collection">Add to Collection <span class="fa fa-angle-down down-arrow"></span></button>
                     <hr />
                 </div>
                 
@@ -35,7 +45,8 @@ const Product = () => {
                     <h3>### REVIEWS</h3>
                     <button>Filter</button>
                 </div>
-                <button>Write a Review</button>
+                <hr />
+                <button class="add-review">Write a Review</button>
                 {/* reviews should be handled in a separate component */}
                 <div id='reviews'>
                     <div class='review'>
@@ -59,17 +70,34 @@ const Product = () => {
                         </div>
 
                         <div class="review-btns">
-                            <div>
-                                <i class="fa fa-regular fa-thumbs-up"></i>
-                                <i class="fa fa-regular fa-reply"></i>
+                            <div class="helpful">
+                                <p>Helpful?</p>
+                                <button class="like-btn" onClick={toggleLike}>
+                                    <div>
+                                        
+                                        {liked ? 
+                                        <>
+                                        <i class="fa fa-thumbs-up" style={{color: 'black'}}></i>
+                                        <span>1</span>
+                                        </>
+                                        : 
+                                        <><i class="fa fa-thumbs-up" style={{color:'lightgray'}}></i>
+                                        <span>0</span></>
+                                        }
+                                        </div>
+                                </button>
                             </div>
+                            
                         
                            {/* render view/hide only if there are replies */}
-                        <button>Show/Hide Replies (###)</button> 
+                        
+                        <button class="comments-toggle" onClick={toggleComments}>Show/Hide Replies</button>
                         </div>
 
                             {/* comments */}
-                            <div class="comments">
+
+                            {commentsDisplay ? 
+                            <div id="comments">
                                 <div class="comment">
 
                                     <div class="comment-head">
@@ -82,7 +110,7 @@ const Product = () => {
                                     </div>
 
                                 </div>
-                                
+                            
                                 <div class="comment">
                                     <div class="comment-head">
                                         <h4>Commenter</h4>
@@ -103,6 +131,9 @@ const Product = () => {
                                     <button>Submit</button>
                                 </div>
                             </div>
+                            : 
+                            <></>}
+                    
                     </div>
                 </div>
 
