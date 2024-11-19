@@ -414,8 +414,52 @@ h3 {
 
 
 /*          UPLOADPRODUCT PAGE           */
+#pcontainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+}
 
+.prod-input {
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 10px;
+  font-size: 16px;
+  width: 100%;
+}
 
+.prod-input:focus {
+  outline: none;
+  border: 2px solid #bc9e6a;
+}
+
+#pbutton:hover {
+  background-color: #60495A;
+  color: white;
+}
+
+#buttondiv {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px 10px;
+  border-radius: 5px; 
+  font-size: 14px; 
+  background-color: #FFF; 
+  color: black; 
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+#pbutton { 
+  width: 50%;
+}
 
 
 
