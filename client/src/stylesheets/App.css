@@ -540,6 +540,106 @@ h3 {
 
 /*          PROFILE PAGE           */
 
+.profile h2 {
+  display: flex;
+  justify-content: center;
+}
+
+.profile h3 {
+  padding: 10px 20px;
+}
+
+.collections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+
+.collection img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+}
+
+
+.goBack {
+  text-decoration: none;
+}
+
+.collection-add-info {
+  margin: 10px 20px;
+}
+
+.collectionDescription p{
+  margin: 0px 20px;
+  font-size: 14px;
+}
+
+.collection-grid {
+  --gap: 1rem;
+  --num-cols: 4;
+  --row-height: 400px;
+
+  box-sizing: border-box;
+  padding: var(--gap);
+
+  display: grid;
+  grid-template-columns: repeat(var(--num-cols), 1fr);
+  grid-auto-rows: var(--row-height);
+  gap: var(--gap);
+
+  justify-items: center;
+}
+
+.collection-card {
+  height: 400px;
+  width: 300px;
+  text-align: center
+  /* border-width: 1px;
+  border-style: solid;
+  border-radius: 10px; */
+}
+
+.collection-card img{
+  height: 300px;
+  width: 300px;
+  object-fit: contain;
+}
+
+.profile-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px 20px;
+}
+
+.profile-head h3 {
+  padding: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+.create-collections-popup {
+  background: #bc9e6a;
+  color: white;
+  border-radius: 30px;
+  width: 25%;
+  max-height: min-content;
+  margin: auto;
+  padding: 10px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 100%;
+  z-index: 1;
+  text-align: center;
+}
 
 /*          PROFILE PAGE           */
 

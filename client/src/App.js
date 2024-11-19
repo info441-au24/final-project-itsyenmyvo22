@@ -3,6 +3,7 @@ import './stylesheets/App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './Home.js'
 import Profile from './screens/profile'
+import Collection from './screens/collection.js'
 import UploadProduct from './screens/uploadProduct';
 import Product from './screens/product';
 
@@ -24,6 +25,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/collection" element={<Collection />} />
           <Route path="/uploadProduct" element={<UploadProduct />} />
           <Route path="/product" element={<Product />} />
           <Route path="/search" element={<Home />} />
