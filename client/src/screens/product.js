@@ -4,14 +4,55 @@ import { Link } from 'react-router-dom';
 const Product = () => {
     const [commentsDisplay, setCommentsDisplay] = useState(false);
     const [liked, setLiked] = useState(false);
+    const [reviewText, setReviewText] = useState(false);
+    const [filterDisplay, setFilterDisplay] = useState(false);
     const toggleComments = () => {
         setCommentsDisplay(!commentsDisplay)
     }
-
-    /* determined by user so implement persistence later */
     const toggleLike = () => {
         setLiked(!liked)
     }
+    const toggleReadMore = () => {
+        setReviewText(!reviewText)
+    }
+    const filterPopup = () => {
+        setFilterDisplay(!filterDisplay)
+    }
+    /* 
+    
+    will need to fetch:
+    review data
+    comments data
+    whether user has liked a review
+    user's collections
+
+    On load:
+
+    - Using review data (an array of review objects),
+    use mapping to parse review data. if array is empty, do not parse
+    and use empty tags.
+
+    - Reviews will also be parsed for if a user has liked a review
+    (meaning they are in the likes array)
+
+    Otherwise:
+
+    - Collections will be fetched only if user clicks add to collection, should be cached after
+    Parse collections for whether item has already been added and show which collections already have the item.
+    
+    - Comments will be fetched only if user clicks toggle on replies, should
+    only be rendered once and then basically cached.
+
+    POSTs:
+
+    - Add product to collection: user must pick either a default collection (wishlist) or another collection
+    - Write a review: select existing tags, dropdown rating, review text
+
+     */
+
+
+
+    /* determined by user so implement persistence later */
     return (
         <div>
             <div class="product-container">
@@ -36,6 +77,7 @@ const Product = () => {
                         <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                     </div>
                     <button id="add-to-collection">Add to Collection <span class="fa fa-angle-down down-arrow"></span></button>
+                    <button class="add-review">Write a Review</button>
                     <hr />
                 </div>
                 
@@ -43,10 +85,27 @@ const Product = () => {
             <div id="product-reviews">
                 <div class="product-reviews-head">
                     <h3>### REVIEWS</h3>
-                    <button>Filter</button>
+                    <button onClick={filterPopup}>Filter</button>
+                    {filterDisplay ? 
+                    <>
+                    <div class="filter-overlay"></div>
+                    <div class="filter-popup">
+                        <div>
+                            <h4>Sort by</h4>
+                            <button onClick={filterPopup}><span class="fa fa-minus"></span></button>
+                        </div>
+                            
+                            <p>Most Recent</p>
+                            <p>Highest Rated</p>
+                            <p>Lowest Rated</p>
+                            <p>Most Helpful</p>
+                    </div> 
+                    </>
+                    : 
+                    <></>
+
+                    }
                 </div>
-                <hr />
-                <button class="add-review">Write a Review</button>
                 {/* reviews should be handled in a separate component */}
                 <div id='reviews'>
                     <div class='review'>
@@ -65,8 +124,12 @@ const Product = () => {
                         </div> 
                         
                         <div class="review-text">
-                            <p>This is the review text. Could either be short or long. The show more button would be used if a review is quite long.</p>
-                            <button>Read more</button>
+                            {reviewText ? 
+                            <p>This is the review text. Could either be short or long. The show more button would be used if the review is quite long.<button onClick={toggleReadMore}>Show less</button></p>
+                            :
+                            <p>This is the review text. Could either be short or long. The show more button would be used...<button onClick={toggleReadMore}>Show more</button></p>
+                            }
+                            
                         </div>
 
                         <div class="review-btns">
