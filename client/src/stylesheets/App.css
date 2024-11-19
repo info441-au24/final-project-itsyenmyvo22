@@ -176,10 +176,85 @@ hr {
   padding: 15px 0px;
 }
 
+.collections-popup {
+  background: #bc9e6a;
+  color: white;
+  border-radius: 30px;
+  width: 80%;
+  max-height: min-content;
+  margin: auto;
+  padding: 10px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 100%;
+  z-index: 1;
+}
+
+.collection {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+
+.collection > img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.popup-head > h4{
+  margin: 0;
+}
+
 .add-review {
   margin: 20px 0px;
   width: auto;
   align-self: center;
+}
+
+.add-review-popup {
+  background: #bc9e6a;
+  color: white;
+  border-radius: 30px;
+  width: 80%;
+  max-height: min-content;
+  margin: auto;
+  padding: 10px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 100%;
+  z-index: 1;
+}
+
+.popup-head {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+}
+
+#add-review {
+  margin: 15px;
+}
+
+#review-input {
+  width: 80%;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+textarea {
+  resize: vertical; 
+  max-height: 200px;
+  width: 100%;
 }
 
 #add-to-collection {

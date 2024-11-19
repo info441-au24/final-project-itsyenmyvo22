@@ -6,6 +6,9 @@ const Product = () => {
     const [liked, setLiked] = useState(false);
     const [reviewText, setReviewText] = useState(false);
     const [filterDisplay, setFilterDisplay] = useState(false);
+    const [collectionsDisplay, setCollectionsDisplay] = useState(false)
+    const [addReviewDisplay, setAddReviewDisplay] = useState(false)
+
     const toggleComments = () => {
         setCommentsDisplay(!commentsDisplay)
     }
@@ -17,6 +20,13 @@ const Product = () => {
     }
     const filterPopup = () => {
         setFilterDisplay(!filterDisplay)
+    }
+    const collectionsPopup = () => {
+        setCollectionsDisplay(!collectionsDisplay)
+    }
+
+    const addReviewPopup = () => {
+        setAddReviewDisplay(!addReviewDisplay)
     }
     /* 
     
@@ -56,28 +66,91 @@ const Product = () => {
     return (
         <div>
             <div class="product-container">
+
                 <div class="product-col product-img">
                         <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
                 </div>
+
                 <div class="product-col product-info">
+
                     <div class="product-head">
                         <h2>Product Name</h2>
                         <p>Product Category</p>
                         <p>Brand Name</p>
                     </div>
+
                     <hr/>
+
                     <div class="product-tags">
                         <span>Normal Skin</span>
                         <span>Ceramides</span>
                         <span>Moisturizing</span>
                     </div>
+
                     <hr />
+
                     <div class="product-descr">
                         <h3>DESCRIPTION</h3>
                         <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                     </div>
-                    <button id="add-to-collection">Add to Collection <span class="fa fa-angle-down down-arrow"></span></button>
-                    <button class="add-review">Write a Review</button>
+
+                    <button onClick={collectionsPopup} id="add-to-collection">Add to Collection <span class="fa fa-angle-down down-arrow"></span></button>
+                    {collectionsDisplay ? 
+                    <>
+                    <div class="filter-overlay"></div>
+                    <div class="collections-popup">
+                        <div class="popup-head">
+                            <h4>Add to collection</h4>
+                            <button onClick={collectionsPopup}><span class="fa fa-minus"></span></button>
+                        </div>
+                            <div class="collection">
+                                <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
+                                <p>Wishlist</p>
+                            </div>
+                            <div class="collection">
+                                <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
+                                <p>Daily Routine</p>
+                            </div>
+                            <div class="collection">
+                                <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
+                                <p>Favorites</p>
+                            </div>
+                    </div> 
+                    </>
+                    : 
+                    <></>
+
+                    }
+
+                    <button onClick={addReviewPopup} class="add-review">Write a Review</button>
+                    {addReviewDisplay ? 
+                    <>
+                    <div class="filter-overlay"></div>
+                    <div class="add-review-popup">
+                        <div class="popup-head">
+                            <h4>Write a review</h4>
+                            <button onClick={addReviewPopup}><span class="fa fa-minus"></span></button>
+                        </div>
+                        <form id="add-review">
+                            <p>Rating</p>
+                            <select class="form-select" aria-label='Choose rating'>
+                                <option selected></option>
+                                <option value="Skin Care">1</option>
+                                <option value="Hair Care">2</option>
+                                <option value="Not Listed">3</option>
+                                <option value="Skin Care">4</option>
+                                <option value="Hair Care">5</option>
+                            </select>
+                            <p>What did you think about this product?</p>
+                            <textarea name="newReviewContent" rows={4}/>
+                            <button>Submit</button>
+                        </form>
+                    </div> 
+                    </>
+                    : 
+                    <></>
+
+                    }
                     <hr />
                 </div>
                 
@@ -90,7 +163,7 @@ const Product = () => {
                     <>
                     <div class="filter-overlay"></div>
                     <div class="filter-popup">
-                        <div>
+                        <div class="popup-head">
                             <h4>Sort by</h4>
                             <button onClick={filterPopup}><span class="fa fa-minus"></span></button>
                         </div>
