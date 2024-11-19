@@ -1,3 +1,8 @@
+/*          GLOBAL           */
+
+
+/*          GLOBAL           */
+
 /* Import Poppins font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -53,6 +58,52 @@ body {
 .nav-button:hover {
   background-color: #3f2f3b;
 }
+
+/*          HOME PAGE           */
+
+
+/*          HOME PAGE           */
+
+.search-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+.search-input {
+  width: 50%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.search-button {
+  width: 30%;
+  padding: 8px 10px;
+  border-radius: 5px; 
+  font-size: 14px; 
+  background-color: #FFF; 
+  color: black; 
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+.search-input:focus {
+  outline: none;
+  border: 2px solid #bc9e6a;
+}
+
+.search-button:hover {
+  background-color: #60495A;
+  color: white;
+}
+
+
 
 /*          PRODUCT PAGE           */
 
@@ -320,3 +371,18 @@ h3 {
     transform: rotate(360deg);
   }
 } */
+
+/*          UPLOADPRODUCT PAGE           */
+
+
+/*          UPLOADPRODUCT PAGE           */
+
+
+
+
+
+/*          PROFILE PAGE           */
+
+
+/*          PROFILE PAGE           */
+

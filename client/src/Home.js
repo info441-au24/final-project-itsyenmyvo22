@@ -27,15 +27,16 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>Products</h1>
+    <div className="search-container">
+      <h1>Search Products</h1>
       <input
         type="text"
+        className="search-input"
         value={searchQuery}
         onChange={e => setSearchQuery(e.target.value)}
         placeholder="Enter product name..."
       />
-      <button onClick={handleSearch}>Search</button>
+      <button className="search-button" onClick={handleSearch}>Search</button>
       <div>
         {noResults && <p>No results found.</p>}
         {Array.isArray(results) && results.map(post => (
@@ -50,4 +51,3 @@ const Home = () => {
 };
 
 export default Home;
-
