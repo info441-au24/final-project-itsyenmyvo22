@@ -17,7 +17,7 @@ const Profile = () => {
                 <div class="profile-head">
                     <h3>Collections</h3>
                     
-                    <button onClick={collectionsPopup} id="create">Create Collection</button>
+                    <button onClick={collectionsPopup} class="collection-button">Create Collection</button>
                     {collectionsDisplay ?
                         <>
                             <div class="filter-overlay"></div>
@@ -46,14 +46,20 @@ const Profile = () => {
             <div class="collections">
                 <div class="collection-grid">
                     <div class="collection-card">
-                        <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
-                        <h4><Link classname='please' to="/collection">Winter 2024</Link></h4>
-                        <button>Delete</button>
+                        <Link to="/collection">
+                            <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
+                            <h4>Winter 2024</h4>
+                        </Link>
+                        <button class="collection-button">Delete</button>
+
                     </div>
                     <div class="collection-card">
-                        <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
-                        <h4>Dry Skin</h4>
-                        <button>Delete</button>
+                        <Link to="/collection">
+                            <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
+                            <h4>Dry Skin</h4>
+                        </Link>
+                        <button class="collection-button">Delete</button>
+
                     </div>
                 </div>
             </div>

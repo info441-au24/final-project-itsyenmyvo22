@@ -610,7 +610,7 @@ h3 {
 .collection-grid {
   --gap: 1rem;
   --num-cols: 4;
-  --row-height: 400px;
+  --row-height: 450px;
 
   box-sizing: border-box;
   padding: var(--gap);
@@ -626,10 +626,11 @@ h3 {
 .collection-card {
   height: 400px;
   width: 300px;
-  text-align: center
-  /* border-width: 1px;
+  text-align: center;
+  border-width: 1px;
   border-style: solid;
-  border-radius: 10px; */
+  border-radius: 10px;
+  padding: 15px;
 }
 
 .collection-card img{
@@ -670,6 +671,16 @@ a {
   opacity: 100%;
   z-index: 1;
   text-align: center;
+}
+
+.collection-button {
+  background-color: white;
+  border-radius: 15px;
+}
+
+.collection-button:hover {
+  background-color: #60495A;
+  color: white;
 }
 
 /*          PROFILE PAGE           */
