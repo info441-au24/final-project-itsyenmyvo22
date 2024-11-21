@@ -33,17 +33,18 @@ const port = 3001;
 app.use(cors());
 app.use(express.json());
 
-// Endpoint to search posts by name
+// Endpoint to search posts by name or return all if no query
 app.get('/api/search', async (req, res) => {
     const query = req.query.query;
-    if (!query) {
-        return res.status(400).json({ message: 'Query parameter is required.' });
-    }
-
+    let posts;
     try {
-        const posts = await models.Post.find({
-            name: { $regex: new RegExp(query, 'i') }  // Case-insensitive regex search
-        });
+        if (query) {
+            posts = await models.Post.find({
+                name: { $regex: new RegExp(query, 'i') }
+            });
+        } else {
+            posts = await models.Post.find({});
+        }
 
         if (posts.length === 0) {
             return res.status(404).json({ message: 'No posts found' });
