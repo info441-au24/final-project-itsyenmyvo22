@@ -554,6 +554,9 @@ h3 {
 #pbutton:hover {
   background-color: #60495A;
   color: white;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 #buttondiv {
@@ -561,19 +564,15 @@ h3 {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  padding: 15px 10px;
-  border-radius: 5px; 
+  padding: 15px 10px; 
   font-size: 14px; 
   background-color: #FFF; 
   color: black; 
-  transition: background-color 0.3s, color 0.3s;
-  cursor: pointer;
 }
 
 #pbutton { 
   width: 50%;
 }
-
 
 
 /*          PROFILE PAGE           */
