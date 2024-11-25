@@ -57,6 +57,25 @@ app.get('/api/search', async (req, res) => {
     }
 });
 
+// Endpoint to handle product uploads
+app.post('/api/uploadProduct', async (req, res) => {
+    const {name, category, price, url} = req.body;
+
+    try {
+        const newProduct = new models.Post({
+            name, 
+            category,
+            price,
+            url
+        });
+        await newProduct.save();
+        res.status(201).json(newProduct);
+    } catch (error) {
+        console.log('Error creating new product:', error);
+        res.status(500).json({message: 'Failed to create product'});
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });

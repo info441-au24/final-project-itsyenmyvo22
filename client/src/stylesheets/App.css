@@ -529,21 +529,23 @@ h3 {
 /*          UPLOADPRODUCT PAGE           */
 #pcontainer {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 100%;
-  margin: 10px 10px;
-  margin-top: 20px;
-  padding-top: 20px;
+  width: 50%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); 
+  border-radius: 10px;
 }
 
 .prod-input {
-  padding: 5px;
-  margin: 5px 0;
-  border-radius: 10px;
-  font-size: 16px;
-  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;  
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
 .prod-input:focus {
@@ -551,27 +553,28 @@ h3 {
   border: 2px solid #bc9e6a;
 }
 
-#pbutton:hover {
-  background-color: #60495A;
-  color: white;
-  transition: background-color 0.3s, color 0.3s;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
 #buttondiv {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  padding: 15px 10px; 
-  font-size: 14px; 
-  background-color: #FFF; 
-  color: black; 
+  justify-content: space-around;
+  width: 100%; 
+  margin-top: 20px; 
 }
 
-#pbutton { 
-  width: 50%;
+#uploadProductButton {
+  padding: 10px 20px; 
+  font-size: 16px;
+  background-color: #fff; 
+  color: #333; 
+  border: 2px solid #60495A;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#uploadProductButton:hover {
+  background-color: #60495A;
+  color: white; 
+  border-color: #60495A; 
 }
 
 
