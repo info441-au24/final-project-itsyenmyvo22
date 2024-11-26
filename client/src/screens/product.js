@@ -1,13 +1,15 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import { useParams } from 'react-router-dom';
 
 const Product = () => {
+    const [productInfo, setProductInfo] = useState({url: "https://images.squarespace-cdn.com/content/v1/5c4f6ba1e2ccd1ee6075495d/1685562425302-JE61B3ZAB2RW455PFS13/different-skincare-products.jpg", category: "Category", name: "Product Name", price: "Price"})
     const [commentsDisplay, setCommentsDisplay] = useState(false);
     const [liked, setLiked] = useState(false);
     const [reviewText, setReviewText] = useState(false);
     const [filterDisplay, setFilterDisplay] = useState(false);
     const [collectionsDisplay, setCollectionsDisplay] = useState(false)
     const [addReviewDisplay, setAddReviewDisplay] = useState(false)
+    const { productID } = useParams()
 
     const toggleComments = () => {
         setCommentsDisplay(!commentsDisplay)
@@ -28,6 +30,29 @@ const Product = () => {
     const addReviewPopup = () => {
         setAddReviewDisplay(!addReviewDisplay)
     }
+
+    /* async function loadProductDetails(prodID){
+        const response = await fetch(`api/v1/posts?productID=${prodID}`)
+        const productDetails = await response.json()
+        setProductInfo(productDetails)
+    } */
+
+    const loadProductInfo = () => {
+        //to update username later
+        fetch(`http://localhost:3001/api/product?productID=${productID}`)
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                console.log(data)
+                setProductInfo(data)
+            })
+    }
+
+    useEffect(() => {
+        loadProductInfo()
+    }, []);
+
 
     /* const loadReviews = () => {
         try {
@@ -75,15 +100,15 @@ const Product = () => {
             <div class="product-container">
 
                 <div class="product-col product-img">
-                        <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
+                        <img src={productInfo.url} alt="product"></img>
                 </div>
 
                 <div class="product-col product-info">
 
                     <div class="product-head">
-                        <h2>Product Name</h2>
-                        <p>Product Category</p>
-                        <p>Brand Name</p>
+                        <h2>{productInfo.name}</h2>
+                        <p>{productInfo.category}</p>
+                        <p>{productInfo.price}</p>
                     </div>
 
                     <hr/>
@@ -128,8 +153,8 @@ const Product = () => {
                     <></>
 
                     }
+                    <hr />
 
-                    <button onClick={addReviewPopup} class="add-review">Write a Review</button>
                     {addReviewDisplay ? 
                     <>
                     <div class="filter-overlay"></div>
@@ -158,14 +183,14 @@ const Product = () => {
                     <></>
 
                     }
-                    <hr />
                 </div>
                 
             </div>
             <div id="product-reviews">
                 <div class="product-reviews-head">
-                    <h3>### REVIEWS</h3>
-                    <button onClick={filterPopup}>Filter</button>
+                    <h3>REVIEWS (1)</h3>
+                    <button onClick={addReviewPopup} id="add-review-button">Write a Review</button>
+                    <button onClick={filterPopup} id="sort-reviews">Sort</button>
                     {filterDisplay ? 
                     <>
                     <div class="filter-overlay"></div>

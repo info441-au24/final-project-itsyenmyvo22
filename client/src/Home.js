@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {Link} from 'react-router-dom';
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,7 +52,7 @@ const Home = () => {
         {Array.isArray(results) && results.map(post => (
           <div key={post._id} className="card">
             <img src={post.url} alt={post.name} className="product-image" />
-            <h4>{post.name}</h4>
+            <Link to={`product/${post._id}`}><h4>{post.name}</h4></Link>
             <p>Category: {post.category}</p>
             <p>Price: {post.price}</p>
           </div>
