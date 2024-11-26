@@ -76,6 +76,38 @@ app.post('/api/uploadProduct', async (req, res) => {
     }
 })
 
+app.post('/api/profile', async (req, res) => {
+    try {
+        const newCollection = new models.Collection({
+            username: "test-acc", //to update later
+            collection_name: req.body.name,
+            products: [],
+            collection_description: req.body.description,
+            collection_img: req.body.img
+        })
+
+        await newCollection.save()
+        res.send({ "status": "success" })
+
+    } catch (error) {
+        console.log("error: " + error)
+        res.status(500).json({ "status": "error", "error": error })
+    }
+})
+
+app.get('/api/profile', async (req, res) => {
+    try {
+        const currentUser = req.query.username
+        const collections = await models.Collection.find({username:currentUser})
+
+        res.send(collections)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ "status": "error", "error": error })
+    }
+})
+
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });

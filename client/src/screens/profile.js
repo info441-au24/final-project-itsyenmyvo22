@@ -1,9 +1,64 @@
-import React, { useState, useEffect } from 'react'; import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
-    const [collections, setCollections] = useState(false);
+    const [cards, setCards] = useState([])
     const [collectionsDisplay, setCollectionsDisplay] = useState(false)
+    const [collection, setCollection] = useState({
+        name: '',
+        description: '',
+        img: ''
+    })
 
+    const loadCollections = () => {
+        //to update username later
+        fetch('api/profile?username=test-acc')
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                console.log(data)
+                setCards(data)
+            })
+    }
+
+    useEffect(() => {
+        loadCollections()
+    }, []);
+
+    const handleChange = (event) => {
+        setCollection({ ...collection, [event.target.name]: event.target.value })
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        try {
+            let responseJson = await fetch(`http://localhost:3001/api/profile`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(collection)
+            })
+
+            if (responseJson.ok) {
+                console.log('collection added');
+                setCollection({
+                    name: '',
+                    description: '',
+                    img: ''
+                });
+                collectionsPopup()
+                loadCollections()
+
+            } else {
+                console.log('collection failed');
+            }
+
+        } catch (error) {
+            console.log("error", error)
+        }
+    }
 
     const collectionsPopup = () => {
         setCollectionsDisplay(!collectionsDisplay)
@@ -16,7 +71,7 @@ const Profile = () => {
                 <hr></hr>
                 <div class="profile-head">
                     <h3>Collections</h3>
-                    
+
                     <button onClick={collectionsPopup} class="collection-button">Create Collection</button>
                     {collectionsDisplay ?
                         <>
@@ -27,12 +82,14 @@ const Profile = () => {
                                     <button onClick={collectionsPopup}><span class="fa fa-minus"></span></button>
                                 </div>
                                 <div class="collection-add-info">
-                                    <form>
-                                        <label for="collectionTitle">Collection Title:</label><br></br>
-                                        <input type="text" id="collectionTitle" name="collectionTitle"></input><br></br>
+                                    <form onSubmit={handleSubmit}>
+                                        <label for="collectionTitle">Collection Name:</label><br></br>
+                                        <input type="text" id="collectionTitle" name="name" value={collection.name} onChange={handleChange}></input><br></br>
                                         <label for="collectionDescription">Description:</label><br></br>
-                                        <input type="text" id="collectionDescription" name="collectionDescription"></input><br></br>
-                                        <input type="submit" value="Submit"onClick={collectionsPopup}></input>
+                                        <input type="text" id="collectionDescription" name="description" value={collection.description} onChange={handleChange}></input><br></br>
+                                        <label for="collectionDescription">Cover Image:</label><br></br>
+                                        <input type="text" id="collectionCoverImg" name="img" value={collection.img} onChange={handleChange}></input><br></br>
+                                        <input type="submit" value="Submit"></input>
                                     </form>
                                 </div>
                             </div>
@@ -44,23 +101,16 @@ const Profile = () => {
                 </div>
             </div>
             <div class="collections">
-                <div class="collection-grid">
-                    <div class="collection-card">
-                        <Link to="/collection">
-                            <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
-                            <h4>Winter 2024</h4>
-                        </Link>
-                        <button class="collection-button">Delete</button>
-
-                    </div>
-                    <div class="collection-card">
-                        <Link to="/collection">
-                            <img src="https://www.cerave.com/-/media/project/loreal/brand-sites/cerave/americas/us/products-v4/moisturizing-cream/cerave_moisturizing_cream_16oz_jar_front-700x875-v4.jpg?rev=db6e3c22250e4928bc749dd2c207de5b&w=500&hash=D85F888749CB3F9C74FBBBF73EFA6D40" alt="product"></img>
-                            <h4>Dry Skin</h4>
-                        </Link>
-                        <button class="collection-button">Delete</button>
-
-                    </div>
+                <div className="collection-grid">
+                    {cards.map((card) => (
+                        <div class="collection-card">
+                            <Link to="/collection">
+                                <img src={card.collection_img} />
+                                <h4>{card.collection_name}</h4>
+                            </Link>
+                            <button class="collection-button">Delete</button>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
