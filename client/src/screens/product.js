@@ -28,6 +28,13 @@ const Product = () => {
     const addReviewPopup = () => {
         setAddReviewDisplay(!addReviewDisplay)
     }
+
+    /* const loadReviews = () => {
+        try {
+            let reviews = await fetchJSON(`api/v1/reviews?productID=${}`)
+        }
+    } */
+        
     /* 
     
     will need to fetch:
