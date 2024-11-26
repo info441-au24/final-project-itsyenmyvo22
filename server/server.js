@@ -107,6 +107,17 @@ app.get('/api/profile', async (req, res) => {
     }
 })
 
+app.get('/api/product', async (req, res) => {
+    try {
+        console.log("finding product")
+        const productID = req.query.productID
+        const product = await models.Post.findOne({_id: productID})
+        res.send(product)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ "status": "error", "error": error })
+    }
+})
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

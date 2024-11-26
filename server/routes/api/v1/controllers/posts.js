@@ -31,5 +31,23 @@ router.post('/', async (req, res) => {
       res.status(500).json({ 'message': error.message });
   }
 })
+
+router.get('/', async (req, res) => {
+  try {
+    if (req.query.productID){
+      console.log(req.query.productID)
+      let product = await req.models.Post.findOne({_id: req.query.productID})
+      console.log(product)
+      res.json({
+        name: product.name,
+        category: product.category,
+        price: product.price,
+        url: product.url
+      })
+    }
+  } catch (err) {
+    res.status(500).json({ 'message': err.message });
+  }
+})
   
 export default router;

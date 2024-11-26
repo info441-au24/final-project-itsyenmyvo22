@@ -27,7 +27,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/uploadProduct" element={<UploadProduct />} />
-          <Route path="/product" element={<Product />} />
+          <Route path="/product/:productID" element={<Product />} />
           <Route path="/search" element={<Home />} />
         </Routes>
       </div>

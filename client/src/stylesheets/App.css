@@ -151,7 +151,7 @@ body {
 
 .product-container {
   display: flex;
-  padding: 0 40px;
+  padding: 20px 40px;
   flex-direction: column;
   align-items: center;
 }
@@ -250,8 +250,8 @@ hr {
   margin: 0;
 }
 
-.add-review {
-  margin: 20px 0px;
+#add-review-button, #sort-reviews {
+  margin: 0px;
   width: auto;
   align-self: center;
 }
@@ -301,10 +301,14 @@ textarea {
   align-self: center;
 }
 
+
+
 .product-reviews-head {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 15px;
+  margin-top: 0px;
 }
 
 h3 {
@@ -560,7 +564,7 @@ h3 {
   margin-top: 20px; 
 }
 
-#uploadProductButton {
+#uploadProductButton, #add-to-collection, #add-review-button, #sort-reviews {
   padding: 10px 20px; 
   font-size: 16px;
   background-color: #fff; 
@@ -571,7 +575,7 @@ h3 {
   transition: background-color 0.3s, color 0.3s;
 }
 
-#uploadProductButton:hover {
+#uploadProductButton:hover, #add-to-collection:hover, #add-review-button:hover, #sort-reviews:hover {
   background-color: #60495A;
   color: white; 
   border-color: #60495A; 
