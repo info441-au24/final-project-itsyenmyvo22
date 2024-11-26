@@ -19,7 +19,8 @@ async function connectDatabase() {
       username: String,
       collection_name: String,
       products: [String],
-      collection_description: String
+      collection_description: String,
+      collection_img: String
     });
     models.Collection = mongoose.model('Collection', collectionSchema);
 
