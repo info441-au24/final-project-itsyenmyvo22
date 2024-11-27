@@ -18,25 +18,26 @@ const UploadProduct = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
         try {
-            const response = await fetch('http://localhost:3001/api/uploadProduct', {
+            const response = await fetch(`${apiUrl}/api/uploadProduct`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(product)
             });
-
+    
             if (response.ok) {
                 console.log('Product uploaded successfully');
                 setProduct({ name: '', category: '', price: '', url: '' }); // Reset form
             } else {
-                console.log('Failed to upload product');
+                console.error('Failed to upload product');
             }
         } catch (error) {
-            console.log('Error:', error);
+            console.error('Error:', error);
         }
-    }
+    };    
 
     return (
         <div id='pcontainer'>

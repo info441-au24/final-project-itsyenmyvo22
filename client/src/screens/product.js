@@ -38,16 +38,15 @@ const Product = () => {
     } */
 
     const loadProductInfo = () => {
-        //to update username later
-        fetch(`http://localhost:3001/api/product?productID=${productID}`)
-            .then((res) => {
-                return res.json()
-            })
+        const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+        fetch(`${apiUrl}/api/product?productID=${productID}`)
+            .then((res) => res.json())
             .then((data) => {
-                console.log(data)
-                setProductInfo(data)
+                console.log(data);
+                setProductInfo(data);
             })
-    }
+            .catch((error) => console.error('Error loading product info:', error));
+    }    
 
     useEffect(() => {
         loadProductInfo()

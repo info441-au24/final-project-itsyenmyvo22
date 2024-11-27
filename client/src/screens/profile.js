@@ -32,16 +32,17 @@ const Profile = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
         try {
-            let responseJson = await fetch(`http://localhost:3001/api/profile`, {
+            let response = await fetch(`${apiUrl}/api/profile`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(collection)
             })
-
-            if (responseJson.ok) {
+    
+            if (response.ok) {
                 console.log('collection added');
                 setCollection({
                     name: '',
@@ -50,15 +51,14 @@ const Profile = () => {
                 });
                 collectionsPopup()
                 loadCollections()
-
             } else {
                 console.log('collection failed');
             }
-
+    
         } catch (error) {
             console.log("error", error)
         }
-    }
+    }    
 
     const collectionsPopup = () => {
         setCollectionsDisplay(!collectionsDisplay)
