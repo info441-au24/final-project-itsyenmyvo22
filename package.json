@@ -1,0 +1,14 @@
+{
+    "name": "cle-fullstack-app",
+    "version": "1.0.0",
+    "description": "A full-stack application for cle",
+    "main": "server/server.js",
+    "scripts": {
+      "start": "node server/server.js",
+      "build": "cd client && npm install && npm run build && cd ../server && npm install",
+      "postbuild": "echo 'Build process complete!'"
+    },
+    "author": "yenmy",
+    "license": "ISC"
+}
+  

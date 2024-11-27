@@ -26,12 +26,20 @@
 import express from 'express';
 import cors from 'cors';
 import models from './models.js';
+import path from 'path';
+import {fileURLToPath} from 'url';
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the React app build directory
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // Endpoint to search posts by name or return all if no query
 app.get('/api/search', async (req, res) => {
@@ -118,6 +126,11 @@ app.get('/api/product', async (req, res) => {
         res.status(500).json({ "status": "error", "error": error })
     }
 })
+
+// Catch-all handler to serve a single-page application
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

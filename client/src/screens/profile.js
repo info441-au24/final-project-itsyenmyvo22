@@ -12,15 +12,19 @@ const Profile = () => {
 
     const loadCollections = () => {
         //to update username later
-        fetch('api/profile?username=test-acc')
+        const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+        fetch(`${apiUrl}/api/profile?username=test-acc`)
             .then((res) => {
-                return res.json()
+                return res.json();
             })
             .then((data) => {
-                console.log(data)
-                setCards(data)
+                console.log(data);
+                setCards(data);
             })
-    }
+            .catch((error) => {
+                console.error('Error loading collections:', error);
+            });
+    }    
 
     useEffect(() => {
         loadCollections()
