@@ -12,8 +12,8 @@ const Profile = () => {
 
     const loadCollections = () => {
         //to update username later
-        const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
-        fetch(`${apiUrl}/api/profile?username=test-acc`)
+        // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+        fetch(`api/profile?username=test-acc`)
             .then((res) => {
                 return res.json();
             })
