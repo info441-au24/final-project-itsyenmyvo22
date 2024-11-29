@@ -25,18 +25,27 @@
 
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 import models from './models.js';
 import path from 'path';
 import {fileURLToPath} from 'url';
+import { dirname, join } from 'path';
+
+import apiV1Router from './routes/api/v1/apiv1.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors());
+app.use(logger('dev'));
 app.use(express.json());
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use('/api/v1', apiV1Router);
 
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, '../client/build')));
@@ -135,3 +144,5 @@ app.get('*', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
+
+export default app;
