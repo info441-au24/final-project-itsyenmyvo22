@@ -7,7 +7,7 @@ var debug = require('debug')('express-starter:server');
 var http = require('http');
 
 (async () => {
-  const app = await (await import('../app.js')).default;
+  const app = await (await import('../server.js')).default;
 
   /**
    * Get port from environment and store in Express.
