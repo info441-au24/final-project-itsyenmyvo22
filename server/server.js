@@ -30,21 +30,23 @@ import logger from 'morgan';
 import models from './models.js';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import { dirname, join } from 'path';
+import { dirname } from 'path';
 
 import apiV1Router from './routes/api/v1/apiv1.js';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 3001;
+// should be unneccesary
+// const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 app.use('/api/v1', apiV1Router);
 
 // Serve static files from the React app build directory
@@ -139,10 +141,6 @@ app.get('/api/product', async (req, res) => {
 // Catch-all handler to serve a single-page application
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
-
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
 });
 
 export default app;

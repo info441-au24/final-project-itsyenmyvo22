@@ -34,17 +34,13 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
+    console.log(`loading product info`)
     if (req.query.productID){
-      console.log(req.query.productID)
-      let product = await req.models.Post.findOne({_id: req.query.productID})
-      console.log(product)
-      res.json({
-        name: product.name,
-        category: product.category,
-        price: product.price,
-        url: product.url
-      })
-    }
+        console.log("finding product")
+        const productID = req.query.productID
+        const product = await models.Post.findOne({_id: productID})
+        res.send(product)
+    } 
   } catch (err) {
     res.status(500).json({ 'message': err.message });
   }

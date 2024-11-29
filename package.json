@@ -4,7 +4,7 @@
     "description": "A full-stack application for cle",
     "main": "server/server.js",
     "scripts": {
-      "start": "node server/server.js",
+      "start": "node ./bin/www.cjs",
       "build": "cd client && npm install && npm run build && cd ../server && npm install",
       "postbuild": "echo 'Build process complete!'"
     },
