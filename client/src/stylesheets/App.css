@@ -448,7 +448,7 @@ h3 {
   margin: 0px; 
 }
 
-#comments {
+.comments {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
