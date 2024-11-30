@@ -228,7 +228,7 @@ const Product = () => {
         </div>
         <div id="product-reviews">
             <div className="product-reviews-head">
-                <h3>REVIEWS (1)</h3>
+                <h3>REVIEWS ({reviews.length})</h3>
                 <button onClick={addReviewPopup} id="add-review-button">Write a Review</button>
                 <button onClick={filterPopup} id="sort-reviews">Sort</button>
                 {filterDisplay ? 
