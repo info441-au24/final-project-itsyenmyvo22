@@ -1,32 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from './loader';
+import ReviewCard from './review_card';
 
 const Product = () => {
     const [productInfo, setProductInfo] = useState({})
     const [isDataLoading, setIsDataLoading] = useState(false);
-    const [newReview, setNewReview] = useState({username: "test-acc"});
-    const [reviews, setReviews] = useState([])
-    const [commentsDisplay, setCommentsDisplay] = useState(false);
-    const [liked, setLiked] = useState(false);
-    const [reviewText, setReviewText] = useState(false);
     const [filterDisplay, setFilterDisplay] = useState(false);
     const [collectionsDisplay, setCollectionsDisplay] = useState(false)
     const [addReviewDisplay, setAddReviewDisplay] = useState(false)
+    const [newReview, setNewReview] = useState({username: "test-acc", rating: "", review: ""});
+    const [reviews, setReviews] = useState([]);
+    
     const { productID } = useParams()
 
-    const toggleComments = () => {
-        setCommentsDisplay(!commentsDisplay)
-    }
-    const toggleLike = () => {
-        setLiked(!liked)
-    }
-    const toggleReadMore = () => {
-        setReviewText(!reviewText)
-    }
     const filterPopup = () => {
         setFilterDisplay(!filterDisplay)
     }
+
     const collectionsPopup = () => {
         setCollectionsDisplay(!collectionsDisplay)
     }
@@ -35,14 +26,16 @@ const Product = () => {
         setAddReviewDisplay(!addReviewDisplay)
     }
 
-    const handleChange = (e) => {
+    const handleReviewChange = (e) => {
         setNewReview({...newReview, [e.target.name]: e.target.value})
     };
 
-    const handleSubmit = async (e) => {
+    const handleNewComment = () => {
+        loadReviews()
+    }
+
+    const submitReview = async (e) => {
         e.preventDefault();
-        setNewReview({...newReview, [e.target.name]: e.target.value})
-        setNewReview({...newReview, productID: productID})
         try {
             const response = await fetch(`/api/v1/reviews?productID=${productID}`, {
                 method: 'POST',
@@ -54,8 +47,9 @@ const Product = () => {
     
             if (response.ok) {
                 console.log('review uploaded successfully');
-                setNewReview({ username: 'test-acc '}); // Reset form
+                setNewReview({ username: 'test-acc', rating: '', review: ''}); // Reset form
                 setAddReviewDisplay(false);
+                loadReviews();
             } else {
                 console.error('Failed to submit review');
             }
@@ -63,12 +57,6 @@ const Product = () => {
             console.error('Error:', error);
         }
     };    
-
-    /* async function loadProductDetails(prodID){
-        const response = await fetch(`api/v1/posts?productID=${prodID}`)
-        const productDetails = await response.json()
-        setProductInfo(productDetails)
-    } */
 
     const loadProductInfo = async () => {
         //const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
@@ -104,7 +92,6 @@ const Product = () => {
     useEffect(() => {
         loadReviews()
     }, []);
-
 
     /* const loadReviews = () => {
         try {
@@ -216,9 +203,9 @@ const Product = () => {
                         <h4>Write a review</h4>
                         <button onClick={addReviewPopup}><span className="fa fa-minus"></span></button>
                     </div>
-                    <form id="add-review">
+                    <form id="add-review" onSubmit={submitReview}>
                         <p>Rating</p>
-                        <select className="form-select" name="rating" value={newReview.rating} onChange={handleChange} aria-label='Choose rating'>
+                        <select className="form-select" name="rating" value={newReview.rating} onChange={handleReviewChange} aria-label='Choose rating'>
                             <option selected></option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -227,8 +214,8 @@ const Product = () => {
                             <option value="5">5</option>
                         </select>
                         <p>What did you think about this product?</p>
-                        <textarea rows={4} name="review" value={newReview.review} onChange={handleChange}/>
-                        <button onClick={handleSubmit}>Submit</button>
+                        <textarea rows={4} name="review" value={newReview.review} onChange={handleReviewChange}/>
+                        <button type="submit">Submit</button>
                     </form>
                 </div> 
                 </>
@@ -266,97 +253,10 @@ const Product = () => {
             </div>
             {/* reviews should be handled in a separate component */}
             <div id='reviews'>
-                {isDataLoading ? <Loader /> : reviews.map((review) => 
-                <div className='review'>
-                    {/* review body */}
-                    <div className="review-head">
-                        <h4>{review.username}</h4>
-                        <p className="date">{review.created_date}</p>
-                    </div>
-                    <div className="rating"> 
-                            <i className="fa fa-star clicked"></i> 
-                            <i className="fa fa-star clicked"></i> 
-                            <i className="fa fa-star clicked"></i> 
-                            <i className="fa fa-star clicked"></i> 
-                            <i className="fa fa-star"></i> 
-                    </div> 
-                    <div className="review-text">
-                        {reviewText ? 
-                        <p>{review.review}<button onClick={toggleReadMore}>Show less</button></p>
-                        :
-                        <p>This is the review text. Could either be short or long. The show more button would be used...<button onClick={toggleReadMore}>Show more</button></p>
-                        }
-                        
-                    </div>
-
-                    <div className="review-btns">
-                        <div className="helpful">
-                            <p>Helpful?</p>
-                            <button className="like-btn" onClick={toggleLike}>
-                                <div>
-                                    
-                                    {liked ? 
-                                    <>
-                                    <i className="fa fa-thumbs-up" style={{color: 'black'}}></i>
-                                    <span>1</span>
-                                    </>
-                                    : 
-                                    <><i className="fa fa-thumbs-up" style={{color:'lightgray'}}></i>
-                                    <span>0</span></>
-                                    }
-                                    </div>
-                            </button>
-                        </div>
-                        
-                    
-                       {/* render view/hide only if there are replies */}
-                    
-                    <button className="comments-toggle" onClick={toggleComments}>Show/Hide Replies</button>
-                    </div>
-                    {/* comments */}
-
-                    {commentsDisplay ? 
-                        <div id="comments">
-                            <div className="comment">
-
-                                <div className="comment-head">
-                                    <h4>Commenter</h4>
-                                    <p className="date">November 17, 2025</p>
-                                </div>
-
-                                <div className="comment-body">
-                                    <p>This is the comment text.</p>
-                                </div>
-
-                            </div>
-                            <div className="comment">
-                                <div className="comment-head">
-                                    <h4>Commenter</h4>
-                                    <p className="date">November 17, 2025</p>
-                        
-                                </div>
-                                <div className="comment-body">
-                                    <p>This is the comment text.</p>
-                                </div>
-                                
-                            </div>
-                            <div className="reply-box">
-                                <input
-                                        type="text"
-                                        id="comment-input"
-                                        placeholder="Add a comment"
-                                    />
-                                <button>Submit</button>
-                            </div>
-                          </div>
-                        : 
-                        <></>}  
-                    </div>
-                )}     
+                {isDataLoading ? <Loader /> : reviews.map((review) => <ReviewCard key={review._id} review={review} callback={handleNewComment}/>)}     
             </div>
-
         </div>
-  </>
+    </>
             }
               </div>
     );
