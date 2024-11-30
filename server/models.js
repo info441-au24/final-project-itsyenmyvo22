@@ -2,29 +2,26 @@ import mongoose from "mongoose";
 
 let models = {};
 
-async function connectDatabase() {
-  try {
-    await mongoose.connect('mongodb+srv://testuser:btsot7@cluster441.dib0a.mongodb.net/cle?retryWrites=true&w=majority&appName=Cluster441');
-    console.log("Successfully connected to MongoDB");
+console.log("connecting to mongodb")
+await mongoose.connect('mongodb+srv://cmle:pU5bUsZKBZKBMUJA@cluster0.sv21o.mongodb.net/cle?retryWrites=true&w=majority&appName=Cluster0')
+console.log("Successfully connected to MongoDB");
 
-    const postSchema = new mongoose.Schema({
-      name: String,
-      category: String,
-      price: String,
-      url: String
-    });
-    models.Post = mongoose.model('Post', postSchema);
-
-    const collectionSchema = new mongoose.Schema({
+const postSchema = new mongoose.Schema({
+    name: String,
+    category: String,
+    price: String,
+    url: String
+});
+    
+const collectionSchema = new mongoose.Schema({
       username: String,
       collection_name: String,
       products: [String],
       collection_description: String,
       collection_img: String
     });
-    models.Collection = mongoose.model('Collection', collectionSchema);
-
-    const reviewSchema = new mongoose.Schema({
+    
+const reviewSchema = mongoose.Schema({
       username: String,
       review: String,
       productID: String,
@@ -32,23 +29,19 @@ async function connectDatabase() {
       comments: [String],
       created_date: Date
     });
-    models.Review = mongoose.model('Review', reviewSchema);
-
-    const commentSchema = new mongoose.Schema({
+    
+const commentSchema = new mongoose.Schema({
       username: String,
       comment: String,
       created_date: Date
     });
-    models.Comment = mongoose.model('Comment', commentSchema);
 
-    console.log('Mongoose models created');
-  } catch (error) {
-    console.error('Error connecting to MongoDB', error);
-  }
-}
 
-(async () => {
-  await connectDatabase();
-})();
+models.Collection = mongoose.model('Collection', collectionSchema);
+models.Post = mongoose.model('Post', postSchema);
+models.Review = mongoose.model('Review', reviewSchema);
+models.Comment = new mongoose.model('Comment', commentSchema);
+    
+console.log('Mongoose models created');
 
 export default models;

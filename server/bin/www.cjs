@@ -27,7 +27,7 @@ var http = require('http');
    */
 
   server.listen(port, ()=> {
-    `Server is listening on ${port}`
+    console.log(`Server is listening on ${port}`)
   });
   server.on('error', onError);
   server.on('listening', onListening);

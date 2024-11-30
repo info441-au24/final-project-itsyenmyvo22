@@ -36,7 +36,8 @@ router.post('/', async (req, res) => {
    const newReview = new req.models.Review ({
         /* username: req.session.account.username, */
         username: req.body.username,
-        productID: req.query.postID,
+        productID: req.query.productID,
+        review: req.body.review,
         rating: req.body.rating,
         comments: [],
         created_date: Date.now()
