@@ -49,7 +49,7 @@ const ReviewCard = (props) => {
     let reloadReviews = props.callback;
     const [commentsDisplay, setCommentsDisplay] = useState(false);
     const [liked, setLiked] = useState(false);
-    const [reviewText, setReviewText] = useState(false);
+    const [showReviewText, setShowReviewText] = useState(false);
     const [newComment, setNewComment] = useState({username: "test-acc"});
 
     const toggleComments = () => {
@@ -59,7 +59,7 @@ const ReviewCard = (props) => {
         setLiked(!liked)
     }
     const toggleReadMore = () => {
-        setReviewText(!reviewText)
+        setShowReviewText(!showReviewText)
     }
 
     const handleCommentChange = async (e) => {
@@ -98,18 +98,19 @@ const ReviewCard = (props) => {
             </div>
                     
             <div className="rating"> 
-                <i className="fa fa-star clicked"></i> 
-                <i className="fa fa-star clicked"></i> 
-                <i className="fa fa-star clicked"></i> 
-                <i className="fa fa-star clicked"></i> 
-                <i className="fa fa-star"></i> 
+                {[...Array(review.rating)].map((index) => {
+                    return <i className="fa fa-star clicked" key={index}></i>
+                })}
+                {[...Array(5 - review.rating)].map((index) => {
+                    return <i className="fa fa-star" key={index}></i>
+                })}
             </div> 
 
             <div className="review-text">
-                {reviewText ? 
-                <p>{review.review}<button onClick={toggleReadMore}>Show less</button></p>
-                :
-                <p>This is the review text. Could either be short or long. The show more button would be used...<button onClick={toggleReadMore}>Show more</button></p>}
+                {review.review.length >= 250 ? <>
+                <p>{showReviewText ? review.review : `${review.review.substring(0, 250)}`}</p>
+                <button onClick={toggleReadMore}>Show {showReviewText ? 'less' : 'more'}</button></> : 
+                <p>{review.review}</p>}
             </div>
 
             <div className="review-btns">
