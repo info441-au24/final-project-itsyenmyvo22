@@ -6,6 +6,7 @@ const Product = () => {
     const [productInfo, setProductInfo] = useState({})
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [newReview, setNewReview] = useState({username: "test-acc"});
+    const [reviews, setReviews] = useState([])
     const [commentsDisplay, setCommentsDisplay] = useState(false);
     const [liked, setLiked] = useState(false);
     const [reviewText, setReviewText] = useState(false);
@@ -52,7 +53,7 @@ const Product = () => {
             });
     
             if (response.ok) {
-                console.log('Product uploaded successfully');
+                console.log('review uploaded successfully');
                 setNewReview({ username: 'test-acc '}); // Reset form
                 setAddReviewDisplay(false);
             } else {
@@ -84,8 +85,24 @@ const Product = () => {
 
     }  
 
+    const loadReviews =  async () => {
+        setIsDataLoading(true);
+        await fetch(`/api/v1/reviews?productID=${productID}`)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                setReviews(data);
+                setIsDataLoading(false);
+            })
+            .catch((error) => console.error('Error loading reviews:', error))
+    }
+
     useEffect(() => {
         loadProductInfo()
+    }, []);
+
+    useEffect(() => {
+        loadReviews()
     }, []);
 
 
@@ -249,13 +266,13 @@ const Product = () => {
             </div>
             {/* reviews should be handled in a separate component */}
             <div id='reviews'>
+                {isDataLoading ? <Loader /> : reviews.map((review) => 
                 <div className='review'>
-                {/* review body */}
+                    {/* review body */}
                     <div className="review-head">
-                        <h4>Reviewer</h4>
-                        <p className="date">November 17, 2025</p>
+                        <h4>{review.username}</h4>
+                        <p className="date">{review.created_date}</p>
                     </div>
-
                     <div className="rating"> 
                             <i className="fa fa-star clicked"></i> 
                             <i className="fa fa-star clicked"></i> 
@@ -263,10 +280,9 @@ const Product = () => {
                             <i className="fa fa-star clicked"></i> 
                             <i className="fa fa-star"></i> 
                     </div> 
-                    
                     <div className="review-text">
                         {reviewText ? 
-                        <p>This is the review text. Could either be short or long. The show more button would be used if the review is quite long.<button onClick={toggleReadMore}>Show less</button></p>
+                        <p>{review.review}<button onClick={toggleReadMore}>Show less</button></p>
                         :
                         <p>This is the review text. Could either be short or long. The show more button would be used...<button onClick={toggleReadMore}>Show more</button></p>
                         }
@@ -297,10 +313,9 @@ const Product = () => {
                     
                     <button className="comments-toggle" onClick={toggleComments}>Show/Hide Replies</button>
                     </div>
+                    {/* comments */}
 
-                        {/* comments */}
-
-                        {commentsDisplay ? 
+                    {commentsDisplay ? 
                         <div id="comments">
                             <div className="comment">
 
@@ -314,7 +329,6 @@ const Product = () => {
                                 </div>
 
                             </div>
-                        
                             <div className="comment">
                                 <div className="comment-head">
                                     <h4>Commenter</h4>
@@ -334,11 +348,11 @@ const Product = () => {
                                     />
                                 <button>Submit</button>
                             </div>
-                        </div>
+                          </div>
                         : 
-                        <></>}
-                
-                </div>
+                        <></>}  
+                    </div>
+                )}     
             </div>
 
         </div>
