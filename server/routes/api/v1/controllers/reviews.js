@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        let reviews = await req.models.Comment.find({productID: req.query.postID})
+        let reviews = await req.models.Review.find({productID: req.query.productID})
+        console.log(reviews)
         let reviewsData = await Promise.all(
             reviews.map(async review => { 
                 return {
