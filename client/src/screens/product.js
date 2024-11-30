@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
+import Loader from './loader';
 
 const Product = () => {
     const [productInfo, setProductInfo] = useState({})
     const [isDataLoading, setIsDataLoading] = useState(false);
+    const [newReview, setNewReview] = useState({username: "test-acc"});
     const [commentsDisplay, setCommentsDisplay] = useState(false);
     const [liked, setLiked] = useState(false);
     const [reviewText, setReviewText] = useState(false);
@@ -31,6 +33,35 @@ const Product = () => {
     const addReviewPopup = () => {
         setAddReviewDisplay(!addReviewDisplay)
     }
+
+    const handleChange = (e) => {
+        setNewReview({...newReview, [e.target.name]: e.target.value})
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setNewReview({...newReview, [e.target.name]: e.target.value})
+        setNewReview({...newReview, productID: productID})
+        try {
+            const response = await fetch(`/api/v1/reviews?productID=${productID}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newReview)
+            });
+    
+            if (response.ok) {
+                console.log('Product uploaded successfully');
+                setNewReview({ username: 'test-acc '}); // Reset form
+                setAddReviewDisplay(false);
+            } else {
+                console.error('Failed to submit review');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };    
 
     /* async function loadProductDetails(prodID){
         const response = await fetch(`api/v1/posts?productID=${prodID}`)
@@ -67,7 +98,6 @@ const Product = () => {
     /* 
     
     will need to fetch:
-    review data
     comments data
     whether user has liked a review
     user's collections
@@ -101,17 +131,17 @@ const Product = () => {
     /* determined by user so implement persistence later */
     return (
         <div>
-            {isDataLoading ? <div>Loading</div> : 
+            {isDataLoading ? <Loader /> : 
             <>
-            <div class="product-container">
+            <div className="product-container">
 
-            <div class="product-col product-img">
+            <div className="product-col product-img">
                     <img src={productInfo.url} alt="product"></img>
             </div>
 
-            <div class="product-col product-info">
+            <div className="product-col product-info">
 
-                <div class="product-head">
+                <div className="product-head">
                     <h2>{productInfo.name}</h2>
                     <p>{productInfo.category}</p>
                     <p>{productInfo.price}</p>
@@ -119,7 +149,7 @@ const Product = () => {
 
                 <hr/>
 
-                <div class="product-tags">
+                <div className="product-tags">
                     <span>Normal Skin</span>
                     <span>Ceramides</span>
                     <span>Moisturizing</span>
@@ -127,29 +157,29 @@ const Product = () => {
 
                 <hr />
 
-                <div class="product-descr">
+                <div className="product-descr">
                     <h3>DESCRIPTION</h3>
                     <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                 </div>
 
-                <button onClick={collectionsPopup} id="add-to-collection">Add to Collection <span class="fa fa-angle-down down-arrow"></span></button>
+                <button onClick={collectionsPopup} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
                 {collectionsDisplay ? 
                 <>
-                <div class="filter-overlay"></div>
-                <div class="collections-popup">
-                    <div class="popup-head">
+                <div className="filter-overlay"></div>
+                <div className="collections-popup">
+                    <div className="popup-head">
                         <h4>Add to collection</h4>
-                        <button onClick={collectionsPopup}><span class="fa fa-minus"></span></button>
+                        <button onClick={collectionsPopup}><span className="fa fa-minus"></span></button>
                     </div>
-                        <div class="collection">
+                        <div className="collection">
                             <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
                             <p>Wishlist</p>
                         </div>
-                        <div class="collection">
+                        <div className="collection">
                             <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
                             <p>Daily Routine</p>
                         </div>
-                        <div class="collection">
+                        <div className="collection">
                             <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
                             <p>Favorites</p>
                         </div>
@@ -163,25 +193,25 @@ const Product = () => {
 
                 {addReviewDisplay ? 
                 <>
-                <div class="filter-overlay"></div>
-                <div class="add-review-popup">
-                    <div class="popup-head">
+                <div className="filter-overlay"></div>
+                <div className="add-review-popup">
+                    <div className="popup-head">
                         <h4>Write a review</h4>
-                        <button onClick={addReviewPopup}><span class="fa fa-minus"></span></button>
+                        <button onClick={addReviewPopup}><span className="fa fa-minus"></span></button>
                     </div>
                     <form id="add-review">
                         <p>Rating</p>
-                        <select class="form-select" aria-label='Choose rating'>
+                        <select className="form-select" name="rating" value={newReview.rating} onChange={handleChange} aria-label='Choose rating'>
                             <option selected></option>
-                            <option value="Skin Care">1</option>
-                            <option value="Hair Care">2</option>
-                            <option value="Not Listed">3</option>
-                            <option value="Skin Care">4</option>
-                            <option value="Hair Care">5</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
                         <p>What did you think about this product?</p>
-                        <textarea name="newReviewContent" rows={4}/>
-                        <button>Submit</button>
+                        <textarea rows={4} name="review" value={newReview.review} onChange={handleChange}/>
+                        <button onClick={handleSubmit}>Submit</button>
                     </form>
                 </div> 
                 </>
@@ -193,17 +223,17 @@ const Product = () => {
             
         </div>
         <div id="product-reviews">
-            <div class="product-reviews-head">
+            <div className="product-reviews-head">
                 <h3>REVIEWS (1)</h3>
                 <button onClick={addReviewPopup} id="add-review-button">Write a Review</button>
                 <button onClick={filterPopup} id="sort-reviews">Sort</button>
                 {filterDisplay ? 
                 <>
-                <div class="filter-overlay"></div>
-                <div class="filter-popup">
-                    <div class="popup-head">
+                <div className="filter-overlay"></div>
+                <div className="filter-popup">
+                    <div className="popup-head">
                         <h4>Sort by</h4>
-                        <button onClick={filterPopup}><span class="fa fa-minus"></span></button>
+                        <button onClick={filterPopup}><span className="fa fa-minus"></span></button>
                     </div>
                         
                         <p>Most Recent</p>
@@ -219,22 +249,22 @@ const Product = () => {
             </div>
             {/* reviews should be handled in a separate component */}
             <div id='reviews'>
-                <div class='review'>
+                <div className='review'>
                 {/* review body */}
-                    <div class="review-head">
+                    <div className="review-head">
                         <h4>Reviewer</h4>
-                        <p class="date">November 17, 2025</p>
+                        <p className="date">November 17, 2025</p>
                     </div>
 
-                    <div class="rating"> 
-                            <i class="fa fa-star clicked"></i> 
-                            <i class="fa fa-star clicked"></i> 
-                            <i class="fa fa-star clicked"></i> 
-                            <i class="fa fa-star clicked"></i> 
-                            <i class="fa fa-star"></i> 
+                    <div className="rating"> 
+                            <i className="fa fa-star clicked"></i> 
+                            <i className="fa fa-star clicked"></i> 
+                            <i className="fa fa-star clicked"></i> 
+                            <i className="fa fa-star clicked"></i> 
+                            <i className="fa fa-star"></i> 
                     </div> 
                     
-                    <div class="review-text">
+                    <div className="review-text">
                         {reviewText ? 
                         <p>This is the review text. Could either be short or long. The show more button would be used if the review is quite long.<button onClick={toggleReadMore}>Show less</button></p>
                         :
@@ -243,19 +273,19 @@ const Product = () => {
                         
                     </div>
 
-                    <div class="review-btns">
-                        <div class="helpful">
+                    <div className="review-btns">
+                        <div className="helpful">
                             <p>Helpful?</p>
-                            <button class="like-btn" onClick={toggleLike}>
+                            <button className="like-btn" onClick={toggleLike}>
                                 <div>
                                     
                                     {liked ? 
                                     <>
-                                    <i class="fa fa-thumbs-up" style={{color: 'black'}}></i>
+                                    <i className="fa fa-thumbs-up" style={{color: 'black'}}></i>
                                     <span>1</span>
                                     </>
                                     : 
-                                    <><i class="fa fa-thumbs-up" style={{color:'lightgray'}}></i>
+                                    <><i className="fa fa-thumbs-up" style={{color:'lightgray'}}></i>
                                     <span>0</span></>
                                     }
                                     </div>
@@ -265,38 +295,38 @@ const Product = () => {
                     
                        {/* render view/hide only if there are replies */}
                     
-                    <button class="comments-toggle" onClick={toggleComments}>Show/Hide Replies</button>
+                    <button className="comments-toggle" onClick={toggleComments}>Show/Hide Replies</button>
                     </div>
 
                         {/* comments */}
 
                         {commentsDisplay ? 
                         <div id="comments">
-                            <div class="comment">
+                            <div className="comment">
 
-                                <div class="comment-head">
+                                <div className="comment-head">
                                     <h4>Commenter</h4>
-                                    <p class="date">November 17, 2025</p>
+                                    <p className="date">November 17, 2025</p>
                                 </div>
 
-                                <div class="comment-body">
+                                <div className="comment-body">
                                     <p>This is the comment text.</p>
                                 </div>
 
                             </div>
                         
-                            <div class="comment">
-                                <div class="comment-head">
+                            <div className="comment">
+                                <div className="comment-head">
                                     <h4>Commenter</h4>
-                                    <p class="date">November 17, 2025</p>
+                                    <p className="date">November 17, 2025</p>
                         
                                 </div>
-                                <div class="comment-body">
+                                <div className="comment-body">
                                     <p>This is the comment text.</p>
                                 </div>
                                 
                             </div>
-                            <div class="reply-box">
+                            <div className="reply-box">
                                 <input
                                         type="text"
                                         id="comment-input"

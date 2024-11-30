@@ -1,12 +1,11 @@
 import express from 'express';
-import models from '../../../../models.js';
 
 const router = express.Router();
 
 router.get('/search', async (req, res) => {
     const { query } = req.query;
     try {
-      const posts = await models.Post.find({
+      const posts = await req.models.Post.find({
         name: { $regex: query, $options: 'i' }, // Case-insensitive search
       });
       res.json(posts);
@@ -38,7 +37,7 @@ router.get('/', async (req, res) => {
     if (req.query.productID){
         console.log("finding product")
         const productID = req.query.productID
-        const product = await models.Post.findOne({_id: productID})
+        const product = await req.models.Post.findOne({_id: productID})
         res.send(product)
     } 
   } catch (err) {
