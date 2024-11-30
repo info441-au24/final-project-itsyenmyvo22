@@ -68,7 +68,6 @@ const ReviewCard = (props) => {
 
     const submitComment = async (e) => {
         e.preventDefault();
-        reloadReviews();
         try {
             const response = await fetch(`/api/v1/reviews/comments?reviewID=${review._id}`, {
                 method: 'POST',
@@ -80,6 +79,7 @@ const ReviewCard = (props) => {
     
             if (response.ok) {
                 console.log('review uploaded successfully');
+                reloadReviews();
                 setNewComment({ username: 'test-acc '}); // Reset form
             } else {
                 console.error('Failed to submit review');

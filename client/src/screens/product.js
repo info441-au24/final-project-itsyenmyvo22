@@ -3,6 +3,55 @@ import { useParams } from 'react-router-dom';
 import Loader from './loader';
 import ReviewCard from './review_card';
 
+const CollectionItem = (props) => {
+    const [alreadySaved, setAlreadySaved] = useState(false);
+    let collection = props.collection
+    let productID = props.productID
+    let reloadCollection = props.callback
+
+    useEffect(() => {
+        checkAlreadySaved();
+    }, [alreadySaved])
+
+    const checkAlreadySaved = () => {
+        if (collection.products.includes(productID)) {
+            console.log("product already saved to collection")
+            setAlreadySaved(true)
+        } else {
+            setAlreadySaved(false)
+        }
+    }
+
+    const saveToCollection = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`/api/v1/collections?collectionID=${collection._id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({productID: productID})})
+            if (response.ok) {
+                console.log('collection updated successfully');
+                reloadCollection();
+            } else {
+                console.error('Failed to submit collection');
+            }
+        } catch(err) {
+            console.error('Error:', err);
+        }
+    };
+
+    return (
+        <div className="collection">
+            <img src={collection.collection_img}></img>
+            <p>{collection.collection_name}</p>
+            {alreadySaved ? <></> : <button onClick={saveToCollection}>Save</button>}
+            
+        </div>
+    )
+}
+
 const Product = () => {
     const [productInfo, setProductInfo] = useState({})
     const [isDataLoading, setIsDataLoading] = useState(false);
@@ -11,6 +60,7 @@ const Product = () => {
     const [addReviewDisplay, setAddReviewDisplay] = useState(false)
     const [newReview, setNewReview] = useState({username: "test-acc", rating: "", review: ""});
     const [reviews, setReviews] = useState([]);
+    const [collections, setCollections] = useState([])
     
     const { productID } = useParams()
 
@@ -56,7 +106,7 @@ const Product = () => {
         } catch (error) {
             console.error('Error:', error);
         }
-    };    
+    };  
 
     const loadProductInfo = async () => {
         //const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
@@ -85,6 +135,18 @@ const Product = () => {
             .catch((error) => console.error('Error loading reviews:', error))
     }
 
+    const loadCollections =  async () => {
+        await fetch(`/api/v1/collections`)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("recieved collection data", data);
+                setCollections(data);
+                console.log("saved collections data", collections)
+                setCollectionsDisplay(true)
+            })
+            .catch((error) => console.error('Error loading collections:', error))
+    }
+
     useEffect(() => {
         loadProductInfo()
     }, []);
@@ -102,23 +164,14 @@ const Product = () => {
     /* 
     
     will need to fetch:
-    comments data
     whether user has liked a review
-    user's collections
 
     On load:
-
-    - Using review data (an array of review objects),
-    use mapping to parse review data. if array is empty, do not parse
-    and use empty tags.
 
     - Reviews will also be parsed for if a user has liked a review
     (meaning they are in the likes array)
 
     Otherwise:
-
-    - Collections will be fetched only if user clicks add to collection, should be cached after
-    Parse collections for whether item has already been added and show which collections already have the item.
     
     - Comments will be fetched only if user clicks toggle on replies, should
     only be rendered once and then basically cached.
@@ -166,28 +219,22 @@ const Product = () => {
                     <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                 </div>
 
-                <button onClick={collectionsPopup} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
+                <button onClick={loadCollections} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
                 {collectionsDisplay ? 
                 <>
                 <div className="filter-overlay"></div>
+
                 <div className="collections-popup">
+
                     <div className="popup-head">
                         <h4>Add to collection</h4>
                         <button onClick={collectionsPopup}><span className="fa fa-minus"></span></button>
                     </div>
-                        <div className="collection">
-                            <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
-                            <p>Wishlist</p>
-                        </div>
-                        <div className="collection">
-                            <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
-                            <p>Daily Routine</p>
-                        </div>
-                        <div className="collection">
-                            <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
-                            <p>Favorites</p>
-                        </div>
+
+                    {collections.map((collection) => <CollectionItem key={collection._id} productID={productID} collection={collection} callback={() => loadCollections()}/> )}
+
                 </div> 
+
                 </>
                 : 
                 <></>
