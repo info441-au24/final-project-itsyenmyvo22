@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 let models = {};
 
 console.log("connecting to mongodb")
-await mongoose.connect('mongodb+srv://cmle:pU5bUsZKBZKBMUJA@cluster0.sv21o.mongodb.net/cle?retryWrites=true&w=majority&appName=Cluster0')
+await mongoose.connect('mongodb+srv://testuser:btsot7@cluster441.dib0a.mongodb.net/cle?retryWrites=true&w=majority&appName=Cluster441')
+
 console.log("Successfully connected to MongoDB");
 
 const postSchema = new mongoose.Schema({
