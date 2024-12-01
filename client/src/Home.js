@@ -9,9 +9,8 @@ const Home = () => {
   // Function to fetch products with or without a query
   const fetchProducts = async (query = '') => {
     try {
-      //const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variables
-      //const apiUrl = 'http://localhost:3001'
-      const response = await fetch(`api/search?query=${encodeURIComponent(query)}`);
+      const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variables
+      const response = await fetch(`${apiUrl}/api/search?query=${encodeURIComponent(query)}`);
       const data = await response.json();
       if (Array.isArray(data) && data.length === 0) {
         setNoResults(true);
