@@ -139,7 +139,7 @@ const ReviewCard = (props) => {
             
                 {/* render view/hide only if there are replies */}
             
-                <button className="comments-toggle" onClick={toggleComments}>{commentsDisplay ? "Hide" : "Show"} Replies</button>
+                <button className="toggle-comments" onClick={toggleComments}>{commentsDisplay ? "Hide" : "Show"} Replies</button>
             </div>
 
             {/* comments */}
