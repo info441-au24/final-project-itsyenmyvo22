@@ -4,9 +4,9 @@ const ReviewPopup = (props) => {
     const [newReview, setNewReview] = useState({username: "test-acc", rating: "", review: ""});
     let productID = props.productID
     let toggleReviewPopup = props.callback
-    let loadReviewsCallback = props.render
+    let renderReviewsCallback = props.render
 
-    const changeReviewPopup = () => {
+    const closeReviewPopup = () => {
         toggleReviewPopup()
     }
 
@@ -14,8 +14,8 @@ const ReviewPopup = (props) => {
         setNewReview({...newReview, [e.target.name]: e.target.value})
     };
 
-    const reloadReviews = () => {
-        loadReviewsCallback()
+    const renderReviews = () => {
+        renderReviewsCallback()
     }
 
     const submitReview = async (e) => {
@@ -32,8 +32,8 @@ const ReviewPopup = (props) => {
             if (response.ok) {
                 console.log('review uploaded successfully');
                 setNewReview({ username: 'test-acc', rating: '', review: ''}); // Reset form
-                changeReviewPopup();
-                reloadReviews();
+                closeReviewPopup();
+                renderReviews();
             } else {
                 console.error('Failed to submit review');
             }
@@ -49,7 +49,7 @@ const ReviewPopup = (props) => {
         <div className="add-review-popup">
             <div className="popup-head">
                 <h4>Write a review</h4>
-                <button onClick={changeReviewPopup}><span className="fa fa-minus"></span></button>
+                <button onClick={closeReviewPopup}><span className="fa fa-minus"></span></button>
             </div>
             <form id="add-review" onSubmit={submitReview}>
                 <p>Rating</p>

@@ -10,7 +10,7 @@ const Product = () => {
     const [productInfo, setProductInfo] = useState({})
     
     const [showCollectionsPopup, setShowCollectionsPopup] = useState(false);
-    const [addReviewPopup, setAddReviewPopup] = useState(false)
+    const [showReviewPopup, setShowReviewPopup] = useState(false)
 
     const [filterDisplay, setFilterDisplay] = useState(false);
     
@@ -22,9 +22,6 @@ const Product = () => {
         setFilterDisplay(!filterDisplay)
     }
 
-    const handleNewComment = () => {
-        loadReviews()
-    }
 
     const loadProductInfo = async () => {
         //const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
@@ -50,6 +47,7 @@ const Product = () => {
             })
             .catch((error) => console.error('Error loading reviews:', error))
     }
+
     useEffect(() => {
         loadProductInfo()
     }, []);
@@ -62,10 +60,7 @@ const Product = () => {
     /* 
     
     will need to fetch:
-    review data
-    comments data
     whether user has liked a review
-    user's collections
 
     On load:
 
@@ -131,7 +126,7 @@ const Product = () => {
                 
                 <hr />
 
-                {addReviewPopup ? <ReviewPopup productID={productID} callback={() => {setAddReviewPopup(!addReviewPopup)}} render={() => loadReviews()}/> : <></>}
+                {showReviewPopup ? <ReviewPopup productID={productID} callback={() => {setShowReviewPopup(!showReviewPopup)}} render={() => loadReviews()}/> : <></>}
             
             </div>
             
@@ -139,7 +134,7 @@ const Product = () => {
         <div id="product-reviews">
             <div className="product-reviews-head">
                 <h3>REVIEWS ({reviews.length})</h3>
-                <button onClick={() => setAddReviewPopup(!addReviewPopup)} id="add-review-button">Write a Review</button>
+                <button onClick={() => setShowReviewPopup(!showReviewPopup)} id="add-review-button">Write a Review</button>
                 <button onClick={filterPopup} id="sort-reviews">Sort</button>
                 {filterDisplay ? 
                 <>
@@ -163,7 +158,7 @@ const Product = () => {
             </div>
             {/* reviews should be handled in a separate component */}
             <div id='reviews'>
-                {isDataLoading ? <></> : reviews.map((review) => <ReviewCard key={review._id} review={review} callback={handleNewComment}/>)}     
+                {isDataLoading ? <></> : reviews.map((review) => <ReviewCard key={review._id} review={review} render={() => loadReviews()}/>)}     
             </div>
         </div>
     </>

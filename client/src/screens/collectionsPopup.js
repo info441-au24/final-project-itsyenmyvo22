@@ -11,17 +11,16 @@ const Collection = (props) => {
     }
 
     useEffect(() => {
-        checkAlreadySaved();
-    }, [])
-
-    const checkAlreadySaved = () => {
-        if (collection.products.includes(productID)) {
-            console.log("product already saved to collection")
-            setAlreadySaved(true)
-        } else {
-            setAlreadySaved(false)
+        const checkAlreadySaved = () => {
+            if (collection.products.includes(productID)) {
+                console.log("product already saved to collection")
+                setAlreadySaved(true)
+            } else {
+                setAlreadySaved(false)
+            }
         }
-    }
+        checkAlreadySaved();
+    } , [collection.products, productID])
 
     const saveToCollection = async (e) => {
         e.preventDefault();
@@ -45,7 +44,7 @@ const Collection = (props) => {
 
     return (
         <div className="collection">
-            <img src={collection.collection_img}></img>
+            <img src={collection.collection_img} alt={`cover for ${collection.collection_name}`}></img>
             <p>{collection.collection_name}</p>
             {alreadySaved ? <></> : <button onClick={saveToCollection}>Save</button>}
             

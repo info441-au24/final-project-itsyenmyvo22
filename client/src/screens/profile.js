@@ -111,7 +111,7 @@ const Profile = () => {
                     {cards.map((card) => (
                         <div class="collection-card">
                             <Link to="/collection">
-                                <img src={card.collection_img} />
+                                <img src={card.collection_img} alt={`cover for ${card.collection_name}`}/>
                                 <h4>{card.collection_name}</h4>
                             </Link>
                             <button class="collection-button">Delete</button>
