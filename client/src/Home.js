@@ -10,7 +10,8 @@ const Home = () => {
 
   // Function to fetch products with or without a query
   const fetchProducts = async () => {
-    const apiUrl = process.env.REACT_APP_API_URL;
+    //const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "http://localhost:3001"
     const queryParameters = [];
     if (searchQuery) queryParameters.push(`query=${encodeURIComponent(searchQuery)}`);
     if (priceFilter) queryParameters.push(`price=${encodeURIComponent(priceFilter)}`);

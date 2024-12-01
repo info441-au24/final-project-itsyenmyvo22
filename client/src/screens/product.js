@@ -72,9 +72,6 @@ const Product = () => {
     (meaning they are in the likes array)
 
     Otherwise:
-
-    - Collections will be fetched only if user clicks add to collection, should be cached after
-    Parse collections for whether item has already been added and show which collections already have the item.
     
     - Comments will be fetched only if user clicks toggle on replies, should
     only be rendered once and then basically cached.
@@ -91,7 +88,7 @@ const Product = () => {
         <div>
             {isDataLoading ? <></> : 
             <>
-            <div className="product-container">
+            <div id="product-info-container">
 
             <div className="product-col product-img">
                     <img src={productInfo.url} alt="product"></img>
@@ -100,25 +97,26 @@ const Product = () => {
             <div className="product-col product-info">
 
                 <div className="product-head">
-                    <h2>{productInfo.name}</h2>
-                    <p>{productInfo.category}</p>
-                    <p>{productInfo.price}</p>
+                    <h2 id="product-name">{productInfo.name}</h2>
+                    <p id="product-category">{productInfo.category}</p>
+                    <p id="product-price">{productInfo.price}</p>
                 </div>
 
-                <hr/>
+                
 
+                {/* <hr/>
                 <div className="product-tags">
                     <span>Normal Skin</span>
                     <span>Ceramides</span>
                     <span>Moisturizing</span>
                 </div>
 
-                <hr />
+                <hr /> */}
 
-                <div className="product-descr">
+                {/* <div className="product-descr">
                     <h3>DESCRIPTION</h3>
                     <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
-                </div>
+                </div> */}
 
                 <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
                 
@@ -133,9 +131,9 @@ const Product = () => {
         </div>
         <div id="product-reviews">
             <div className="product-reviews-head">
-                <h3>REVIEWS ({reviews.length})</h3>
+                <h3 id="reviews-heading">REVIEWS ({reviews.length})</h3>
                 <button onClick={() => setShowReviewPopup(!showReviewPopup)} id="add-review-button">Write a Review</button>
-                <button onClick={filterPopup} id="sort-reviews">Sort</button>
+                {/* <button onClick={filterPopup} id="sort-reviews">Sort</button> */}
                 {filterDisplay ? 
                 <>
                 <div className="filter-overlay"></div>
