@@ -4,11 +4,15 @@ const Collection = (props) => {
     const [alreadySaved, setAlreadySaved] = useState(false);
     let collection = props.collection
     let productID = props.productID
-    let reloadCollection = props.callback
+    let renderCollections = props.render
+
+    const rerenderCollections = () => {
+        renderCollections()
+    }
 
     useEffect(() => {
         checkAlreadySaved();
-    }, [alreadySaved])
+    }, [])
 
     const checkAlreadySaved = () => {
         if (collection.products.includes(productID)) {
@@ -30,7 +34,7 @@ const Collection = (props) => {
                 body: JSON.stringify({productID: productID})})
             if (response.ok) {
                 console.log('collection updated successfully');
-                reloadCollection();
+                rerenderCollections();
             } else {
                 console.error('Failed to submit collection');
             }
@@ -50,10 +54,10 @@ const Collection = (props) => {
 }
 
 const CollectionsPopup = (props) => {
-    const [collectionsDisplay, setCollectionsDisplay] = useState(false)
     const [collections, setCollections] = useState([])
     let productID = props.productID
     let toggleCollectionsPopup = props.callback
+
 
     const changeCollectionsPoup = () => {
         toggleCollectionsPopup()
@@ -66,7 +70,6 @@ const CollectionsPopup = (props) => {
                 console.log("recieved collection data", data);
                 setCollections(data);
                 console.log("saved collections data", collections)
-                setCollectionsDisplay(true)
             })
             .catch((error) => console.error('Error loading collections:', error))
     }
@@ -75,10 +78,12 @@ const CollectionsPopup = (props) => {
         loadCollections()
     }, [])
 
+    // add caching of collections?
+    // but should refresh collections after saving?
+
 
     return (
-        <>{collectionsDisplay ? 
-            <>
+        <> 
             <div className="filter-overlay"></div>
 
             <div className="collections-popup">
@@ -88,12 +93,10 @@ const CollectionsPopup = (props) => {
                     <button onClick={changeCollectionsPoup}><span className="fa fa-minus"></span></button>
                 </div>
 
-                {collections.map((collection) => <Collection key={collection._id} productID={productID} collection={collection}/> )}
+                {collections.map((collection) => <Collection key={collection._id} productID={productID} collection={collection} render={() => loadCollections()}/> )}
 
             </div> 
-
-            </> : <></>
-        }</>
+        </>
     )
 }
 
