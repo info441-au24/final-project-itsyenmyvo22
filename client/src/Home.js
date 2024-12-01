@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {Link} from 'react-router-dom';
 
 const Home = () => {
@@ -8,10 +8,10 @@ const Home = () => {
   const [priceFilter, setPriceFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   // Function to fetch products with or without a query
-  const fetchProducts = async () => {
-    //const apiUrl = process.env.REACT_APP_API_URL;
-    const apiUrl = "http://localhost:3001"
+  const fetchProducts = useCallback(async () => {
     const queryParameters = [];
     if (searchQuery) queryParameters.push(`query=${encodeURIComponent(searchQuery)}`);
     if (priceFilter) queryParameters.push(`price=${encodeURIComponent(priceFilter)}`);
@@ -38,15 +38,15 @@ const Home = () => {
       setResults([]);
       setNoResults(true);
     }
-  };
+  },[apiUrl, searchQuery, priceFilter, categoryFilter]);
 
   // Load all products initially
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   const handleSearch = () => {
-    fetchProducts(searchQuery);
+    fetchProducts();
   };
 
   return (
