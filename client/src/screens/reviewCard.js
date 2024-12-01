@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 /* import { useParams } from 'react-router-dom';*/
-import Loader from './loader';
 
 const Comment = (props) => {
     const [isDataLoading, setIsDataLoading] = useState(true);
