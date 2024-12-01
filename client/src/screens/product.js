@@ -18,15 +18,6 @@ const Product = () => {
     const [reviews, setReviews] = useState([]);
     const { productID } = useParams()
 
-    const toggleComments = () => {
-        setCommentsDisplay(!commentsDisplay)
-    }
-    const toggleLike = () => {
-        setLiked(!liked)
-    }
-    const toggleReadMore = () => {
-        setReviewText(!reviewText)
-    }
     const filterPopup = () => {
         setFilterDisplay(!filterDisplay)
     }
@@ -35,13 +26,16 @@ const Product = () => {
         loadReviews()
     }
 
-    const loadProductInfo = () => {
-        const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
-        fetch(`${apiUrl}/api/product?productID=${productID}`)
+    const loadProductInfo = async () => {
+        //const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+        //const apiUrl = 'http://localhost:3001'
+        setIsDataLoading(true);
+        await fetch(`/api/v1/posts?productID=${productID}`)
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
                 setProductInfo(data);
+                setIsDataLoading(false);
             })
             .catch((error) => console.error('Error loading product info:', error));
 
@@ -60,12 +54,10 @@ const Product = () => {
         loadProductInfo()
     }, []);
 
+    useEffect(() => {
+        loadReviews()
+    }, []);
 
-    /* const loadReviews = () => {
-        try {
-            let reviews = await fetchJSON(`api/v1/reviews?productID=${}`)
-        }
-    } */
         
     /* 
     
@@ -106,32 +98,32 @@ const Product = () => {
             <>
             <div className="product-container">
 
-                <div class="product-col product-img">
-                        <img src={productInfo.url} alt="product"></img>
+            <div className="product-col product-img">
+                    <img src={productInfo.url} alt="product"></img>
+            </div>
+
+            <div className="product-col product-info">
+
+                <div className="product-head">
+                    <h2>{productInfo.name}</h2>
+                    <p>{productInfo.category}</p>
+                    <p>{productInfo.price}</p>
                 </div>
 
-                <div class="product-col product-info">
+                <hr/>
 
-                    <div class="product-head">
-                        <h2>{productInfo.name}</h2>
-                        <p>{productInfo.category}</p>
-                        <p>{productInfo.price}</p>
-                    </div>
+                <div className="product-tags">
+                    <span>Normal Skin</span>
+                    <span>Ceramides</span>
+                    <span>Moisturizing</span>
+                </div>
 
-                    <hr/>
+                <hr />
 
-                    <div class="product-tags">
-                        <span>Normal Skin</span>
-                        <span>Ceramides</span>
-                        <span>Moisturizing</span>
-                    </div>
-
-                    <hr />
-
-                    <div class="product-descr">
-                        <h3>DESCRIPTION</h3>
-                        <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
-                    </div>
+                <div className="product-descr">
+                    <h3>DESCRIPTION</h3>
+                    <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
+                </div>
 
                 <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
                 
@@ -174,6 +166,9 @@ const Product = () => {
                 {isDataLoading ? <></> : reviews.map((review) => <ReviewCard key={review._id} review={review} callback={handleNewComment}/>)}     
             </div>
         </div>
+    </>
+            }
+              </div>
     );
 };
 
