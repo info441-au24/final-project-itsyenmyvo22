@@ -68,7 +68,7 @@ const Home = () => {
         </select>
         <select className="filter-input" value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}>
           <option value="">Select Category</option>
-          <option value="Moisturizer">Moisturizer</option>
+          <option value="Moisturiser">Moisturiser</option>
           <option value="Serum">Serum</option>
           <option value="Oil">Oil</option>
           <option value="Mist">Mist</option>
