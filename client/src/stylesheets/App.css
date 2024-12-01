@@ -143,6 +143,29 @@ body {
   cursor: pointer;
 }
 
+/* Container for filter dropdowns to lay them out side by side */
+.filters-container {
+  display: flex;
+  justify-content: space-around; 
+  width: 100%; 
+  margin-bottom: 20px;
+}
+
+/* Individual filter dropdown styling */
+.filter-input {
+  padding: 10px;
+  margin: 10px; 
+  border: 1px solid #ccc;
+  width: 45%; 
+  box-sizing: border-box;
+}
+
+.filter-input:focus {
+  outline: none;
+  border: 2px solid #bc9e6a;
+}
+
+
 /*          PRODUCT PAGE           */
 
 

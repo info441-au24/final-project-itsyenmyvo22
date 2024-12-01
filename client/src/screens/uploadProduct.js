@@ -52,9 +52,20 @@ const UploadProduct = () => {
                     <p>Type of product:</p>
                     <select name="category" className="prod-input" value={product.category} onChange={handleChange} aria-label='Choose the type of beauty product'>
                         <option value="">Select the type of product:</option>
-                        <option value="Skin Care">Skin Care</option>
-                        <option value="Hair Care">Hair Care</option>
-                        <option value="Not Listed">Not Listed</option>
+                        <option value="Moisturizer">Moisturizer</option>
+                        <option value="Serum">Serum</option>
+                        <option value="Oil">Oil</option>
+                        <option value="Mist">Mist</option>
+                        <option value="Balm">Balm</option>
+                        <option value="Mask">Mask</option>
+                        <option value="Peel">Peel</option>
+                        <option value="Eye Care">Eye Care</option>
+                        <option value="Cleanser">Cleanser</option>
+                        <option value="Toner">Toner</option>
+                        <option value="Exfoliator">Exfoliator</option>
+                        <option value="Bath Salts">Bath Salts</option>
+                        <option value="Body Wash">Body Wash</option>
+                        <option value="Bath Oil">Bath Oil</option>
                     </select>
                 </div>
                 <div id="pdiv">

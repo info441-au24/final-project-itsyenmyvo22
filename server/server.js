@@ -59,21 +59,17 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 
 // Endpoint to search posts by name or return all if no query
 app.get('/api/search', async (req, res) => {
-    const query = req.query.query;
-    let posts;
+    const {query, price, category} = req.query;
+    let filter = {};
+    if (query) filter.name = {$regex: new RegExp(query, 'i')};
+    if (price) filter.price = price;
+    if (category) filter.category = category;
+
     try {
-        if (query) {
-            posts = await models.Post.find({
-                name: { $regex: new RegExp(query, 'i') }
-            });
-        } else {
-            posts = await models.Post.find({});
-        }
-
+        const posts = await models.Post.find(filter);
         if (posts.length === 0) {
-            return res.status(404).json({ message: 'No posts found' });
+            return res.status(404).json({message: 'No posts found'});
         }
-
         res.json(posts);
     } catch (error) {
         console.error('Error searching posts:', error);
