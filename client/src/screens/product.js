@@ -2,75 +2,22 @@ import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from './loader';
 import ReviewCard from './review_card';
-
-const CollectionItem = (props) => {
-    const [alreadySaved, setAlreadySaved] = useState(false);
-    let collection = props.collection
-    let productID = props.productID
-    let reloadCollection = props.callback
-
-    useEffect(() => {
-        checkAlreadySaved();
-    }, [alreadySaved])
-
-    const checkAlreadySaved = () => {
-        if (collection.products.includes(productID)) {
-            console.log("product already saved to collection")
-            setAlreadySaved(true)
-        } else {
-            setAlreadySaved(false)
-        }
-    }
-
-    const saveToCollection = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`/api/v1/collections?collectionID=${collection._id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({productID: productID})})
-            if (response.ok) {
-                console.log('collection updated successfully');
-                reloadCollection();
-            } else {
-                console.error('Failed to submit collection');
-            }
-        } catch(err) {
-            console.error('Error:', err);
-        }
-    };
-
-    return (
-        <div className="collection">
-            <img src={collection.collection_img}></img>
-            <p>{collection.collection_name}</p>
-            {alreadySaved ? <></> : <button onClick={saveToCollection}>Save</button>}
-            
-        </div>
-    )
-}
+import CollectionsPopup from './collectionsPopup';
 
 const Product = () => {
     const [productInfo, setProductInfo] = useState({})
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [filterDisplay, setFilterDisplay] = useState(false);
-    const [collectionsDisplay, setCollectionsDisplay] = useState(false)
     const [addReviewDisplay, setAddReviewDisplay] = useState(false)
     const [newReview, setNewReview] = useState({username: "test-acc", rating: "", review: ""});
     const [reviews, setReviews] = useState([]);
-    const [collections, setCollections] = useState([])
-    
+    const [showCollectionsPopup, setShowCollectionsPopup] = useState(false);
     const { productID } = useParams()
 
     const filterPopup = () => {
         setFilterDisplay(!filterDisplay)
     }
 
-    const collectionsPopup = () => {
-        setCollectionsDisplay(!collectionsDisplay)
-    }
 
     const addReviewPopup = () => {
         setAddReviewDisplay(!addReviewDisplay)
@@ -135,7 +82,7 @@ const Product = () => {
             .catch((error) => console.error('Error loading reviews:', error))
     }
 
-    const loadCollections =  async () => {
+    /* const loadCollections =  async () => {
         await fetch(`/api/v1/collections`)
             .then((res) => res.json())
             .then((data) => {
@@ -146,7 +93,7 @@ const Product = () => {
             })
             .catch((error) => console.error('Error loading collections:', error))
     }
-
+ */
     useEffect(() => {
         loadProductInfo()
     }, []);
@@ -154,12 +101,6 @@ const Product = () => {
     useEffect(() => {
         loadReviews()
     }, []);
-
-    /* const loadReviews = () => {
-        try {
-            let reviews = await fetchJSON(`api/v1/reviews?productID=${}`)
-        }
-    } */
         
     /* 
     
@@ -219,27 +160,8 @@ const Product = () => {
                     <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                 </div>
 
-                <button onClick={loadCollections} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
-                {collectionsDisplay ? 
-                <>
-                <div className="filter-overlay"></div>
-
-                <div className="collections-popup">
-
-                    <div className="popup-head">
-                        <h4>Add to collection</h4>
-                        <button onClick={collectionsPopup}><span className="fa fa-minus"></span></button>
-                    </div>
-
-                    {collections.map((collection) => <CollectionItem key={collection._id} productID={productID} collection={collection} callback={() => loadCollections()}/> )}
-
-                </div> 
-
-                </>
-                : 
-                <></>
-
-                }
+                <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
+                {showCollectionsPopup ? <CollectionsPopup productID={productID} callback={() => {setShowCollectionsPopup(!showCollectionsPopup)}}/> : <></>}
                 <hr />
 
                 {addReviewDisplay ? 
