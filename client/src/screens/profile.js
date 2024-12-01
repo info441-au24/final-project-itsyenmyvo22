@@ -12,8 +12,9 @@ const Profile = () => {
 
     const loadCollections = () => {
         //to update username later
-        const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
-        fetch(`${apiUrl}/api/profile?username=test-acc`)
+        // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+        //fetch(`${apiUrl}/api/profile?username=test-acc`)
+        fetch(`/api/profile?username=test-acc`)
             .then((res) => {
                 return res.json();
             })
@@ -36,9 +37,10 @@ const Profile = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+        // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
         try {
-            let response = await fetch(`${apiUrl}/api/profile`, {
+            //let response = await fetch(`${apiUrl}/api/profile`, {
+            let response = await fetch(`/api/profile`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
