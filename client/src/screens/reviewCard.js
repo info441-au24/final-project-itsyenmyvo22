@@ -8,7 +8,7 @@ const Comment = (props) => {
 
     const loadComment =  async () => {
         setIsDataLoading(true);
-        console.log("about to make fetch data about comment with ID:", comment)
+        console.log("about to fetch data about comment with ID:", comment)
         await fetch(`/api/v1/reviews/comments?commentID=${comment}`)
             .then((res) => res.json())
             .then((data) => {
@@ -45,7 +45,7 @@ const Comment = (props) => {
 const ReviewCard = (props) => {
     let review = props.review;
     let comments = review.comments;
-    let reloadReviews = props.callback;
+    let renderReviewsCallback = props.render
     const [commentsDisplay, setCommentsDisplay] = useState(false);
     const [liked, setLiked] = useState(false);
     const [showReviewText, setShowReviewText] = useState(false);
@@ -65,6 +65,10 @@ const ReviewCard = (props) => {
         setNewComment({...newComment, [e.target.name]: e.target.value})
     };
 
+    const renderReviews = () => {
+        renderReviewsCallback()
+    }
+
     const submitComment = async (e) => {
         e.preventDefault();
         try {
@@ -78,15 +82,16 @@ const ReviewCard = (props) => {
     
             if (response.ok) {
                 console.log('review uploaded successfully');
-                reloadReviews();
-                setNewComment({ username: 'test-acc '}); // Reset form
+                renderReviews();
+                setNewComment({ username: 'test-acc ', comment: ''}); // Reset form
             } else {
                 console.error('Failed to submit review');
             }
         } catch (error) {
             console.error('Error:', error);
         }
-    };  
+    }; 
+    
 
     return (
         <div className='review'>
