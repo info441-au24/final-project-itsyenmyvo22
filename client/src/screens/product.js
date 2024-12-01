@@ -2,25 +2,22 @@ import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from './loader';
 import ReviewCard from './review_card';
+import CollectionsPopup from './collectionsPopup';
 
 const Product = () => {
     const [productInfo, setProductInfo] = useState({})
     const [isDataLoading, setIsDataLoading] = useState(false);
     const [filterDisplay, setFilterDisplay] = useState(false);
-    const [collectionsDisplay, setCollectionsDisplay] = useState(false)
     const [addReviewDisplay, setAddReviewDisplay] = useState(false)
     const [newReview, setNewReview] = useState({username: "test-acc", rating: "", review: ""});
     const [reviews, setReviews] = useState([]);
-    
+    const [showCollectionsPopup, setShowCollectionsPopup] = useState(false);
     const { productID } = useParams()
 
     const filterPopup = () => {
         setFilterDisplay(!filterDisplay)
     }
 
-    const collectionsPopup = () => {
-        setCollectionsDisplay(!collectionsDisplay)
-    }
 
     const addReviewPopup = () => {
         setAddReviewDisplay(!addReviewDisplay)
@@ -56,7 +53,7 @@ const Product = () => {
         } catch (error) {
             console.error('Error:', error);
         }
-    };    
+    };  
 
     const loadProductInfo = async () => {
         //const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
@@ -85,6 +82,18 @@ const Product = () => {
             .catch((error) => console.error('Error loading reviews:', error))
     }
 
+    /* const loadCollections =  async () => {
+        await fetch(`/api/v1/collections`)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("recieved collection data", data);
+                setCollections(data);
+                console.log("saved collections data", collections)
+                setCollectionsDisplay(true)
+            })
+            .catch((error) => console.error('Error loading collections:', error))
+    }
+ */
     useEffect(() => {
         loadProductInfo()
     }, []);
@@ -92,33 +101,18 @@ const Product = () => {
     useEffect(() => {
         loadReviews()
     }, []);
-
-    /* const loadReviews = () => {
-        try {
-            let reviews = await fetchJSON(`api/v1/reviews?productID=${}`)
-        }
-    } */
         
     /* 
     
     will need to fetch:
-    comments data
     whether user has liked a review
-    user's collections
 
     On load:
-
-    - Using review data (an array of review objects),
-    use mapping to parse review data. if array is empty, do not parse
-    and use empty tags.
 
     - Reviews will also be parsed for if a user has liked a review
     (meaning they are in the likes array)
 
     Otherwise:
-
-    - Collections will be fetched only if user clicks add to collection, should be cached after
-    Parse collections for whether item has already been added and show which collections already have the item.
     
     - Comments will be fetched only if user clicks toggle on replies, should
     only be rendered once and then basically cached.
@@ -166,33 +160,8 @@ const Product = () => {
                     <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                 </div>
 
-                <button onClick={collectionsPopup} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
-                {collectionsDisplay ? 
-                <>
-                <div className="filter-overlay"></div>
-                <div className="collections-popup">
-                    <div className="popup-head">
-                        <h4>Add to collection</h4>
-                        <button onClick={collectionsPopup}><span className="fa fa-minus"></span></button>
-                    </div>
-                        <div className="collection">
-                            <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
-                            <p>Wishlist</p>
-                        </div>
-                        <div className="collection">
-                            <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
-                            <p>Daily Routine</p>
-                        </div>
-                        <div className="collection">
-                            <img src="https://i.pinimg.com/236x/97/69/da/9769da3ec35c566c9aeb4356afab1010.jpg"></img>
-                            <p>Favorites</p>
-                        </div>
-                </div> 
-                </>
-                : 
-                <></>
-
-                }
+                <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
+                {showCollectionsPopup ? <CollectionsPopup productID={productID} callback={() => {setShowCollectionsPopup(!showCollectionsPopup)}}/> : <></>}
                 <hr />
 
                 {addReviewDisplay ? 
