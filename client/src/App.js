@@ -6,7 +6,38 @@ import Collection from './screens/collection.js'
 import UploadProduct from './screens/uploadProduct';
 import Product from './screens/product';
 
+const handleSignIn = async () => {
+  try {
+    const response = await fetch(`/signin`, {
+      method: 'GET'
+    });
+    if (response.ok) {
+      console.log('Signed in successfully');
+    } else {
+        console.error('Failed to sign in');
+    }
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};
+
+const handleSignOut = async () => {
+  try {
+    const response = await fetch(`/signout`, {
+      method: 'GET'
+    });
+    if (response.ok) {
+      console.log('Signed out successfully');
+    } else {
+        console.error('Failed to sign out');
+    }
+  } catch (error) {
+      console.error('Error:', error);
+  }
+};
+
 const App = () => {
+
   return (
     <Router>
       <div>
@@ -18,6 +49,8 @@ const App = () => {
           <div className="nav-buttons">
             <Link to="/uploadProduct" className="nav-button">Upload Product</Link>
             <Link to="/profile" className="nav-button">Profile</Link>
+            <a onClick={handleSignIn} className="nav-button" id="authbutton" role="button">Sign In</a>
+            <a onClick={handleSignOut} className="nav-button" id="authbutton" role="button">Sign Out</a>
           </div>
         </nav>
 
@@ -28,6 +61,7 @@ const App = () => {
           <Route path="/uploadProduct" element={<UploadProduct />} />
           <Route path="/product/:productID" element={<Product />} />
           <Route path="/search" element={<Home />} />
+          {/* <Route path="*" element={<h1>404 - Not Found</h1>} /> */}
         </Routes>
       </div>
     </Router>

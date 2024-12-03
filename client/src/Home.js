@@ -8,7 +8,8 @@ const Home = () => {
   const [priceFilter, setPriceFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
-  const apiUrl = process.env.REACT_APP_API_URL;
+  // const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = 'http://localhost:3001'
 
   // Function to fetch products with or without a query
   const fetchProducts = useCallback(async () => {

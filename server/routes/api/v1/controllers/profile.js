@@ -36,5 +36,18 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/checkauth', async (req, res) => {
+    try {
+        if (req.session.account.isAuthenticated) {
+            res.json({ isAuthenticated: true, user: req.session.account.username})
+        } else {
+            res.json({ isAuthenticated: false, user: null})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ "status": "error", "error": error })
+    }
+})
+
 
 export default router;
