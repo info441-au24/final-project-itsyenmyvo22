@@ -9,7 +9,7 @@ const Home = () => {
   const [categoryFilter, setCategoryFilter] = useState('');
 
   // const apiUrl = process.env.REACT_APP_API_URL;
-  const apiUrl = 'http://localhost:3001'
+  //const apiUrl = 'http://localhost:3001'
 
   // Function to fetch products with or without a query
   const fetchProducts = useCallback(async () => {
@@ -18,12 +18,12 @@ const Home = () => {
     if (priceFilter) queryParameters.push(`price=${encodeURIComponent(priceFilter)}`);
     if (categoryFilter) queryParameters.push(`category=${encodeURIComponent(categoryFilter)}`);
 
-    const url = `${apiUrl}/api/search?${queryParameters.join('&')}`;
+    //const url = `${apiUrl}/api/search?${queryParameters.join('&')}`;
 
     try {
       // const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variables
       // const apiUrl = "http://localhost:3001"
-      const response = await fetch(url);
+      const response = await fetch(`/api/v1/posts/search?${queryParameters.join('&')}`);
       const data = await response.json();
       if (Array.isArray(data) && data.length === 0) {
         setNoResults(true);
@@ -39,7 +39,7 @@ const Home = () => {
       setResults([]);
       setNoResults(true);
     }
-  },[apiUrl, searchQuery, priceFilter, categoryFilter]);
+  },[searchQuery, priceFilter, categoryFilter]);
 
   // Load all products initially
   useEffect(() => {

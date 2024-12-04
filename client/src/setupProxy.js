@@ -26,7 +26,7 @@ module.exports = function (app) {
     );
 
     app.use(
-        '/myIdentity',
+        '/api/v1/users/myIdentity',
         createProxyMiddleware({
             target: 'http://localhost:3001', 
             changeOrigin: true,

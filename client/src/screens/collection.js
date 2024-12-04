@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-const Collection = () => {
+const Collection = (props) => {
     const [collections, setCollections] = useState([]);
     const [products, setProducts] = useState([]);
+    let name = props.user.name
+    let { collectionID } = useParams()
 
     return (
         <div>
             <div class="profile">
-                <h2>Username</h2>
+                <h2>{name}</h2>
                 <hr></hr>
                 <div class="profile-head">
                     <h3><Link className='goBack' to="/profile">←</Link> Winter 2024</h3>

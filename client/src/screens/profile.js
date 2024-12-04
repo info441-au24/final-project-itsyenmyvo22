@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-const Profile = () => {
+const Profile = (props) => {
     const [cards, setCards] = useState([])
     const [collectionsDisplay, setCollectionsDisplay] = useState(false)
     const [collection, setCollection] = useState({
@@ -9,12 +9,14 @@ const Profile = () => {
         description: '',
         img: ''
     })
+    let name = props.user.name
+    let { username } = useParams()
 
     const loadCollections = () => {
         //to update username later
         // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
         //fetch(`${apiUrl}/api/profile?username=test-acc`)
-        fetch(`/api/profile?username=test-acc`)
+        fetch(`/api/v1/collections?username=${username}`)
             .then((res) => {
                 return res.json();
             })
@@ -28,8 +30,24 @@ const Profile = () => {
     }    
 
     useEffect(() => {
+        const loadCollections = () => {
+            //to update username later
+            // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+            //fetch(`${apiUrl}/api/profile?username=test-acc`)
+            fetch(`/api/v1/collections?username=${username}`)
+                .then((res) => {
+                    return res.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    setCards(data);
+                })
+                .catch((error) => {
+                    console.error('Error loading collections:', error);
+                });
+        };    
         loadCollections()
-    }, []);
+    }, [name, username]);
 
     const handleChange = (event) => {
         setCollection({ ...collection, [event.target.name]: event.target.value })
@@ -40,7 +58,7 @@ const Profile = () => {
         // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
         try {
             //let response = await fetch(`${apiUrl}/api/profile`, {
-            let response = await fetch(`/api/profile`, {
+            let response = await fetch(`/api/v1/collections`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,7 +91,7 @@ const Profile = () => {
     return (
         <div>
             <div class="profile">
-                <h2>Username</h2>
+                <h2>{name}</h2>
                 <hr></hr>
                 <div class="profile-head">
                     <h3>Collections</h3>

@@ -16,17 +16,16 @@ router.get('/', async (req, res) => {
     
 })
 
-// post reviews
+// write a review
 
 router.post('/', async (req, res) => {
   try {
-    /* if (!req.session.isAuthenticated) {
+    if (!req.session.isAuthenticated) {
         res.status(401).json({status: "error", error: "not logged in"})
-    } */
-   console.log(req.body)
-   const newReview = new req.models.Review ({
-        /* username: req.session.account.username, */
-        username: req.body.username,
+    }
+    console.log(req.body)
+    const newReview = new req.models.Review ({
+        username: req.session.account.username,
         productID: req.query.productID,
         review: req.body.review,
         rating: req.body.rating,
@@ -54,15 +53,15 @@ router.get('/comments', async (req, res) => {
     }
 })
 
+// write a comment
 router.post('/comments', async (req, res) => {
     try {
-      /* if (!req.session.isAuthenticated) {
+      if (!req.session.isAuthenticated) {
           res.status(401).json({status: "error", error: "not logged in"})
-      } */
+      }
      console.log(req.body)
      const newComment = new req.models.Comment ({
-          /* username: req.session.account.username, */
-          username: req.body.username,
+          username: req.session.account.username,
           comment: req.body.comment,
           created_date: Date.now()
     })

@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 let models = {};
 
 console.log("connecting to mongodb")
-await mongoose.connect('mongodb+srv://testuser:btsot7@cluster441.dib0a.mongodb.net/cle?retryWrites=true&w=majority&appName=Cluster441')
+await mongoose.connect(process.env.MONGO_DB_CONNECTION)
 
 console.log("Successfully connected to MongoDB");
 

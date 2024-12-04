@@ -46,10 +46,11 @@ const ReviewCard = (props) => {
     let review = props.review;
     let comments = review.comments;
     let renderReviewsCallback = props.render
+    let user = props.user
     const [commentsDisplay, setCommentsDisplay] = useState(false);
     const [liked, setLiked] = useState(false);
     const [showReviewText, setShowReviewText] = useState(false);
-    const [newComment, setNewComment] = useState({username: "test-acc"});
+    const [newComment, setNewComment] = useState({});
 
     const toggleComments = () => {
         setCommentsDisplay(!commentsDisplay)
@@ -71,6 +72,7 @@ const ReviewCard = (props) => {
 
     const submitComment = async (e) => {
         e.preventDefault();
+        setNewComment({...newComment, username: user})
         try {
             const response = await fetch(`/api/v1/reviews/comments?reviewID=${review._id}`, {
                 method: 'POST',
@@ -146,7 +148,7 @@ const ReviewCard = (props) => {
             {commentsDisplay ? 
                 <div className="comments">
                     {comments.map((comment) => <Comment key={comment._id} comment={comment}/>)}
-                    <div className="reply-box">
+                    {user ? <div className="reply-box">
                         <input
                                 type="text"
                                 id="comment-input"
@@ -156,7 +158,8 @@ const ReviewCard = (props) => {
                                 onChange={handleCommentChange}
                             />
                         <button onClick={submitComment}>Submit</button>
-                    </div>
+                    </div> : <></>}
+                    
                 </div>
                 : 
                 <></>}  

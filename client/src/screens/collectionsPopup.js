@@ -25,12 +25,12 @@ const Collection = (props) => {
     const saveToCollection = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`/api/v1/collections?collectionID=${collection._id}`, {
+            const response = await fetch(`/api/v1/collections/product?productID=${productID}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({productID: productID})})
+                body: JSON.stringify({collectionID: collection._id})})
             if (response.ok) {
                 console.log('collection updated successfully');
                 rerenderCollections();

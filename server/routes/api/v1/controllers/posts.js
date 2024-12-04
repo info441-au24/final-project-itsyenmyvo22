@@ -2,46 +2,57 @@ import express from 'express';
 
 const router = express.Router();
 
+// search products
 router.get('/search', async (req, res) => {
-    const { query } = req.query;
+    const {query, price, category} = req.query;
+    let filter = {};
+    if (query) filter.name = {$regex: new RegExp(query, 'i')};
+    if (price) filter.price = price;
+    if (category) filter.category = category;
+
     try {
-      const posts = await req.models.Post.find({
-        name: { $regex: query, $options: 'i' }, // Case-insensitive search
-      });
-      res.json(posts);
+        const posts = await req.models.Post.find(filter);
+        if (posts.length === 0) {
+            return res.status(404).json({message: 'No posts found'});
+        }
+        res.json(posts);
     } catch (error) {
-      console.error('Error fetching posts:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+        console.error('Error searching posts:', error);
+        res.status(500).json({status: 'error', error: err });
     }
 });
 
+// upload product
 router.post('/', async (req, res) => {
+  const {name, category, price, url} = req.body;
   try {
-    let newPost = new req.models.Post ({
-      name: req.body.name,
-      category: req.body.category,
-      price: req.body.price,
-      url: req.body.url
-  })
-  
-    await newPost.save()
-    res.json(({"status": "success"}))
+      const newProduct = new req.models.Post({
+          name, 
+          category,
+          price,
+          url
+      });
+      await newProduct.save();
+      res.json(newProduct);
   } catch (error) {
-      res.status(500).json({ 'message': error.message });
+      console.log('Error creating new product:', error);
+      res.status(500).json({status: 'error', error: err });
   }
 })
 
+// find specific product information
 router.get('/', async (req, res) => {
   try {
     console.log(`loading product info`)
     if (req.query.productID){
-        console.log("finding product")
+        console.log("finding product with ID:", req.query.productID)
         const productID = req.query.productID
         const product = await req.models.Post.findOne({_id: productID})
         res.send(product)
     } 
   } catch (err) {
-    res.status(500).json({ 'message': err.message });
+    console.log('Error finding product info:', err);
+    res.status(500).json({status: 'error', error: err });
   }
 })
   
