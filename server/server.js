@@ -109,7 +109,7 @@ app.post('/api/profile', async (req, res) => {
     try {
         let username = req.session.account.username
         const newCollection = new models.Collection({
-            username: username, //to update later
+            username: username, 
             collection_name: req.body.name,
             products: [],
             collection_description: req.body.description,
@@ -137,20 +137,69 @@ app.get('/api/profile', async (req, res) => {
     }
 })
 
-
-/* app.get('/api/product', async (req, res) => {
+app.get('/api/profile/collections', async (req, res) => {
     try {
-        console.log("finding product")
-        const productID = req.query.productID
-        const product = await models.Post.findOne({_id: productID})
-        res.send(product)
+        const currentCollection = req.query.collectionID;
+        console.log("Received collectionID:", currentCollection);
+        const collection = await req.models.Collection.findById(currentCollection)
+
+        res.send(collection)
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ "status": "error", "error": error })
     }
-}) */
+})
+
+app.get('/api/product', async (req, res) => {
+    try {
+        const productID = req.query.productID
+        const product = await models.Post.findOne({_id: productID})
+        console.log("sending back", product)
+        res.json(product)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ "status": "error", "error": error })
+    }
+}) 
 
 
+app.delete('/api/profile', async (req, res) => {
+    try {
+    const collectionID = req.body.collectionID
+    let collection = await req.models.Collection.findById(collectionID)
+    await req.models.Collection.deleteOne({_id: collectionID})
+
+    res.json({status: "success"})
+
+    } catch (error) {
+        console.log("error")
+        res.status(500).json({ "status": "error", "error": error.message })
+    }
+})
+
+app.delete('/api/profile/collections', async (req, res) => {
+    try {
+    const collectionID = req.body.collectionID
+    const productID = req.body.productID
+    let collection = await req.models.Collection.findById(collectionID)
+    console.log("BEFORE", collection.products)
+    let productArray = collection.products
+    if(productArray.includes(productID)) {
+        collection.products = collection.products.filter(function (id) {
+            return id != productID
+        })
+    }
+
+    console.log("AFTER", collection.products)
+    await collection.save()
+    res.json({status: "success"})
+
+    } catch (error) {
+        console.log("error")
+        res.status(500).json({ "status": "error", "error": error.message })
+    }
+})
 
 
 // Azure Authentication:
