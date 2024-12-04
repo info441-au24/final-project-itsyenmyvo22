@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-const Product = (props) => {
+const ProductCard = (props) => {
     const [productInfo, setProductInfo] = useState({})
     let productID = props.product
-    const { product, removeProduct, loadCollectionProducts, collectionID } = props;
+    let renderProductsCallback = props.loadCollectionProducts
+    let collectionID = props.collectionID
+
+    const renderProducts = () => {
+        renderProductsCallback()
+    }
 
     const loadProduct = () => {
         console.log("this is product: ", productID)
@@ -17,7 +22,24 @@ const Product = (props) => {
                     setProductInfo(data)
                 }
             })
-            .catch((error) => console.error('Error loading collection products:', error))
+            .catch((error) => console.error('Error loading product:', error))
+    }
+
+    const removeProduct = async () => {
+        let response = await fetch(`/api/v1/collections/product?productID=${productID}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ collectionID: collectionID })
+        })
+        if (response.ok) {
+            console.log('Product deleted successfully');
+            renderProducts()
+        } else {
+            console.error('Failed to delete product');
+        }
+        
     }
 
     useEffect(() => {
@@ -30,7 +52,7 @@ const Product = (props) => {
                 <img src={productInfo.url} alt={`cover image for ${productInfo.name}`}></img>
                 <h4>{productInfo.name}</h4>
             </Link>
-            <button onClick={() => props.removeProduct(productInfo._id, collectionID)} className="collection-button">Delete</button>
+            <button onClick={() => removeProduct(productID, collectionID)} className="collection-button">Delete</button>
         </div>
     )
 }
@@ -40,7 +62,7 @@ const Collection = (props) => {
     const [products, setProducts] = useState([])
     const { collectionID } = useParams()
 
-   let user = props.user
+    let user = props.user
 
     const loadCollectionProducts = async () => {
         await fetch(`/api/v1/collections?collectionID=${collectionID}`)
@@ -57,20 +79,6 @@ const Collection = (props) => {
             });
 
 
-    }
-
-    const removeProduct = async (productID, collectionID) => {
-        let response = await fetch(`/api/v1/collections`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ collectionID: collectionID, productID: productID })
-        })
-        if (response.ok) {
-            loadCollectionProducts();
-        }
-        
     }
 
     useEffect(() => {
@@ -100,13 +108,12 @@ const Collection = (props) => {
                         <p>{collection.collection_description}</p>
                     </div>
                     <div className="collection-grid">
-                        {products.map((info) => (
-                            <Product
-                                key={info}
-                                product={info}
-                                removeProduct={removeProduct}
-                                loadCollectionProducts={loadCollectionProducts}
-                                collectionID={collection._id}
+                        {products.map((product) => (
+                            <ProductCard
+                                key={product}
+                                product={product}
+                                loadCollectionProducts={() => loadCollectionProducts()}
+                                collectionID={collectionID}
                             />
 
                         ))}

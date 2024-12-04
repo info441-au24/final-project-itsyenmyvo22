@@ -6,9 +6,11 @@ var router = express.Router();
 router.get('/', async (req, res) => {
     console.log('received request for collections')
         try {
+            if (!req.session.isAuthenticated) {
+                res.status(401).json({status: "error", error: "not logged in"})
+            }
             console.log("finding collections")
-            // const username = req.session.account.username
-            const username = 'test-acc'
+            const username = req.session.account.username
             const collections = await req.models.Collection.find({username: username})
             console.log("retrieved data", collections)
             res.json(collections)
@@ -44,6 +46,20 @@ router.post('/', async (req, res) => {
 
 })
 
+// deleting a collection
+app.delete('/', async (req, res) => {
+    try {
+    const collectionID = req.query.collectionID
+    await req.models.Collection.deleteOne({_id: collectionID})
+
+    res.json({status: "success"})
+
+    } catch (error) {
+        console.log("error")
+        res.status(500).json({ "status": "error", "error": error.message })
+    }
+})
+
 // adding a product to a collection
 router.post('/product', async (req, res) => {
     console.log('received request to add product to collection')
@@ -60,5 +76,34 @@ router.post('/product', async (req, res) => {
         res.status(500).json({status: 'error', error: err });
     }
 })
+
+
+// deleting a product from a collection
+router.delete('/product', async (req, res) => {
+    try {
+        if (!req.session.isAuthenticated) {
+            res.status(401).json({status: "error", error: "not logged in"})
+        }
+        const collectionID = req.body.collectionID
+        const productID = req.query.productID
+        let collection = await req.models.Collection.findById(collectionID)
+        console.log("BEFORE", collection.products)
+        let productArray = collection.products
+        if(productArray.includes(productID)) {
+            collection.products = collection.products.filter(function (id) {
+                return id != productID
+            })
+        }
+
+        console.log("AFTER", collection.products)
+        await collection.save()
+        res.json({status: "success"})
+
+        } catch (err) {
+            console.log("error")
+            res.status(500).json({ "status": "error", "error": err })
+        }
+})
+
 
 export default router;

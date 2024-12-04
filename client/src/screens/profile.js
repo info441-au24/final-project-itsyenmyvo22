@@ -9,53 +9,32 @@ const Profile = (props) => {
         description: '',
         img: ''
     })
-    let name = props.user.name
+    let user = props.user
     let { username } = useParams()
 
     const loadCollections = () => {
-        // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
-        //fetch(`${apiUrl}/api/profile?username=test-acc`)
-        if (identity.status == "loggedin") {
-            fetch(`/api/profile?username=${identity.userInfo.username}`)
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                    setCards(data);
-                })
-                .catch((error) => {
-                    console.error('Error loading collections:', error);
-                });
-        }
-    }
-
+        fetch(`/api/v1/collections`)
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                console.log(data);
+                setCards(data);
+            })
+            .catch((error) => {
+                console.error('Error loading collections:', error);
+            });
+    };    
 
     useEffect(() => {
-        const loadCollections = () => {
-            //to update username later
-            // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
-            //fetch(`${apiUrl}/api/profile?username=test-acc`)
-            fetch(`/api/v1/collections?username=${username}`)
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                    setCards(data);
-                })
-                .catch((error) => {
-                    console.error('Error loading collections:', error);
-                });
-        };    
         loadCollections()
-    }, [name, username]);
+    }, [user, username]);
 
     useEffect(() => {
-        if (identity.status === "loggedin") {
+        if (user) {
             loadCollections(); 
         }
-    }, [identity, setCards]); 
+    }, [ cards ]); 
 
     const handleChange = (event) => {
         setCollection({ ...collection, [event.target.name]: event.target.value })
@@ -63,9 +42,8 @@ const Profile = (props) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+        
         try {
-            //let response = await fetch(`${apiUrl}/api/profile`, {
             let response = await fetch(`/api/v1/collections`, {
                 method: "POST",
                 headers: {
@@ -84,7 +62,7 @@ const Profile = (props) => {
                 collectionsPopup()
                 loadCollections()
             } else {
-                console.log('collection failed');
+                console.log('collection could not be saved');
             }
 
         } catch (error) {
@@ -96,23 +74,26 @@ const Profile = (props) => {
         setCollectionsDisplay(!collectionsDisplay)
     }
 
-    const removeCollection = async (id) => {
-        let response = await fetch(`api/profile`, {
+    const removeCollection = async (collectionID) => {
+        let response = await fetch(`/api/v1/collections?collectionID=${collectionID}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ collectionID: id })
+            }
         })
-        loadCollections();
+        if (response.ok) {
+            loadCollections();
+        } else {
+            console.error('Failed to delete collection');
+        }
     }
 
     return (
         <div>
-            {identity.status === "loggedin" ? (
+            {user ? (
                 <div>
                     <div className="profile">
-                        <h2>{identity.userInfo.name}</h2>
+                        <h2>{user.name}</h2>
                         <hr />
                         <div className="profile-head">
                             <h3>Collections</h3>
