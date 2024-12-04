@@ -21,7 +21,7 @@ const UploadProduct = () => {
         // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
         try {
             //const response = await fetch(`${apiUrl}/api/uploadProduct`, {
-            const response = await fetch(`/api/uploadProduct`, {
+            const response = await fetch(`/api/v1/posts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

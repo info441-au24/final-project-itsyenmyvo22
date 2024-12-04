@@ -3,29 +3,31 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Home from './Home.js'
 import Profile from './screens/profile'
-import Collection from './screens/collection.js'
+import Collection from './screens/collection'
 import UploadProduct from './screens/uploadProduct';
 import Product from './screens/product';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
-
-  const loadIdentity = async () => {
-    try {
-      const response = await fetch('/myIdentity');
-      const identityInfo = await response.json();
-      if (identityInfo.status === 'loggedin') {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    } catch (error) {
-      console.error('Error loading identity:', error);
-      setIsLoggedIn(false);
-    }
-  };
+  const [user, setUser] = useState({status: "loggedout"});
 
   useEffect(() => {
+    const loadIdentity = async () => {
+      try {
+        const response = await fetch('/api/v1/users/myIdentity');
+        const identityInfo = await response.json();
+        if (identityInfo.status === 'loggedin') {
+          setIsLoggedIn(true);
+          setUser(user);
+        } else {
+          setUser(null)
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error('Error loading identity:', error);
+        setIsLoggedIn(false);
+      }
+    };
     loadIdentity();
   }, []);
 
@@ -39,9 +41,12 @@ const App = () => {
 
           <div className="nav-buttons">
             <Link to="/uploadProduct" className="nav-button">Upload Product</Link>
-            <Link to="/profile" className="nav-button">Profile</Link>
+    
             {isLoggedIn ? (
+              <>
+                <Link to={`/profile/${user.username}`} className="nav-button">Profile</Link>
                 <a href="/signout" className="nav-button" id="authbutton" role="button">Sign Out</a>
+              </>
               ) : (
                 <a href="/signin" className="nav-button" id="authbutton" role="button">Sign In</a>
               )}
@@ -50,12 +55,12 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/collection/:collectionID" element={<Collection />} />
+          <Route path="/profile/:username" element={<Profile user={user}/>} />
+          <Route path="/collection/:collectionID" element={<Collection user={user}/>} />
           <Route path="/uploadProduct" element={<UploadProduct />} />
-          <Route path="/product/:productID" element={<Product />} />
+          <Route path="/product/:productID" element={<Product user={user}/>} />
           <Route path="/search" element={<Home />} />
-          <Route path="*" element={<h1>404 - Not Found</h1>} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </div>
     </Router>

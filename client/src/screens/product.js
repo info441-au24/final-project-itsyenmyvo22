@@ -4,7 +4,7 @@ import ReviewCard from './reviewCard';
 import CollectionsPopup from './collectionsPopup';
 import ReviewPopup from './reviewPopup';
 
-const Product = () => {
+const Product = (props) => {
     const [isDataLoading, setIsDataLoading] = useState(false);
 
     const [productInfo, setProductInfo] = useState({})
@@ -17,15 +17,13 @@ const Product = () => {
     /* const [newReview, setNewReview] = useState({username: "test-acc", rating: "", review: ""}); */
     const [reviews, setReviews] = useState([]);
     const { productID } = useParams()
+    let user = props.user
 
     const filterPopup = () => {
         setFilterDisplay(!filterDisplay)
     }
 
-
     const loadProductInfo = async () => {
-        //const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
-        //const apiUrl = 'http://localhost:3001'
         setIsDataLoading(true);
         await fetch(`/api/v1/posts?productID=${productID}`)
             .then((res) => res.json())
@@ -56,34 +54,6 @@ const Product = () => {
         loadReviews()
     }, []);
 
-        
-    /* 
-    
-    will need to fetch:
-    whether user has liked a review
-
-    On load:
-
-    - Using review data (an array of review objects),
-    use mapping to parse review data. if array is empty, do not parse
-    and use empty tags.
-
-    - Reviews will also be parsed for if a user has liked a review
-    (meaning they are in the likes array)
-
-    Otherwise:
-    
-    - Comments will be fetched only if user clicks toggle on replies, should
-    only be rendered once and then basically cached.
-
-    POSTs:
-    - Write a review: select existing tags, dropdown rating, review text
-
-     */
-
-
-
-    /* determined by user so implement persistence later */
     return (
         <div>
             {isDataLoading ? <></> : 
@@ -117,8 +87,10 @@ const Product = () => {
                     <h3>DESCRIPTION</h3>
                     <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
                 </div> */}
-
-                <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>
+                {user ? 
+                <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button> : 
+                <></>}
+                
                 
                 {showCollectionsPopup ? <CollectionsPopup productID={productID} callback={() => {setShowCollectionsPopup(!showCollectionsPopup)}}/> : <></>}
                 
@@ -132,7 +104,9 @@ const Product = () => {
         <div id="product-reviews">
             <div className="product-reviews-head">
                 <h3 id="reviews-heading">REVIEWS ({reviews.length})</h3>
-                <button onClick={() => setShowReviewPopup(!showReviewPopup)} id="add-review-button">Write a Review</button>
+                {user ? <button onClick={() => setShowReviewPopup(!showReviewPopup)} id="add-review-button">Write a Review</button> : 
+                <></>}
+                
                 {/* <button onClick={filterPopup} id="sort-reviews">Sort</button> */}
                 {filterDisplay ? 
                 <>
@@ -156,7 +130,7 @@ const Product = () => {
             </div>
             {/* reviews should be handled in a separate component */}
             <div id='reviews'>
-                {isDataLoading ? <></> : reviews.map((review) => <ReviewCard key={review._id} review={review} render={() => loadReviews()}/>)}     
+                {isDataLoading ? <></> : reviews.map((review) => <ReviewCard key={review._id} review={review} user={user} render={() => loadReviews()}/>)}     
             </div>
         </div>
     </>

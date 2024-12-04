@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-const Product = (props) => {
+const ProductCard = (props) => {
     const [productInfo, setProductInfo] = useState({})
     let productID = props.product
-    const { product, removeProduct, loadCollectionProducts, collectionID } = props;
+    let renderProductsCallback = props.render
+    let collectionID = props.collectionID
+
+    const renderProducts = () => {
+        renderProductsCallback()
+    }
 
     const loadProduct = () => {
         console.log("this is product: ", productID)
-        fetch(`/api/product?productID=${productID}`)
+        fetch(`/api/v1/posts?productID=${productID}`)
             .then((res) => res.json())
             .then((data) => {
                 console.log("this is the data:", data);
@@ -17,7 +22,24 @@ const Product = (props) => {
                     setProductInfo(data)
                 }
             })
-            .catch((error) => console.error('Error loading collection products:', error))
+            .catch((error) => console.error('Error loading product:', error))
+    }
+
+    const removeProduct = async () => {
+        let response = await fetch(`/api/v1/collections/product?productID=${productID}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ collectionID: collectionID })
+        })
+        if (response.ok) {
+            console.log('Product deleted successfully');
+            renderProducts()
+        } else {
+            console.error('Failed to delete product');
+        }
+        
     }
 
     useEffect(() => {
@@ -30,44 +52,29 @@ const Product = (props) => {
                 <img src={productInfo.url} alt={`cover image for ${productInfo.name}`}></img>
                 <h4>{productInfo.name}</h4>
             </Link>
-            <button onClick={() => props.removeProduct(productInfo._id, collectionID)} className="collection-button">Delete</button>
+            <button onClick={() => removeProduct(productID, collectionID)} className="collection-button">Delete</button>
         </div>
     )
 }
 
-const Collection = () => {
-    const [collection, setCollection] = useState([]);
-    const [products, setProducts] = useState([])
+const Collection = (props) => {
+    const [collection, setCollection] = useState({});
+    const [products, setProducts] = useState([]);
+    const [isDataLoading, setIsDataLoading] = useState(false);
     const { collectionID } = useParams()
 
-    const [identity, setIdentity] = useState({})
 
-    const loadIdentity = () => {
-        console.log("in here")
-        fetch(`/myIdentity`)
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setIdentity(data);
-            })
-            .catch((error) => {
-                console.error('Error loading collections:', error);
-            });
-    }
+    let user = props.user
 
-    const loadCollectionProducts = async () => {
-        //to update username later
-        // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
-        //fetch(`${apiUrl}/api/profile?username=test-acc`)
-        await fetch(`/api/profile/collections?collectionID=${collectionID}`)
-            .then((res) => {
-                return res.json();
-            })
+    const loadCollection = async () => {
+        setIsDataLoading(true)
+        await fetch(`/api/v1/collections/collection?collectionID=${collectionID}`)
+            .then((res) => res.json())
             .then((data) => {
-                setCollection(data)
+                console.log("this is the collection we recieved", data);
+                setCollection(data);
                 setProducts(data.products)
-                console.log("this is the products", data.products)
+                setIsDataLoading(false);
             })
             .catch((error) => {
                 console.error('Error loading products:', error);
@@ -76,38 +83,21 @@ const Collection = () => {
 
     }
 
-    const removeProduct = async (productID, collectionID) => {
-        let response = await fetch(`/api/profile/collections`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ collectionID: collectionID, productID: productID })
-        })
-        loadCollectionProducts();
-    }
-
     useEffect(() => {
-        loadIdentity();
+        loadCollection()
     }, []);
-
-    useEffect(() => {
-        if (identity.status === "loggedin") {
-            loadCollectionProducts()
-        }
-    }, [identity, setCollection]);
 
 
     return (
         <div>
-            {identity.status === "loggedin" ? (
+            {user ? (
                 <div>
                     <div className="profile">
-                        <h2>{identity.userInfo.name}</h2>
+                        <h2>{user.name}</h2>
                         <hr />
                         <div className="profile-head">
                             <h3>
-                                <Link className="goBack" to="/profile">
+                                <Link className="goBack" to={`/profile/${user.username}`}>
                                     ←
                                 </Link>
                                 {collection.collection_name}
@@ -118,17 +108,18 @@ const Collection = () => {
                         <p>{collection.collection_description}</p>
                     </div>
                     <div className="collection-grid">
-                        {products.map((info) => (
-                            <Product
-                                key={info}
-                                product={info}
-                                removeProduct={removeProduct}
-                                loadCollectionProducts={loadCollectionProducts}
-                                collectionID={collection._id}
-                            />
-
-                        ))}
+                        {isDataLoading ? <></> : products.map((product) => 
+                        <ProductCard key={product}
+                            product={product}
+                            collectionID={collectionID}
+                            render={() => loadCollection()}/>)}
                     </div>
+                            {/* /* return <ProductCard
+                            key={product}
+                            product={product}
+                            collectionID={collectionID}
+                            render={() => loadCollection()}
+                                                /> */ }
                 </div>
             ) : (
                 <div>Please log in to view your collection.</div>
