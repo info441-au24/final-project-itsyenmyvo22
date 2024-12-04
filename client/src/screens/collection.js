@@ -103,6 +103,7 @@ const Collection = (props) => {
                                 </Link>
                                 {collection.collection_name}
                             </h3>
+                            <Link to={"/"}><button className="collection-button">Add Product</button></Link>
                         </div>
                     </div>
                     <div className="collectionDescription">
