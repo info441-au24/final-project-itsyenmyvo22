@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Home from './Home.js'
 import Profile from './screens/profile'
-import Collection from './screens/collection.js'
+import Collection from './screens/collection'
 import UploadProduct from './screens/uploadProduct';
 import Product from './screens/product';
 
@@ -18,7 +18,7 @@ const App = () => {
         const identityInfo = await response.json();
         if (identityInfo.status === 'loggedin') {
           setIsLoggedIn(true);
-          setUser(identityInfo.userInfo);
+          setUser(user);
         } else {
           setUser(null)
           setIsLoggedIn(false);
@@ -60,7 +60,7 @@ const App = () => {
           <Route path="/uploadProduct" element={<UploadProduct />} />
           <Route path="/product/:productID" element={<Product user={user}/>} />
           <Route path="/search" element={<Home />} />
-          <Route path="*" element={<h1>404 - Not Found</h1>} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </div>
     </Router>

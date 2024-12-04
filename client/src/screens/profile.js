@@ -10,7 +10,6 @@ const Profile = (props) => {
         img: ''
     })
     let user = props.user
-    let { username } = useParams()
 
     const loadCollections = () => {
         fetch(`/api/v1/collections`)
@@ -18,8 +17,10 @@ const Profile = (props) => {
                 return res.json();
             })
             .then((data) => {
-                console.log(data);
-                setCards(data);
+                if (user) {
+                    console.log(data);
+                    setCards(data);
+                }
             })
             .catch((error) => {
                 console.error('Error loading collections:', error);
@@ -28,7 +29,7 @@ const Profile = (props) => {
 
     useEffect(() => {
         if (user) {
-            loadCollections(); 
+            loadCollections()
         }
     }, []); 
 

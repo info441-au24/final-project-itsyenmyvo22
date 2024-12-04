@@ -8,12 +8,13 @@ router.get('/', async (req, res) => {
         try {
             if (!req.session.isAuthenticated) {
                 res.status(401).json({status: "error", error: "not logged in"})
-            }
-                console.log("finding collections")
+            } else {
+                console.log("finding collections for", req.session.account.username)
                 const username = req.session.account.username
                 const collections = await req.models.Collection.find({username: username})
                 console.log("retrieved collections", collections)
                 res.json(collections)
+            }
         } catch(err) {
             console.error('Error fetching collections:', err);
             res.status(500).json({status: 'error', error: err });
@@ -29,11 +30,14 @@ router.get('/collection', async (req, res) => {
                 res.status(401).json({status: "error", error: "not logged in"})
             }
             if (req.query.collectionID) {
-            const collection = await req.models.Collection.findOne({_id: req.query.collectionID})
-            console.log("retrieved collection", collection)
-            res.json(collection) }
+                console.log("retrieving collection with ID", req.query.collectionID)
+                const collectionID = req.query.collectionID
+                const collection = await req.models.Collection.findOne({_id: collectionID})
+                console.log("retrieved collection", collection)
+                res.json(collection)
+            }
             } catch(err) {
-            console.error('Error fetching collections:', err);
+            console.error('Error fetching collection:', err);
             res.status(500).json({status: 'error', error: err });
         }
     

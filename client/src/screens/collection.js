@@ -59,16 +59,22 @@ const ProductCard = (props) => {
 
 const Collection = (props) => {
     const [collection, setCollection] = useState({});
+    const [products, setProducts] = useState([]);
+    const [isDataLoading, setIsDataLoading] = useState(false);
     const { collectionID } = useParams()
+
 
     let user = props.user
 
     const loadCollection = async () => {
+        setIsDataLoading(true)
         await fetch(`/api/v1/collections/collection?collectionID=${collectionID}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log("this is the collection we recieved", data)
-                setCollection(data)
+                console.log("this is the collection we recieved", data);
+                setCollection(data);
+                setProducts(data.products)
+                setIsDataLoading(false);
             })
             .catch((error) => {
                 console.error('Error loading products:', error);
@@ -91,7 +97,7 @@ const Collection = (props) => {
                         <hr />
                         <div className="profile-head">
                             <h3>
-                                <Link className="goBack" to="/profile">
+                                <Link className="goBack" to={`/profile/${user.username}`}>
                                     ←
                                 </Link>
                                 {collection.collection_name}
@@ -102,24 +108,18 @@ const Collection = (props) => {
                         <p>{collection.collection_description}</p>
                     </div>
                     <div className="collection-grid">
-                    {collection.products.map((product) => {
-                    return <ProductCard
-                    key={product}
-                    product={product}
-                    collectionID={collectionID}
-                    render={() => loadCollection()}
-                /> 
-                    })}
-                        {/* {collection.products.map((product) => (
-                         <ProductCard
-                                key={product}
-                                product={product}
-                                collectionID={collectionID}
-                                render={() => loadCollection()}
-                            /> 
-
-                        ))} */}
+                        {isDataLoading ? <></> : products.map((product) => 
+                        <ProductCard key={product}
+                            product={product}
+                            collectionID={collectionID}
+                            render={() => loadCollection()}/>)}
                     </div>
+                            {/* /* return <ProductCard
+                            key={product}
+                            product={product}
+                            collectionID={collectionID}
+                            render={() => loadCollection()}
+                                                /> */ }
                 </div>
             ) : (
                 <div>Please log in to view your collection.</div>
