@@ -4,11 +4,13 @@
     "description": "A full-stack application for cle",
     "main": "server/server.js",
     "scripts": {
-      "start": "node ./bin/www.cjs",
-      "build": "cd client && npm install && npm run build && cd ../server && npm install",
-      "postbuild": "echo 'Build process complete!'"
+        "start": "node ./bin/www.cjs",
+        "build": "cd client && npm install && npm run build && cd ../server && npm install",
+        "postbuild": "echo 'Build process complete!'"
     },
     "author": "yenmy",
-    "license": "ISC"
+    "license": "ISC",
+    "dependencies": {
+        "msal-node-wrapper": "https://gitpkg.now.sh/kylethayer/ms-identity-javascript-nodejs-tutorial-msal-node-v2-/Common/msal-node-wrapper?main"
+    }
 }
-  
