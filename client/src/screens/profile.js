@@ -50,8 +50,6 @@ const Profile = (props) => {
         };    
         loadCollections()
     }, [name, username]);
-        loadIdentity(); 
-    }, []);
 
     useEffect(() => {
         if (identity.status === "loggedin") {

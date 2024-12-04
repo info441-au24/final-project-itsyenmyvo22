@@ -9,7 +9,7 @@ const Product = (props) => {
 
     const loadProduct = () => {
         console.log("this is product: ", productID)
-        fetch(`/api/product?productID=${productID}`)
+        fetch(`/api/v1/posts?productID=${productID}`)
             .then((res) => res.json())
             .then((data) => {
                 console.log("this is the data:", data);
@@ -35,32 +35,15 @@ const Product = (props) => {
     )
 }
 
-const Collection = () => {
+const Collection = (props) => {
     const [collection, setCollection] = useState([]);
     const [products, setProducts] = useState([])
     const { collectionID } = useParams()
 
-    const [identity, setIdentity] = useState({})
-
-    const loadIdentity = () => {
-        console.log("in here")
-        fetch(`/myIdentity`)
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setIdentity(data);
-            })
-            .catch((error) => {
-                console.error('Error loading collections:', error);
-            });
-    }
+   let user = props.user
 
     const loadCollectionProducts = async () => {
-        //to update username later
-        // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
-        //fetch(`${apiUrl}/api/profile?username=test-acc`)
-        await fetch(`/api/profile/collections?collectionID=${collectionID}`)
+        await fetch(`/api/v1/collections?collectionID=${collectionID}`)
             .then((res) => {
                 return res.json();
             })
@@ -77,33 +60,32 @@ const Collection = () => {
     }
 
     const removeProduct = async (productID, collectionID) => {
-        let response = await fetch(`/api/profile/collections`, {
+        let response = await fetch(`/api/v1/collections`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ collectionID: collectionID, productID: productID })
         })
-        loadCollectionProducts();
+        if (response.ok) {
+            loadCollectionProducts();
+        }
+        
     }
 
     useEffect(() => {
-        loadIdentity();
-    }, []);
-
-    useEffect(() => {
-        if (identity.status === "loggedin") {
+        if (user) {
             loadCollectionProducts()
         }
-    }, [identity, setCollection]);
+    }, [user, collection]);
 
 
     return (
         <div>
-            {identity.status === "loggedin" ? (
+            {user ? (
                 <div>
                     <div className="profile">
-                        <h2>{identity.userInfo.name}</h2>
+                        <h2>{user.name}</h2>
                         <hr />
                         <div className="profile-head">
                             <h3>
