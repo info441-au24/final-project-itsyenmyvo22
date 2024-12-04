@@ -18,7 +18,7 @@ const App = () => {
         const identityInfo = await response.json();
         if (identityInfo.status === 'loggedin') {
           setIsLoggedIn(true);
-          setUser(user);
+          setUser(identityInfo);
         } else {
           setUser(null)
           setIsLoggedIn(false);
