@@ -44,7 +44,7 @@ const App = () => {
     
             {isLoggedIn ? (
               <>
-                <Link to={`/profile/${user.username}`} className="nav-button">Profile</Link>
+                <Link to={`/profile/${user.userInfo.username}`} className="nav-button">Profile</Link>
                 <a href="/signout" className="nav-button" id="authbutton" role="button">Sign Out</a>
               </>
               ) : (
