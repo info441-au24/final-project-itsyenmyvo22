@@ -21,10 +21,10 @@ We all have struggled with products that fit our skin. Overall, our project aims
 # Technical Description
 
 ## Architectural Diagrams
-![info441-userFlow](info441-userFlow.jpg)
+![info441-userFlow](info441-userFlow-v2.jpg)
 
 ## Data Flow
-![info441-dataFlow](info441-dataFlow.jpg)
+![info441-dataFlow](info441-dataFlow-v2.jpg)
 
 ## Summary Tables for User Stories
 |   Priority    |      User     |  Description  |  Technical Implementation  |
