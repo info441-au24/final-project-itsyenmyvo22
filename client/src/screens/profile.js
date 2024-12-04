@@ -12,7 +12,8 @@ const Profile = (props) => {
     let user = props.user
 
     const loadCollections = () => {
-        fetch(`/api/v1/collections`)
+        if (user) {
+            fetch(`/api/v1/collections`)
             .then((res) => {
                 return res.json();
             })
@@ -25,12 +26,12 @@ const Profile = (props) => {
             .catch((error) => {
                 console.error('Error loading collections:', error);
             });
+        }
+        
     };    
 
     useEffect(() => {
-        if (user) {
             loadCollections()
-        }
     }, []); 
 
     const handleChange = (event) => {
@@ -87,10 +88,11 @@ const Profile = (props) => {
 
     return (
         <div>
+            {/* user */}
             {user ? (
                 <div>
                     <div className="profile">
-                        <h2>{user.name}</h2>
+                        <h2>{user.userInfo.name}</h2>
                         <hr />
                         <div className="profile-head">
                             <h3>Collections</h3>

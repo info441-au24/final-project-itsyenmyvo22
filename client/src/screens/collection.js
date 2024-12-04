@@ -67,8 +67,9 @@ const Collection = (props) => {
     let user = props.user
 
     const loadCollection = async () => {
-        setIsDataLoading(true)
-        await fetch(`/api/v1/collections/collection?collectionID=${collectionID}`)
+        if (user) {
+            setIsDataLoading(true)
+            await fetch(`/api/v1/collections/collection?collectionID=${collectionID}`)
             .then((res) => res.json())
             .then((data) => {
                 console.log("this is the collection we recieved", data);
@@ -79,7 +80,7 @@ const Collection = (props) => {
             .catch((error) => {
                 console.error('Error loading products:', error);
             });
-
+        }
 
     }
 
@@ -93,11 +94,11 @@ const Collection = (props) => {
             {user ? (
                 <div>
                     <div className="profile">
-                        <h2>{user.name}</h2>
+                        <h2>{user.userInfo.name}</h2>
                         <hr />
                         <div className="profile-head">
                             <h3>
-                                <Link className="goBack" to={`/profile/${user.username}`}>
+                                <Link className="goBack" to={`/profile/${user.userInfo.username}`}>
                                     ←
                                 </Link>
                                 {collection.collection_name}
