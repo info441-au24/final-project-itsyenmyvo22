@@ -4,17 +4,35 @@ var router = express.Router();
 
 // retrieving existing collections for a user
 router.get('/', async (req, res) => {
-    console.log('received request for collections')
+    console.log('received request for collection(s)')
         try {
             if (!req.session.isAuthenticated) {
                 res.status(401).json({status: "error", error: "not logged in"})
             }
-            console.log("finding collections")
-            const username = req.session.account.username
-            const collections = await req.models.Collection.find({username: username})
-            console.log("retrieved data", collections)
-            res.json(collections)
+                console.log("finding collections")
+                const username = req.session.account.username
+                const collections = await req.models.Collection.find({username: username})
+                console.log("retrieved collections", collections)
+                res.json(collections)
         } catch(err) {
+            console.error('Error fetching collections:', err);
+            res.status(500).json({status: 'error', error: err });
+        }
+    
+})
+
+// retrieve collection by ID
+router.get('/collection', async (req, res) => {
+    console.log('received request for collection(s)')
+        try {
+            if (!req.session.isAuthenticated) {
+                res.status(401).json({status: "error", error: "not logged in"})
+            }
+            if (req.query.collectionID) {
+            const collection = await req.models.Collection.findOne({_id: req.query.collectionID})
+            console.log("retrieved collection", collection)
+            res.json(collection) }
+            } catch(err) {
             console.error('Error fetching collections:', err);
             res.status(500).json({status: 'error', error: err });
         }
@@ -47,7 +65,7 @@ router.post('/', async (req, res) => {
 })
 
 // deleting a collection
-app.delete('/', async (req, res) => {
+router.delete('/', async (req, res) => {
     try {
     const collectionID = req.query.collectionID
     await req.models.Collection.deleteOne({_id: collectionID})
@@ -69,7 +87,7 @@ router.post('/product', async (req, res) => {
         console.log("retrieved data", collection)
         collection.products.push(req.query.productID)
         console.log(collection.products)
-        await req.models.Collection.updateOne({ _id: req.query.collectionID}, {products: collection.products})
+        await req.models.Collection.updateOne({ _id: req.body.collectionID}, {products: collection.products})
         res.json({status: "success"})
     } catch (err) {
         console.error('Error saving to collection:', err);

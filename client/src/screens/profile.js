@@ -27,14 +27,10 @@ const Profile = (props) => {
     };    
 
     useEffect(() => {
-        loadCollections()
-    }, [user, username]);
-
-    useEffect(() => {
         if (user) {
             loadCollections(); 
         }
-    }, [ cards ]); 
+    }, []); 
 
     const handleChange = (event) => {
         setCollection({ ...collection, [event.target.name]: event.target.value })

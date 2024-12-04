@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 const ProductCard = (props) => {
     const [productInfo, setProductInfo] = useState({})
     let productID = props.product
-    let renderProductsCallback = props.loadCollectionProducts
+    let renderProductsCallback = props.render
     let collectionID = props.collectionID
 
     const renderProducts = () => {
@@ -58,21 +58,17 @@ const ProductCard = (props) => {
 }
 
 const Collection = (props) => {
-    const [collection, setCollection] = useState([]);
-    const [products, setProducts] = useState([])
+    const [collection, setCollection] = useState({});
     const { collectionID } = useParams()
 
     let user = props.user
 
-    const loadCollectionProducts = async () => {
-        await fetch(`/api/v1/collections?collectionID=${collectionID}`)
-            .then((res) => {
-                return res.json();
-            })
+    const loadCollection = async () => {
+        await fetch(`/api/v1/collections/collection?collectionID=${collectionID}`)
+            .then((res) => res.json())
             .then((data) => {
+                console.log("this is the collection we recieved", data)
                 setCollection(data)
-                setProducts(data.products)
-                console.log("this is the products", data.products)
             })
             .catch((error) => {
                 console.error('Error loading products:', error);
@@ -82,10 +78,8 @@ const Collection = (props) => {
     }
 
     useEffect(() => {
-        if (user) {
-            loadCollectionProducts()
-        }
-    }, [user, collection]);
+        loadCollection()
+    }, []);
 
 
     return (
@@ -108,15 +102,23 @@ const Collection = (props) => {
                         <p>{collection.collection_description}</p>
                     </div>
                     <div className="collection-grid">
-                        {products.map((product) => (
-                            <ProductCard
+                    {collection.products.map((product) => {
+                    return <ProductCard
+                    key={product}
+                    product={product}
+                    collectionID={collectionID}
+                    render={() => loadCollection()}
+                /> 
+                    })}
+                        {/* {collection.products.map((product) => (
+                         <ProductCard
                                 key={product}
                                 product={product}
-                                loadCollectionProducts={() => loadCollectionProducts()}
                                 collectionID={collectionID}
-                            />
+                                render={() => loadCollection()}
+                            /> 
 
-                        ))}
+                        ))} */}
                     </div>
                 </div>
             ) : (
