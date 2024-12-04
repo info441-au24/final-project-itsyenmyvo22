@@ -59,6 +59,13 @@ app.use('/api/v1', apiV1Router);
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, '../client/build')));
 
+app.use(sessions({
+    secret: "this is some secret key I am making up 093u4oih54lkndso8y43hewrdskjf",
+    saveUninitialized: true,
+    cookie: {maxAge: 1000 * 60 * 60 * 24},
+    resave: false
+}))
+
 // Endpoint to search posts by name or return all if no query
 app.get('/api/search', async (req, res) => {
     const {query, price, category} = req.query;
@@ -143,22 +150,10 @@ app.get('/api/profile', async (req, res) => {
     }
 }) */
 
-// Catch-all handler to serve a single-page application
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-// });
 
-app.get(/^\/(?!api|signin|signout).*/, (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
-  
 
-// import httpProxyMiddlware from 'http-proxy-middleware';
-// const createProxyMiddleware = httpProxyMiddlware.createProxyMiddleware
 
-// app.use('/', createProxyMiddleware({ target: 'http://localhost:3000'}));
-
-// UW loggin information:
+// Azure Authentication:
 const authConfig = {
     auth: {
    	clientId: "c63d0fac-737a-420b-af80-59616c55fe4a",
@@ -179,30 +174,47 @@ const authConfig = {
 
 app.enable('trust proxy')
 
-app.use(sessions({
-    secret: "this is some secret key I am making up 093u4oih54lkndso8y43hewrdskjf",
-    saveUninitialized: true,
-    cookie: {maxAge: 1000 * 60 * 60 * 24},
-    resave: false
-}))
-
 const authProvider = await WebAppAuthProvider.WebAppAuthProvider.initialize(authConfig);
 
 app.use(authProvider.authenticate());
 
+// Endpoint to signin
 app.get('/signin', (req, res, next) => {
    	 return req.authContext.login({
-   		 postLoginRedirectUri: "/", // redirect here after login
+   		 postLoginRedirectUri: "/", 
    	 })(req, res, next);
 });
-
+// Endpoint to signout
 app.get('/signout', (req, res, next) => {
    	 return req.authContext.logout({
-   		 postLogoutRedirectUri: "/", // redirect here after logout
+   		 postLogoutRedirectUri: "/", 
    	 })(req, res, next);
     
 });
 
 app.use(authProvider.interactionErrorHandler());
+
+// Endpoint to see identity information
+app.get('/myIdentity', async (req, res) => {
+
+    if(req.session.isAuthenticated) {
+      let name = await req.session.account.name
+      let username = await req.session.account.username
+        res.json({
+          status: "loggedin", 
+          userInfo: {
+             name: name, 
+             username: username
+            }
+       })
+    } else {
+      res.json({status: "loggedout"})
+    }
+ });
+
+// Catch-all handler to serve a single-page application
+app.get(/^\/(?!api|signin|signout|redirect|checkauth).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 export default app;

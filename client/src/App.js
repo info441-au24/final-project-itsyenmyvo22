@@ -1,42 +1,33 @@
 import './stylesheets/App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import Home from './Home.js'
 import Profile from './screens/profile'
 import Collection from './screens/collection.js'
 import UploadProduct from './screens/uploadProduct';
 import Product from './screens/product';
 
-const handleSignIn = async () => {
-  try {
-    const response = await fetch(`/signin`, {
-      method: 'GET'
-    });
-    if (response.ok) {
-      console.log('Signed in successfully');
-    } else {
-        console.error('Failed to sign in');
-    }
-  } catch (error) {
-      console.error('Error:', error);
-  }
-};
-
-const handleSignOut = async () => {
-  try {
-    const response = await fetch(`/signout`, {
-      method: 'GET'
-    });
-    if (response.ok) {
-      console.log('Signed out successfully');
-    } else {
-        console.error('Failed to sign out');
-    }
-  } catch (error) {
-      console.error('Error:', error);
-  }
-};
-
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+
+  const loadIdentity = async () => {
+    try {
+      const response = await fetch('/myIdentity');
+      const identityInfo = await response.json();
+      if (identityInfo.status === 'loggedin') {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error('Error loading identity:', error);
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    loadIdentity();
+  }, []);
 
   return (
     <Router>
@@ -49,9 +40,12 @@ const App = () => {
           <div className="nav-buttons">
             <Link to="/uploadProduct" className="nav-button">Upload Product</Link>
             <Link to="/profile" className="nav-button">Profile</Link>
-            <a onClick={handleSignIn} className="nav-button" id="authbutton" role="button">Sign In</a>
-            <a onClick={handleSignOut} className="nav-button" id="authbutton" role="button">Sign Out</a>
-          </div>
+            {isLoggedIn ? (
+                <a href="/signout" className="nav-button" id="authbutton" role="button">Sign Out</a>
+              ) : (
+                <a href="/signin" className="nav-button" id="authbutton" role="button">Sign In</a>
+              )}
+          </div> 
         </nav>
 
         <Routes>
@@ -61,7 +55,7 @@ const App = () => {
           <Route path="/uploadProduct" element={<UploadProduct />} />
           <Route path="/product/:productID" element={<Product />} />
           <Route path="/search" element={<Home />} />
-          {/* <Route path="*" element={<h1>404 - Not Found</h1>} /> */}
+          <Route path="*" element={<h1>404 - Not Found</h1>} />
         </Routes>
       </div>
     </Router>
