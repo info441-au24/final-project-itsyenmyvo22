@@ -9,6 +9,7 @@ const Profile = (props) => {
         description: '',
         img: ''
     })
+
     let user = props.user
 
     const loadCollections = () => {
