@@ -133,7 +133,7 @@ export default app;
     try {
         let username = req.session.account.username
         const newCollection = new models.Collection({
-            username: username, //to update later
+            username: username, 
             collection_name: req.body.name,
             products: [],
             collection_description: req.body.description,
@@ -161,17 +161,113 @@ export default app;
     }
 }) */
 
-
-/* app.get('/api/product', async (req, res) => {
+app.get('/api/profile/collections', async (req, res) => {
     try {
-        console.log("finding product")
-        const productID = req.query.productID
-        const product = await models.Post.findOne({_id: productID})
-        res.send(product)
+        const currentCollection = req.query.collectionID;
+        console.log("Received collectionID:", currentCollection);
+        const collection = await req.models.Collection.findById(currentCollection)
+
+        res.send(collection)
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ "status": "error", "error": error })
     }
+})
+
+app.get('/api/product', async (req, res) => {
+    try {
+        const productID = req.query.productID
+        const product = await models.Post.findOne({_id: productID})
+        console.log("sending back", product)
+        res.json(product)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ "status": "error", "error": error })
+    }
+}) 
+
+
+app.delete('/api/profile', async (req, res) => {
+    try {
+    const collectionID = req.body.collectionID
+    let collection = await req.models.Collection.findById(collectionID)
+    await req.models.Collection.deleteOne({_id: collectionID})
+
+    res.json({status: "success"})
+
+    } catch (error) {
+        console.log("error")
+        res.status(500).json({ "status": "error", "error": error.message })
+    }
+})
+
+app.delete('/api/profile/collections', async (req, res) => {
+    try {
+    const collectionID = req.body.collectionID
+    const productID = req.body.productID
+    let collection = await req.models.Collection.findById(collectionID)
+    console.log("BEFORE", collection.products)
+    let productArray = collection.products
+    if(productArray.includes(productID)) {
+        collection.products = collection.products.filter(function (id) {
+            return id != productID
+        })
+    }
+
+    console.log("AFTER", collection.products)
+    await collection.save()
+    res.json({status: "success"})
+
+    } catch (error) {
+        console.log("error")
+        res.status(500).json({ "status": "error", "error": error.message })
+    }
+})
+
+
+// Azure Authentication:
+const authConfig = {
+    auth: {
+   	clientId: "c63d0fac-737a-420b-af80-59616c55fe4a",
+    	authority: "https://login.microsoftonline.com/f6b6dd5b-f02f-441a-99a0-162ac5060bd2",
+    	clientSecret: "U9J8Q~BpY-X~NuJ10qnaLwpA0y96xfVQHU0wfcq6",
+    	redirectUri: "/redirect"
+    },
+	system: {
+    	loggerOptions: {
+        	loggerCallback(loglevel, message, containsPii) {
+            	console.log(message);
+        	},
+        	piiLoggingEnabled: false,
+        	logLevel: 3,
+    	}
+	}
+};
+
+app.enable('trust proxy')
+
+const authProvider = await WebAppAuthProvider.WebAppAuthProvider.initialize(authConfig);
+
+app.use(authProvider.authenticate());
+
+// Endpoint to signin
+app.get('/signin', (req, res, next) => {
+   	 return req.authContext.login({
+   		 postLoginRedirectUri: "/", 
+   	 })(req, res, next);
+});
+// Endpoint to signout
+app.get('/signout', (req, res, next) => {
+   	 return req.authContext.logout({
+   		 postLogoutRedirectUri: "/", 
+   	 })(req, res, next);
+    
+});
+
+app.use(authProvider.interactionErrorHandler());
+
+// Endpoint to see identity information
 }) */
 
 /* // Endpoint to see identity information
