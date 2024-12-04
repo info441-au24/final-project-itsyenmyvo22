@@ -674,7 +674,6 @@ textarea {
 }
 
 .collection-card {
-  height: 400px;
   width: 300px;
   text-align: center;
   border-width: 1px;
@@ -701,8 +700,7 @@ textarea {
 .profile-head {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  margin: 10px 20px;
+  margin: 10px 20px 0px;
 }
 
 .profile-head h3 {
