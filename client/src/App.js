@@ -60,7 +60,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile/:username" element={<PrivateRoute element={<Profile user={user} />} isLoggedIn={isLoggedIn} />}/>          
-          <Route path="/collection/:collectionID" element={<PrivateRoute element={<Collection user={user} />} isLoggedIn={isLogged />
+          <Route path="/collection/:collectionID" element={<PrivateRoute element={<Collection user={user} />} isLoggedIn={isLoggedIn } />}/> 
           <Route path="/uploadProduct" element={<UploadProduct />} />
           <Route path="/product/:productID" element={<Product user={user}/>} />
           <Route path="/search" element={<Home />} />
