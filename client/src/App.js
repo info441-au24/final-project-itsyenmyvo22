@@ -1,11 +1,15 @@
 import './stylesheets/App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Home from './Home.js'
 import Profile from './screens/profile'
 import Collection from './screens/collection'
 import UploadProduct from './screens/uploadProduct';
 import Product from './screens/product';
+
+function PrivateRoute({ element, isLoggedIn }) {
+  return isLoggedIn ? element : <Navigate to="/" />;
+}
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
@@ -18,7 +22,7 @@ const App = () => {
         const identityInfo = await response.json();
         if (identityInfo.status === 'loggedin') {
           setIsLoggedIn(true);
-          setUser(user);
+          setUser(identityInfo);
         } else {
           setUser(null)
           setIsLoggedIn(false);
@@ -55,8 +59,8 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile/:username" element={<Profile user={user}/>} />
-          <Route path="/collection/:collectionID" element={<Collection user={user}/>} />
+          <Route path="/profile/:username" element={<PrivateRoute element={<Profile user={user} />} isLoggedIn={isLoggedIn} />}/>          
+          <Route path="/collection/:collectionID" element={<PrivateRoute element={<Collection user={user} />} isLoggedIn={isLogged />
           <Route path="/uploadProduct" element={<UploadProduct />} />
           <Route path="/product/:productID" element={<Product user={user}/>} />
           <Route path="/search" element={<Home />} />
