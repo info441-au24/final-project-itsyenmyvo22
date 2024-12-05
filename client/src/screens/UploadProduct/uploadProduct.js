@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../stylesheets/App.css'
 
 // update css
 // connect to db next 
