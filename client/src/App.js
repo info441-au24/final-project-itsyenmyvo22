@@ -1,6 +1,7 @@
 import './assets/stylesheets/App.css';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import NavBar from './components/NavBar';
 import Home from './screens/Home/Home';
 import Profile from './screens/Profile/profile';
 import Collection from './screens/Collection/collection';
@@ -36,26 +37,8 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
       <div>
-        <nav className="navbar">
-          <div className="navbar-left">
-            <Link to="/" className="navbar-logo">Clé</Link>
-          </div>
-
-          <div className="nav-buttons">
-            <Link to="/uploadProduct" className="nav-button">Upload Product</Link>
-    
-            {isLoggedIn ? (
-              <>
-                <Link to={`/profile/${user.userInfo.username}`} className="nav-button">Profile</Link>
-                <a href="/signout" className="nav-button" id="authbutton" role="button">Sign Out</a>
-              </>
-              ) : (
-                <a href="/signin" className="nav-button" id="authbutton" role="button">Sign In</a>
-              )}
-          </div> 
-        </nav>
+        <NavBar user={user}/>
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -67,7 +50,6 @@ const App = () => {
           <Route path="*" element={<Home />} />
         </Routes>
       </div>
-    </Router>
   );
 };
 
