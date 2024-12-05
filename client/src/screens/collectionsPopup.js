@@ -77,9 +77,6 @@ const CollectionsPopup = (props) => {
         loadCollections()
     }, [])
 
-    // add caching of collections?
-    // but should refresh collections after saving?
-
 
     return (
         <> 
