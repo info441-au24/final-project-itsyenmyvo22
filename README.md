@@ -29,63 +29,78 @@ We all have struggled with products that fit our skin. Overall, our project aims
 ## Summary Tables for User Stories
 |   Priority    |      User     |  Description  |  Technical Implementation  |
 | ------------- | ------------- | ------------- | -------------------------- |
-|      P0       |   As a user   | I want to be able to create an account/profile and log in/out of it | When logging in, use Azure Authentication to verify users, and add them into our database.
-|      P0       |   As a user   | I want to be able to upload a product that is not already on the website | When uploading a product, add the product to MongoDB with attributes such as name, category, description, and hyperlink to an image of the product.
+|      P0       |   As a user   | I want to be able to create an account/profile and log in/out of it | When logging in, use Azure Authentication to verify users.
+|      P0       |   As a user   | I want to be able to upload a product that is not already on the website | When uploading a product, add the product to MongoDB with attributes such as name, skincare category, description, and hyperlink to an image of the product.
 |      P0       |   As a user   | I want to be able to view skincare products | When loading the homepage, retrieve a JSON of product previews that include name, category, image, and description for each product.
 |      P1       |   As a user   | I want to be able to search skincare products | When searching for products, retrieve all product names that contain the user input.
 |      P1       |   As a user   | I want to be able to view reviews on products | When loading a specific product page, retrieve the product’s name, category, image, description, and reviews.
-|      P1       |   As a user   | I want to be able to leave reviews on products | When leaving a review on a product, add the review to the reviews database on Mongo DB with attributes such as ID of the user, product ID, review text, and an integer between 1-5 representing the product rating.
-|      P1       |   As a user   | I want to be able to sort and filter products according to {skin type, cost, rating, include/exclude products} | Filter and order results according to the applied tags from the products database.
-|      P2       |   As a user   | I want to be able to comment on reviews | When commenting on a review, retrieve the specific review from the database and add the comment to the associated review in the database.
-|      P2       |   As a user   | I want to create new product collections/routines | When creating a new collection/routine, add collection to MongoDB using a unique ID connected to current user.
-|      P2       |   As a user   | I want to add an existing product to my collection/routine | When adding products to a collection/routine, add selected product to MongoDB and add its unique ID to the corresponding collection.
-|      P2       |   As a user   | I want to be able to view my profile | Retrieve all collections in the database related to the specific user and display the collections.
+|      P1       |   As a user   | I want to be able to leave reviews on products | When leaving a review on a product, add the review to the reviews database on MongoDB with attributes such as username, product ID, review text, and an integer between 1-5 representing the product rating.
+|      P1       |   As a user   | I want to be able to sort and filter products according to {cost and typical skincare categories} | Filter and order results according to the applied tags from the products database.
+|      P2       |   As a user   | I want to be able to comment on reviews | When commenting on a review, retrieve the specific review from the database and add the comment to the associated review in MongoDB.
+|      P2       |   As a user   | I want to create new product collections when signed in | When creating a new collection, add collection to MongoDB using the user's username.
+|      P2       |   As a user   | I want to add an existing product to my collection | When adding products to a collection, add selected product with its unique ID to the corresponding collection, updating in MongoDB.
+|      P2       |   As a user   | I want to be able to view my profile | Retrieve all collections in the database related to the specific username and display the collections.
 
 ## API Endpoints
-GET /user/login - Allows users to log into their account.
+GET /signin - Allows users to log into their UW account (Azure authentication).
 
-GET /products - Allows users to view previews of existing products
+GET /signout - Allows users to log out of their UW account (Azure authentication).
 
-POST /products - Allows users to upload a product 
+GET /api/v1/users/myIdentity - Allows developers to view if a user is currently logged in according to the session and shares the name and username of the signed-in account.
 
-GET /products/:id - Allows users to view all information about a specific product, including name, category, description, and image.
+GET /api/v1/posts?productID - Allows users to view specific product information, including name, category, description, and image.
 
-GET /products/:id/reviews - Allows users to view reviews on a specific product.
+POST /api/v1/posts - Allows users to upload a product, including user-inputted product name, category, description, and image.
 
-POST /products/:id/reviews - Allows users to upload one review to a specific product.
+GET /api/v1/posts/search?query&price&category - Allows users to search existing products based on their input from the search bar or filtering methods (price and category).
 
-GET /user/profile - Allows users to view their account name, uploaded products, and review history.
+GET /api/v1/reviews?productID - Allows users to view reviews on a specific product.
 
-GET /user/profile/collections - Allows users to view their collections
+POST /api/v1/reviews?productID - Allows signed-in users to upload a review for a specific product.
 
-POST /user/profile/collections - Allows users to create a new collection
+GET /api/v1/reviews/comments?commentID - Allows users to view comments on a product review.
 
-POST /users/profile/collections/:id/products - Allows users to add certain products to a specific collection
+POST /api/v1/reviews/comments?commentID - Allows signed-in users to post a comment on a product review.
 
-GET /user/profile/collections/:id - Allows users to view products within their collection
+GET /api/v1/collections - Allows signed-in users to view previews of all their collections.
 
-DELETE /user/profile/collections - Allows users to delete a collection
+POST /api/v1/collections - Allows signed-in users to create a new collection, adding a collection name, description, and cover image.
 
-DELETE /users/profile/collections/:id/product/:id - Allows users to remove a product from a specific collection
+DELETE /api/v1/collections?collectionID - Allows users to delete a specific collection from their profile and database.
+
+GET /api/v1/collections/collection?collectionID - Allows users to retrieve a specific collection, containing information like collection name, products, and description.
+
+POST /api/v1/collections/product?productID - Allows users to add a specific product to a collection.
+
+DELETE /api/v1/collections/product?productID - Allows users to delete a specific product from the collection.
 
 ## Database Schemas
-Users
-- <ins>User ID (String)</ins>
-- Product Collections (Array of Product IDs)
-
 Products
-- <ins>Product ID (Number)</ins>
-- Name of product (String)
-- Category of product (String)
-- Price range of product (String)
-- Reviews (Array of Review IDs)
-- Image (String representing a hyperlink)
+- <ins>Product ID (String)</ins>
+- Product Name (String)
+- Product Category (String)
+- Price (String, 3 options [$, $$, $$$])
+- Image URL (String representing a hyperlink)
+
+Collections
+- <ins>Collection ID (String)</ins>
+- Username (String)
+- Collection Name (String)
+- Products (Array of Products),
+- Collection Description (String),
+- Collection Cover Image URL (String representing a hyperlink)
 
 Reviews
-- <ins>Review ID (Number)</ins>
+- <ins>Review ID (String)</ins>
 - Review Text (String)
-- Product ID (Number)
-- User ID (String)
+- Product ID (String)
+- Username (String, 5 options [1 to 5 stars])
 - Rating (Number)
-- Comments (Array of Comment Objects)
+- Comments (Array of Comments)
+- Date (Date)
 
+Comments
+- <ins>Comment ID (String)</ins>
+- Username (String)
+- Comment (String)
+- Date (Date)
