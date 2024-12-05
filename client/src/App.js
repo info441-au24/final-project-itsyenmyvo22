@@ -1,11 +1,11 @@
-import './stylesheets/App.css';
+import './assets/stylesheets/App.css';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import Home from './Home.js'
-import Profile from './screens/profile'
-import Collection from './screens/collection'
-import UploadProduct from './screens/uploadProduct';
-import Product from './screens/product';
+import Home from './screens/Home/Home';
+import Profile from './screens/Profile/profile';
+import Collection from './screens/Collection/collection';
+import UploadProduct from './screens/UploadProduct/uploadProduct';
+import Product from './screens/Product/product';
 
 function PrivateRoute({ element, isLoggedIn }) {
   return isLoggedIn ? element : <Navigate to="/" />;
