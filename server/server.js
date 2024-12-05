@@ -3,8 +3,8 @@ import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import sessions from 'express-session'
-import WebAppAuthProvider from 'msal-node-wrapper'
+import sessions from 'express-session';
+import WebAppAuthProvider from 'msal-node-wrapper';
 
 import apiV1Router from './routes/api/v1/apiv1.js';
 import models from './models.js';
