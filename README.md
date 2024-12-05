@@ -79,7 +79,7 @@ Products
 - <ins>Product ID (String)</ins>
 - Product Name (String)
 - Product Category (String)
-- Price (String, 3 options [$, $$, $$$])
+- Price (String)
 - Image URL (String representing a hyperlink)
 
 Collections
@@ -94,7 +94,7 @@ Reviews
 - <ins>Review ID (String)</ins>
 - Review Text (String)
 - Product ID (String)
-- Username (String, 5 options [1 to 5 stars])
+- Username (String)
 - Rating (Number)
 - Comments (Array of Comments)
 - Date (Date)
