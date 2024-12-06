@@ -2,11 +2,11 @@ import './assets/stylesheets/App.css';
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import NavBar from './components/NavBar';
-import Home from './screens/Home/Home';
-import Profile from './screens/Profile/profile';
-import Collection from './screens/Collection/collection';
-import UploadProduct from './screens/UploadProduct/uploadProduct';
-import Product from './screens/Product/product';
+import Home from './screens/Home/HomePage';
+import Profile from './screens/Profile/ProfilePage';
+import Collection from './screens/Collection/CollectionPage';
+import UploadProduct from './screens/UploadProduct/UploadProductPage';
+import Product from './screens/Product/ProductPage';
 
 function PrivateRoute({ element, isLoggedIn }) {
   return isLoggedIn ? element : <Navigate to="/" />;

@@ -1,3 +1,6 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
 const CollectionCard = (props) => {
     let collection = props.collection
     let renderCollectionsCallback = props.render
