@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import Collection from './collection';
 
 const CollectionItem = (props) => {
     const [productInfo, setProductInfo] = useState({})
@@ -53,7 +51,7 @@ const CollectionItem = (props) => {
                 <img src={productInfo.url} alt={`cover image for ${productInfo.name}`}></img>
                 <h4>{productInfo.name}</h4>
             </Link>
-            <button onClick={() => removeProduct(productID, collectionID)} className="small-button">Delete</button>
+            <button onClick={() => removeProduct()} className="small-button">Delete</button>
         </div>
     )
 }
