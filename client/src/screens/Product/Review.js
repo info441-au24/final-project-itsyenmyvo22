@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-/* import { useParams } from 'react-router-dom';*/
 
 const Comment = (props) => {
     const [isDataLoading, setIsDataLoading] = useState(true);
@@ -8,12 +7,10 @@ const Comment = (props) => {
 
     const loadComment =  async () => {
         setIsDataLoading(true);
-        console.log("about to fetch data about comment with ID:", comment)
         await fetch(`/api/v1/reviews/comments?commentID=${comment}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
-                if (data) {setCommentData(data)};
+                setCommentData(data);
                 setIsDataLoading(false);
             })
             .catch((error) => console.error('Error loading reviews:', error))
@@ -46,7 +43,7 @@ const ReviewCard = (props) => {
     let review = props.review;
     let comments = review.comments;
     let renderReviewsCallback = props.render
-    let user = props.user
+    let user = props.user ? props.user : {status: "loggedout"}
     const [commentsDisplay, setCommentsDisplay] = useState(false);
     const [showReviewText, setShowReviewText] = useState(false);
     const [newComment, setNewComment] = useState({});
@@ -71,7 +68,6 @@ const ReviewCard = (props) => {
     const submitComment = async (e) => {
         e.preventDefault();
         setNewComment({...newComment, username: user.userInfo.username})
-        setName(user.userInfo.name)
         try {
             const response = await fetch(`/api/v1/reviews/comments?reviewID=${review._id}`, {
                 method: 'POST',
@@ -99,7 +95,7 @@ const ReviewCard = (props) => {
         <div className='review'>
             {/* review body */}
             <div className="review-head">
-                <h4>{name}</h4>
+                <h4>{review.username}</h4>
                 <p className="date">{review.created_date}</p>
             </div>
                     
@@ -129,7 +125,7 @@ const ReviewCard = (props) => {
             {commentsDisplay ? 
                 <div className="comments">
                     {comments.map((comment) => <Comment key={comment._id} comment={comment}/>)}
-                    {user ? <div className="reply-box">
+                    {user.status === "loggedin" && <div className="reply-box">
                         <input
                                 type="text"
                                 id="comment-input"
@@ -139,7 +135,7 @@ const ReviewCard = (props) => {
                                 onChange={handleCommentChange}
                             />
                         <button className="small-button" onClick={submitComment}>Submit</button>
-                    </div> : <></>}
+                    </div>}
                     
                 </div>
                 : 

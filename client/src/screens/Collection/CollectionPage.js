@@ -21,7 +21,6 @@ const Collection = (props) => {
             await fetch(`/api/v1/collections/collection?collectionID=${collectionID}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log("this is the collection we recieved", data);
                 setCollection(data);
                 setProducts(data.products)
                 setIsDataLoading(false);

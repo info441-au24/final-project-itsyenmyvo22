@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import ReviewCard from './ReviewCard';
+import ReviewCard from './Review';
 import CollectionsPopup from './AddToCollectionsPopup';
-import ReviewPopup from './reviewPopup';
+import NewReviewPopup from './NewReviewPopup';
 
 const Product = (props) => {
     const [isDataLoading, setIsDataLoading] = useState(false);
@@ -14,14 +14,13 @@ const Product = (props) => {
    
     const [reviews, setReviews] = useState([]);
     const { productID } = useParams()
-    let user = props.user
+    let user = props.user ? props.user : {status: "loggedout"}
 
     const loadProductInfo = async () => {
         setIsDataLoading(true);
         await fetch(`/api/v1/posts?productID=${productID}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setProductInfo(data);
                 setIsDataLoading(false);
             })
@@ -33,7 +32,6 @@ const Product = (props) => {
         await fetch(`/api/v1/reviews?productID=${productID}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setReviews(data);
             })
             .catch((error) => console.error('Error loading reviews:', error))
@@ -65,9 +63,8 @@ const Product = (props) => {
                     <p id="product-price">{productInfo.price}</p>
                 </div>
 
-                {user ? 
-                <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection" className="medium-button">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button> : 
-                <></>}
+                {user.status === "loggedin" && 
+                <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection" className="medium-button">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button>}
                 
                 
                 
@@ -76,14 +73,13 @@ const Product = (props) => {
             
             </div>
             {showCollectionsPopup ? <CollectionsPopup productID={productID} callback={() => {setShowCollectionsPopup(!showCollectionsPopup)}}/> : <></>}
-                {showReviewPopup ? <ReviewPopup productID={productID} callback={() => {setShowReviewPopup(!showReviewPopup)}} render={() => loadReviews()}/> : <></>}
+                {showReviewPopup ? <NewReviewPopup productID={productID} callback={() => {setShowReviewPopup(!showReviewPopup)}} render={() => loadReviews()}/> : <></>}
             
         </div>
         <div id="product-reviews">
             <div className="product-reviews-head">
                 <h3 id="reviews-heading">REVIEWS ({reviews.length})</h3>
-                {user ? <button onClick={() => setShowReviewPopup(!showReviewPopup)} id="add-review-button" className="medium-button">Write a Review</button> : 
-                <></>}
+                {user.status === "loggedin" && <button onClick={() => setShowReviewPopup(!showReviewPopup)} id="add-review-button" className="medium-button">Write a Review</button>}
                 
             </div>
             {/* reviews should be handled in a separate component */}
