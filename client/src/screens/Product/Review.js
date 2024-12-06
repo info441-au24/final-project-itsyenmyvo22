@@ -41,7 +41,7 @@ const Comment = (props) => {
     
 }
 
-const Review = (props) => {
+const ReviewCard = (props) => {
     let review = props.review;
     let comments = review.comments;
     let renderReviewsCallback = props.render
@@ -147,4 +147,4 @@ const Review = (props) => {
     )
 }
 
-export default Review;
+export default ReviewCard;
