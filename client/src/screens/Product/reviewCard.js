@@ -48,7 +48,6 @@ const ReviewCard = (props) => {
     let renderReviewsCallback = props.render
     let user = props.user
     const [commentsDisplay, setCommentsDisplay] = useState(false);
-    const [liked, setLiked] = useState(false);
     const [showReviewText, setShowReviewText] = useState(false);
     const [newComment, setNewComment] = useState({});
     const [name, setName] = useState('')
@@ -56,9 +55,7 @@ const ReviewCard = (props) => {
     const toggleComments = () => {
         setCommentsDisplay(!commentsDisplay)
     }
-    const toggleLike = () => {
-        setLiked(!liked)
-    }
+    
     const toggleReadMore = () => {
         setShowReviewText(!showReviewText)
     }

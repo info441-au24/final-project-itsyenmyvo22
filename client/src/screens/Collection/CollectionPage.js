@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import CollectionItem from './collectionItem';
+import CollectionItem from './CollectionItem';
 
 const Collection = (props) => {
     const [collection, setCollection] = useState({});

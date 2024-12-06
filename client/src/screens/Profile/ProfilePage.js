@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import NewCollectionPopup from './NewCollectionPopup';
-import CollectionCard from './collectionCard';
+import CollectionCard from './CollectionCard';
 
 const Profile = (props) => {
     const [cards, setCards] = useState([])

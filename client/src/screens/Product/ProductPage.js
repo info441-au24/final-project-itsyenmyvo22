@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import ReviewCard from './reviewCard';
-import CollectionsPopup from './collectionsPopup';
+import ReviewCard from './ReviewCard';
+import CollectionsPopup from './AddToCollectionsPopup';
 import ReviewPopup from './reviewPopup';
 
 const Product = (props) => {
