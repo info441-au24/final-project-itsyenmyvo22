@@ -4,23 +4,22 @@ const Collection = (props) => {
     const [alreadySaved, setAlreadySaved] = useState(false);
     let collection = props.collection
     let productID = props.productID
-    let renderCollections = props.render
+    let renderCollectionsCallback = props.render
 
-    const rerenderCollections = () => {
-        renderCollections()
+    const renderCollections = () => {
+        renderCollectionsCallback()
     }
 
     useEffect(() => {
         const checkAlreadySaved = () => {
             if (collection.products.includes(productID)) {
-                console.log("product already saved to collection")
                 setAlreadySaved(true)
             } else {
                 setAlreadySaved(false)
             }
         }
         checkAlreadySaved();
-    } , [collection.products, productID])
+    } , [collection, productID])
 
     const saveToCollection = async (e) => {
         e.preventDefault();
@@ -33,7 +32,7 @@ const Collection = (props) => {
                 body: JSON.stringify({collectionID: collection._id})})
             if (response.ok) {
                 console.log('collection updated successfully');
-                rerenderCollections();
+                renderCollections();
             } else {
                 throw new Error('Failed to submit collection');
             }
@@ -68,9 +67,7 @@ const CollectionsPopup = (props) => {
         await fetch(`/api/v1/collections`)
             .then((res) => res.json())
             .then((data) => {
-                console.log("recieved collection data", data);
                 setCollections(data);
-                console.log("saved collections data", collections)
             })
             .catch((error) => console.error('Error loading collections:', error))
     }
@@ -91,7 +88,11 @@ const CollectionsPopup = (props) => {
                     <button className="remove-default close-popup" onClick={changeCollectionsPoup}><span className="fa fa-x"></span></button>
                 </div>
 
-                {collections.map((collection) => <Collection key={collection._id} productID={productID} collection={collection} render={() => loadCollections()}/> )}
+                {collections.map((collection) => <Collection 
+                                                    key={collection._id} 
+                                                    productID={productID} 
+                                                    collection={collection} 
+                                                    render={() => loadCollections()}/> )}
 
             </div> 
         </>

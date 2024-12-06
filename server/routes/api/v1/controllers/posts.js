@@ -14,8 +14,9 @@ router.get('/search', async (req, res) => {
         const posts = await req.models.Post.find(filter);
         if (posts.length === 0) {
             return res.status(404).json({message: 'No posts found'});
+        } else {
+          res.json(posts);
         }
-        res.json(posts);
     } catch (error) {
         console.error('Error searching posts:', error);
         res.status(500).json({status: 'error', error: err });
@@ -43,8 +44,7 @@ router.post('/', async (req, res) => {
 // find specific product information
 router.get('/', async (req, res) => {
   try {
-    console.log(`loading product info`)
-    if (req.query.productID){
+    if (req.query.productID) {
         console.log("finding product with ID:", req.query.productID)
         const productID = req.query.productID
         const product = await req.models.Post.findOne({_id: productID})

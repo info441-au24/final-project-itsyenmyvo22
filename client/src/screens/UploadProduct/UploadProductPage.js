@@ -28,8 +28,6 @@ const UploadProduct = () => {
             if (response.ok) {
                 console.log('Product uploaded successfully');
                 setProduct({ name: '', category: '', price: '', url: '' }); // Reset form
-            } else {
-                throw new Error('Failed to upload product');
             }
         } catch (error) {
             console.error('Error:', error);

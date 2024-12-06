@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
-const ReviewPopup = (props) => {
-    const [newReview, setNewReview] = useState({username: "test-acc", rating: "", review: ""});
+const NewReviewPopup = (props) => {
+    const [newReview, setNewReview] = useState({rating: '', review: ''});
     let productID = props.productID
     let toggleReviewPopup = props.callback
     let renderReviewsCallback = props.render
@@ -31,14 +31,15 @@ const ReviewPopup = (props) => {
     
             if (response.ok) {
                 console.log('review uploaded successfully');
-                setNewReview({ username: 'test-acc', rating: '', review: ''}); // Reset form
+                setNewReview({rating: '', review: ''}); // Reset form
                 closeReviewPopup();
                 renderReviews();
             } else {
-                console.error('Failed to submit review');
+                throw new Error('Failed to submit review');
             }
         } catch (error) {
             console.error('Error:', error);
+            alert('Whoops! Your review could not be saved.')
         }
     };  
 
@@ -77,4 +78,4 @@ const ReviewPopup = (props) => {
     
 }
 
-export default ReviewPopup;
+export default NewReviewPopup;

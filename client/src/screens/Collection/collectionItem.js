@@ -11,32 +11,32 @@ const CollectionItem = (props) => {
         loadProduct() 
     }, []); 
 
-    const loadProduct = () => {
-        console.log("this is product: ", productID)
-        fetch(`/api/v1/posts?productID=${productID}`)
+    const loadProduct = async () => {
+        await fetch(`/api/v1/posts?productID=${productID}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log("this is the data:", data);
-                if (data) {
-                    setProductInfo(data)
-                }
+                setProductInfo(data)
             })
             .catch((error) => console.error('Error loading product:', error))
     }
 
     const removeProduct = async () => {
-        let response = await fetch(`/api/v1/collections/product?productID=${productID}`, {
+        try {
+            let response = await fetch(`/api/v1/collections/product?productID=${productID}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ collectionID: collectionID })
-        })
-        if (response.ok) {
-            console.log('Product deleted successfully');
-            renderProducts()
-        } else {
-            console.error('Failed to delete product');
+            })
+            if (response.ok) {
+                console.log('Product deleted successfully');
+                renderProducts()
+            } else {
+                throw new Error("Product could not be deleted", response)
+            }
+        } catch (err) {
+            console.error('Error fetching search results:', err);
         }
         
     }

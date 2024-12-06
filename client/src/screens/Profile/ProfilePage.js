@@ -14,17 +14,12 @@ const Profile = (props) => {
             loadCollections()
     }, []); 
 
-    const loadCollections = () => {
+    const loadCollections = async () => {
         if (user.status === "loggedin" && user.userInfo.username === username) {
-            fetch(`/api/v1/collections`)
-            .then((res) => {
-                return res.json();
-            })
+            await fetch(`/api/v1/collections`)
+            .then((res) => res.json())
             .then((data) => {
-                if (user) {
-                    console.log(data);
-                    setCards(data);
-                }
+                setCards(data);
             })
             .catch((error) => {
                 console.error('Error loading collections:', error);
