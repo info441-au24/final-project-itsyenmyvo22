@@ -11,17 +11,10 @@ const Product = (props) => {
     
     const [showCollectionsPopup, setShowCollectionsPopup] = useState(false);
     const [showReviewPopup, setShowReviewPopup] = useState(false)
-
-    const [filterDisplay, setFilterDisplay] = useState(false);
-    
-    /* const [newReview, setNewReview] = useState({username: "test-acc", rating: "", review: ""}); */
+   
     const [reviews, setReviews] = useState([]);
     const { productID } = useParams()
     let user = props.user
-
-    const filterPopup = () => {
-        setFilterDisplay(!filterDisplay)
-    }
 
     const loadProductInfo = async () => {
         setIsDataLoading(true);

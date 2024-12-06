@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
+import ProductPreview from './ProductPreview';
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -8,10 +9,10 @@ const Home = () => {
   const [priceFilter, setPriceFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
-  // const apiUrl = process.env.REACT_APP_API_URL;
-  //const apiUrl = 'http://localhost:3001'
+  useEffect(() => {
+    fetchProducts();
+  }, [priceFilter, categoryFilter]);
 
-  // Function to fetch products with or without a query
   const fetchProducts = async () => {
 
     const queryParameters = [];
@@ -19,11 +20,7 @@ const Home = () => {
     if (priceFilter) queryParameters.push(`price=${encodeURIComponent(priceFilter)}`);
     if (categoryFilter) queryParameters.push(`category=${encodeURIComponent(categoryFilter)}`);
 
-    //const url = `${apiUrl}/api/search?${queryParameters.join('&')}`;
-
     try {
-      // const apiUrl = process.env.REACT_APP_API_URL; // Get API URL from environment variables
-      // const apiUrl = "http://localhost:3001"
       const response = await fetch(`/api/v1/posts/search?${queryParameters.join('&')}`);
       const data = await response.json();
       if (Array.isArray(data) && data.length === 0) {
@@ -43,10 +40,6 @@ const Home = () => {
   };
 
   // Load all products initially
-  useEffect(() => {
-    fetchProducts();
-  }, [priceFilter, categoryFilter]);
-
   const handleSearch = (e) => {
     e.preventDefault()
     fetchProducts();
@@ -91,13 +84,8 @@ const Home = () => {
       <button className="search-button" onClick={handleSearch}>Search</button>
       <div className="results-container">
         {noResults && <p>No results found.</p>}
-        {Array.isArray(results) && results.map(post => (
-          <div key={post._id} className="card">
-            <img src={post.url} alt={post.name} className="product-image" />
-            <Link to={`product/${post._id}`}><h4>{post.name}</h4></Link>
-            <p>Category: {post.category}</p>
-            <p>Price: {post.price}</p>
-          </div>
+        {Array.isArray(results) && results.map(product => (
+          <ProductPreview product={product}/>
         ))}
       </div>
     </div>
