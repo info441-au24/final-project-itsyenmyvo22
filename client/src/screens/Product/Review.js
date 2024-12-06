@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-/* import { useParams } from 'react-router-dom';*/
 
 const Comment = (props) => {
     const [isDataLoading, setIsDataLoading] = useState(true);
@@ -42,7 +41,7 @@ const Comment = (props) => {
     
 }
 
-const ReviewCard = (props) => {
+const Review = (props) => {
     let review = props.review;
     let comments = review.comments;
     let renderReviewsCallback = props.render
@@ -148,4 +147,4 @@ const ReviewCard = (props) => {
     )
 }
 
-export default ReviewCard;
+export default Review;

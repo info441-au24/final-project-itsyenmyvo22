@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import ReviewCard from './ReviewCard';
+import ReviewCard from './Review';
 import CollectionsPopup from './AddToCollectionsPopup';
-import ReviewPopup from './reviewPopup';
+import ReviewPopup from './ReviewPopup';
 
 const Product = (props) => {
     const [isDataLoading, setIsDataLoading] = useState(false);
