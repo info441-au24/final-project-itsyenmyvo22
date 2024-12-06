@@ -12,7 +12,8 @@ const Home = () => {
   //const apiUrl = 'http://localhost:3001'
 
   // Function to fetch products with or without a query
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = async () => {
+
     const queryParameters = [];
     if (searchQuery) queryParameters.push(`query=${encodeURIComponent(searchQuery)}`);
     if (priceFilter) queryParameters.push(`price=${encodeURIComponent(priceFilter)}`);
@@ -39,14 +40,15 @@ const Home = () => {
       setResults([]);
       setNoResults(true);
     }
-  },[searchQuery, priceFilter, categoryFilter]);
+  };
 
   // Load all products initially
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+  }, [priceFilter, categoryFilter]);
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault()
     fetchProducts();
   };
 
