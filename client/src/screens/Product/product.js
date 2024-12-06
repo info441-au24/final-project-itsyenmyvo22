@@ -56,7 +56,7 @@ const Product = (props) => {
 
     return (
         <div>
-            {isDataLoading ? <></> : 
+            {!isDataLoading && 
             <>
             <div id="product-info-container">
 
@@ -72,61 +72,26 @@ const Product = (props) => {
                     <p id="product-price">{productInfo.price}</p>
                 </div>
 
-                
-
-                {/* <hr/>
-                <div className="product-tags">
-                    <span>Normal Skin</span>
-                    <span>Ceramides</span>
-                    <span>Moisturizing</span>
-                </div>
-
-                <hr /> */}
-
-                {/* <div className="product-descr">
-                    <h3>DESCRIPTION</h3>
-                    <p>This is the product description. Might look something like: CeraVe Moisturizing Cream is a rich, non-greasy, fast-absorbing moisturizer with three essential ceramides that lock in skin's moisture and help maintain the skin's protective barrier. Word Count Limit?</p>
-                </div> */}
                 {user ? 
-                <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button> : 
+                <button onClick={() => setShowCollectionsPopup(!showCollectionsPopup)} id="add-to-collection" className="medium-button">Add to Collection <span className="fa fa-angle-down down-arrow"></span></button> : 
                 <></>}
                 
                 
-                {showCollectionsPopup ? <CollectionsPopup productID={productID} callback={() => {setShowCollectionsPopup(!showCollectionsPopup)}}/> : <></>}
                 
-                <hr />
-
-                {showReviewPopup ? <ReviewPopup productID={productID} callback={() => {setShowReviewPopup(!showReviewPopup)}} render={() => loadReviews()}/> : <></>}
+                
+                <hr /> 
             
             </div>
+            {showCollectionsPopup ? <CollectionsPopup productID={productID} callback={() => {setShowCollectionsPopup(!showCollectionsPopup)}}/> : <></>}
+                {showReviewPopup ? <ReviewPopup productID={productID} callback={() => {setShowReviewPopup(!showReviewPopup)}} render={() => loadReviews()}/> : <></>}
             
         </div>
         <div id="product-reviews">
             <div className="product-reviews-head">
                 <h3 id="reviews-heading">REVIEWS ({reviews.length})</h3>
-                {user ? <button onClick={() => setShowReviewPopup(!showReviewPopup)} id="add-review-button">Write a Review</button> : 
+                {user ? <button onClick={() => setShowReviewPopup(!showReviewPopup)} id="add-review-button" className="medium-button">Write a Review</button> : 
                 <></>}
                 
-                {/* <button onClick={filterPopup} id="sort-reviews">Sort</button> */}
-                {filterDisplay ? 
-                <>
-                <div className="filter-overlay"></div>
-                <div className="filter-popup">
-                    <div className="popup-head">
-                        <h4>Sort by</h4>
-                        <button onClick={filterPopup}><span className="fa fa-minus"></span></button>
-                    </div>
-                        
-                        <p>Most Recent</p>
-                        <p>Highest Rated</p>
-                        <p>Lowest Rated</p>
-                        <p>Most Helpful</p>
-                </div> 
-                </>
-                : 
-                <></>
-
-                }
             </div>
             {/* reviews should be handled in a separate component */}
             <div id='reviews'>

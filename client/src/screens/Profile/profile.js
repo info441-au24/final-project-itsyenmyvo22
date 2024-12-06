@@ -91,56 +91,62 @@ const Profile = (props) => {
         <div>
             {/* user */}
             {user ? (
-                <div>
-                    <div className="profile">
-                        <h2>{user.userInfo.name}</h2>
+                <>
+                    <div id="profile-info">
+                        <h2>Welcome, {user.userInfo.name}</h2>
                         <hr />
                         <div className="profile-head">
                             <h3>Collections</h3>
 
-                            <button onClick={collectionsPopup} className="collection-button">
+                            <button onClick={collectionsPopup} className="medium-button">
                                 Create Collection
                             </button>
                             {collectionsDisplay ? (
                                 <>
                                     <div className="filter-overlay"></div>
-                                    <div className="create-collections-popup">
+                                    <div className="popup-container">
                                         <div className="popup-head">
                                             <h4>Create Collection</h4>
-                                            <button onClick={collectionsPopup}>
-                                                <span className="fa fa-minus"></span>
+                                            <button className="remove-default" onClick={collectionsPopup}>
+                                                <span className="fa fa-x"></span>
                                             </button>
                                         </div>
-                                        <div className="collection-add-info">
+                                        <div className="form-div">
                                             <form onSubmit={handleSubmit}>
-                                                <label htmlFor="collectionTitle">Collection Name:</label><br />
+                                                <p>Collection Name:</p>
                                                 <input
                                                     type="text"
                                                     id="collectionTitle"
+                                                    className="form-input"
                                                     name="name"
                                                     value={collection.name}
                                                     onChange={handleChange}
+                                                    placeholder="Enter collection name..."
                                                 />
                                                 <br />
-                                                <label htmlFor="collectionDescription">Description:</label><br />
+                                                <p>Description:</p>
                                                 <input
                                                     type="text"
                                                     id="collectionDescription"
+                                                    className="form-input"
                                                     name="description"
                                                     value={collection.description}
                                                     onChange={handleChange}
+                                                    placeholder="Describe your collection..."
                                                 />
                                                 <br />
-                                                <label htmlFor="collectionCoverImg">Cover Image:</label><br />
+                                                <p>Cover Image:</p>
                                                 <input
                                                     type="text"
                                                     id="collectionCoverImg"
+                                                    className=""
                                                     name="img"
                                                     value={collection.img}
                                                     onChange={handleChange}
+                                                    placeholder="Enter an image URL..."
                                                 />
                                                 <br />
-                                                <input type="submit" value="Submit" />
+                                                <input type="submit" value="Submit" className="small-button submit-form"  />
                                             </form>
                                         </div>
                                     </div>
@@ -153,21 +159,21 @@ const Profile = (props) => {
                     <div class="collections">
                         <div className="collection-grid">
                             {cards.map((card) => (
-                                <div key={card._id} class="collection-card">
+                                <div key={card._id} className="collection-card">
                                     <Link to={`/collection/${card._id}`}>
                                         <img src={card.collection_img} alt={`cover for ${card.collection_name}`} />
                                         <h4>{card.collection_name}</h4>
                                     </Link>
-                                    <button onClick={() => removeCollection(card._id)} class="collection-button">Delete</button>
+                                    <button onClick={() => removeCollection(card._id)} className="small-button">Delete</button>
                                 </div>
                             ))}
                         </div>
                     </div>
-                </div>
+                </>
             ) : (
-                <div>
+                <>
                     <h2>Please log in to view your collections.</h2>
-                </div>
+                </>
             )}
         </div>
     );

@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import CollectionItem from './collectionItem';
 
-const ProductCard = (props) => {
+/* const ProductCard = (props) => {
     const [productInfo, setProductInfo] = useState({})
     let productID = props.product
     let renderProductsCallback = props.render
     let collectionID = props.collectionID
 
-    const renderProducts = () => {
-        renderProductsCallback()
-    }
+    useEffect(() => {
+        loadProduct() 
+    }, []); 
 
     const loadProduct = () => {
         console.log("this is product: ", productID)
@@ -42,9 +43,9 @@ const ProductCard = (props) => {
         
     }
 
-    useEffect(() => {
-        loadProduct()  // Call the fetch function on mount
-    }, []);  // Include productID as a dependency in case it changes
+    const renderProducts = () => {
+            renderProductsCallback()
+        }
 
     return (
         <div class="collection-card">
@@ -55,7 +56,7 @@ const ProductCard = (props) => {
             <button onClick={() => removeProduct(productID, collectionID)} className="collection-button">Delete</button>
         </div>
     )
-}
+} */
 
 const Collection = (props) => {
     const [collection, setCollection] = useState({});
@@ -63,11 +64,14 @@ const Collection = (props) => {
     const [isDataLoading, setIsDataLoading] = useState(false);
     const { collectionID } = useParams()
 
+    let user = props.user ? props.user : {status: "loggedout"}
 
-    let user = props.user
+    useEffect(() => {
+        loadCollection()
+    }, []);
 
     const loadCollection = async () => {
-        if (user) {
+        if (user.status === "loggedin") {
             setIsDataLoading(true)
             await fetch(`/api/v1/collections/collection?collectionID=${collectionID}`)
             .then((res) => res.json())
@@ -78,53 +82,40 @@ const Collection = (props) => {
                 setIsDataLoading(false);
             })
             .catch((error) => {
-                console.error('Error loading products:', error);
+                console.error('Error loading collection:', error);
             });
         }
-
     }
 
-    useEffect(() => {
-        loadCollection()
-    }, []);
-
-
     return (
-        <div>
-            {user ? (
-                <div>
-                    <div className="profile">
-                        <h2>{user.userInfo.name}</h2>
+        <div id="collection-container">
+            {user.status === "loggedin" ? (
+                <>
+                    <div className="collection-info">
+                        <div id="collection-head">
+                            <h2>{collection.collection_name}</h2>
+                            <p id="collection-description">{collection.collection_description}</p>
+                            <p id="collection-size">{products.length} products</p>
+                        </div>
+                        
                         <hr />
-                        <div className="profile-head">
-                            <h3>
-                                <Link className="goBack" to={`/profile/${user.userInfo.username}`}>
-                                    ←
-                                </Link>
-                                {collection.collection_name}
-                            </h3>
-                            <Link to={"/"}><button className="collection-button">Add Product</button></Link>
+
+                        <div className="collection-btns">
+                            <Link className="goBack" to={`/profile/${user.userInfo.username}`}><i id="back-to-collections-btn" className="fa fa-arrow-left"></i></Link>
+                            <Link to="/"><button className="small-button">Add Product</button></Link>
                         </div>
                     </div>
-                    <div className="collectionDescription">
-                        <p>{collection.collection_description}</p>
-                    </div>
+                    
                     <div className="collection-grid">
-                        {isDataLoading ? <></> : products.map((product) => 
-                        <ProductCard key={product}
-                            product={product}
+                        {!isDataLoading && products.map((productID) => 
+                        <CollectionItem key={productID}
+                            product={productID}
                             collectionID={collectionID}
                             render={() => loadCollection()}/>)}
                     </div>
-                            {/* /* return <ProductCard
-                            key={product}
-                            product={product}
-                            collectionID={collectionID}
-                            render={() => loadCollection()}
-                                                /> */ }
-                </div>
+                </>
             ) : (
-                <div>Please log in to view your collection.</div>
+                <p>Please log in to view your collection.</p>
             )}
         </div>
     );
