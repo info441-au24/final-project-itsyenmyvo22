@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import CollectionItem from './CollectionItem';
+import CollectionProduct from './CollectionProduct';
 
 const Collection = (props) => {
     const [collection, setCollection] = useState({});
@@ -52,7 +52,7 @@ const Collection = (props) => {
                     
                     <div className="collection-grid">
                         {!isDataLoading && products.map((productID) => 
-                        <CollectionItem key={productID}
+                        <CollectionProduct key={productID}
                             product={productID}
                             collectionID={collectionID}
                             render={() => loadCollection()}/>)}
