@@ -119,29 +119,10 @@ const ReviewCard = (props) => {
                 <p>{review.review}</p>}
             </div>
 
-            <div className="review-btns">
-                <div className="helpful">
-                    <p>Helpful?</p>
-                    <button className="like-btn" onClick={toggleLike}>
-                        <div>
-                            
-                            {liked ? 
-                            <>
-                            <i className="fa fa-thumbs-up" style={{color: 'black'}}></i>
-                            <span>1</span>
-                            </>
-                            : 
-                            <><i className="fa fa-thumbs-up" style={{color:'lightgray'}}></i>
-                            <span>0</span></>
-                            }
-                            </div>
-                    </button>
-                </div>
-                
-            
+            <div className="review-btn">
                 {/* render view/hide only if there are replies */}
             
-                <button className="toggle-comments" onClick={toggleComments}>{commentsDisplay ? "Hide" : "Show"} Replies</button>
+                <button className="small-button" onClick={toggleComments}>{commentsDisplay ? "Hide" : "Show"} Replies</button>
             </div>
 
             {/* comments */}
@@ -157,7 +138,7 @@ const ReviewCard = (props) => {
                                 value={newComment.comment}
                                 onChange={handleCommentChange}
                             />
-                        <button onClick={submitComment}>Submit</button>
+                        <button className="small-button" onClick={submitComment}>Submit</button>
                     </div> : <></>}
                     
                 </div>

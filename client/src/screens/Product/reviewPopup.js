@@ -46,25 +46,31 @@ const ReviewPopup = (props) => {
         <>
         <div className="filter-overlay"></div>
 
-        <div className="add-review-popup">
+        <div className="popup-container">
             <div className="popup-head">
                 <h4>Write a review</h4>
-                <button onClick={closeReviewPopup}><span className="fa fa-minus"></span></button>
+                <button className="remove-default" onClick={closeReviewPopup}>
+                    <span className="fa fa-x"></span>
+                </button>
             </div>
-            <form id="add-review" onSubmit={submitReview}>
-                <p>Rating</p>
-                <select className="form-select" name="rating" value={newReview.rating} onChange={handleReviewChange} aria-label='Choose rating'>
-                    <option selected></option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-                <p>What did you think about this product?</p>
-                <textarea rows={4} name="review" value={newReview.review} onChange={handleReviewChange}/>
-                <button type="submit">Submit</button>
-            </form>
+            
+            <div className="form-div">
+                <form id="add-review" onSubmit={submitReview}>
+                    <p>Rating</p>
+                    <select className="form-input" name="rating" value={newReview.rating} onChange={handleReviewChange} aria-label='Choose rating'>
+                        <option selected></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <p>What did you think about this product?</p>
+                    <textarea className="form-input" rows={4} name="review" value={newReview.review} onChange={handleReviewChange} placeholder="Write your review..."/>
+                    <button className="small-button submit-form" type="submit">Submit</button>
+                </form>
+            </div>
+            
         </div> 
         </>
     )

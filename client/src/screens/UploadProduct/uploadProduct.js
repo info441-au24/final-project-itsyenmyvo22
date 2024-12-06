@@ -45,11 +45,11 @@ const UploadProduct = () => {
             <form id="uploadproduct" onSubmit={handleSubmit}>
                 <div id="pdiv">
                     <p>Product Name:</p>
-                    <input type="text" name="name" className="prod-input" value={product.name} onChange={handleChange} placeholder="Enter product name..." />
+                    <input type="text" name="name" className="form-input" value={product.name} onChange={handleChange} placeholder="Enter product name..." />
                 </div>
                 <div id="pdiv">
                     <p>Type of product:</p>
-                    <select name="category" className="prod-input" value={product.category} onChange={handleChange} aria-label='Choose the type of beauty product'>
+                    <select name="category" className="form-input" value={product.category} onChange={handleChange} aria-label='Choose the type of beauty product'>
                         <option value="">Select the type of product:</option>
                         <option value="Moisturiser">Moisturiser</option>
                         <option value="Serum">Serum</option>
@@ -69,7 +69,7 @@ const UploadProduct = () => {
                 </div>
                 <div id="pdiv">
                     <p>Price Range:</p>
-                    <select name="price" className="prod-input" value={product.price} onChange={handleChange} aria-label='Choose the price range'>
+                    <select name="price" className="form-input" value={product.price} onChange={handleChange} aria-label='Choose the price range'>
                         <option value="">Select the price range:</option>
                         <option value="$">$</option>
                         <option value="$$">$$</option>
@@ -78,13 +78,13 @@ const UploadProduct = () => {
                 </div>
                 <div id="pdiv">
                     <p>Image hyperlink:</p>
-                    <input type="url" name="url" className="prod-input" value={product.url} onChange={handleChange} placeholder='Enter an image URL...'></input>
+                    <input type="url" name="url" className="form-input" value={product.url} onChange={handleChange} placeholder='Enter an image URL...'></input>
                 </div>
                 <div id='buttondiv'>
-                    <button id="uploadProductButton" type='submit'>Submit</button>
+                    <button id="uploadProductButton" className="medium-button" type='submit'>Submit</button>
                 </div>
                 <div id='buttondiv'>
-                    <button id="uploadProductButton" type="reset" onClick={() => setProduct({ name: '', category: '', price: '', url: '' })}>Reset</button>
+                    <button id="uploadProductButton" className="medium-button" type="reset" onClick={() => setProduct({ name: '', category: '', price: '', url: '' })}>Reset</button>
                 </div>
             </form>
         </div>

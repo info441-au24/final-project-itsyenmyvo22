@@ -44,10 +44,11 @@ const Collection = (props) => {
 
     return (
         <div className="collection">
-            <img src={collection.collection_img} alt={`cover for ${collection.collection_name}`}></img>
-            <p>{collection.collection_name}</p>
-            {alreadySaved ? <></> : <button onClick={saveToCollection}>Save</button>}
-            
+            <div>
+                <img src={collection.collection_img} alt={`cover for ${collection.collection_name}`}></img>
+                <p>{collection.collection_name}</p>
+            </div>
+            {alreadySaved ? <i className="fa-solid fa-circle-check unselected"></i> : <button className="remove-default" onClick={saveToCollection}><i className="fa-regular fa-circle selected"></i></button>}
         </div>
     )
 }
@@ -82,11 +83,11 @@ const CollectionsPopup = (props) => {
         <> 
             <div className="filter-overlay"></div>
 
-            <div className="collections-popup">
+            <div className="popup-container">
 
                 <div className="popup-head">
                     <h4>Add to collection</h4>
-                    <button onClick={changeCollectionsPoup}><span className="fa fa-minus"></span></button>
+                    <button className="remove-default close-popup" onClick={changeCollectionsPoup}><span className="fa fa-x"></span></button>
                 </div>
 
                 {collections.map((collection) => <Collection key={collection._id} productID={productID} collection={collection} render={() => loadCollections()}/> )}
