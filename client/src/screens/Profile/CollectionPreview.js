@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const CollectionCard = (props) => {
+const CollectionPreview = (props) => {
     let collection = props.collection
     let renderCollectionsCallback = props.render
 
@@ -40,4 +40,4 @@ const CollectionCard = (props) => {
     )
 }
 
-export default CollectionCard;
+export default CollectionPreview;
