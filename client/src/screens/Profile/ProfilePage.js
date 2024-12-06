@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import NewCollectionPopup from './NewCollectionPopup';
-import CollectionCard from './CollectionCard';
+import CollectionPreview from './CollectionPreview';
 
 const Profile = (props) => {
     const [cards, setCards] = useState([])
@@ -48,7 +48,7 @@ const Profile = (props) => {
                     <div class="collections">
                         <div className="collection-grid">
                             {cards.map((card) => (
-                                <CollectionCard collection={card} render={() => loadCollections()}/>
+                                <CollectionPreview collection={card} render={() => loadCollections()}/>
                             ))}
                         </div>
                     </div>
