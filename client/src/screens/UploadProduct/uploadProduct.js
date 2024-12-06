@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 
-// update css
-// connect to db next 
-    // post products according to schema
 const UploadProduct = () => {
     const [product, setProduct] = useState({
         name: '',
@@ -17,9 +14,9 @@ const UploadProduct = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // const apiUrl = process.env.REACT_APP_API_URL; // Use the API URL from environment variables
+        if (!product.name || !product.category || !product.price || !product.url) {
+            alert("You must fill out all fields!")
         try {
-            //const response = await fetch(`${apiUrl}/api/uploadProduct`, {
             const response = await fetch(`/api/v1/posts`, {
                 method: 'POST',
                 headers: {
@@ -32,12 +29,13 @@ const UploadProduct = () => {
                 console.log('Product uploaded successfully');
                 setProduct({ name: '', category: '', price: '', url: '' }); // Reset form
             } else {
-                console.error('Failed to upload product');
+                throw new Error('Failed to upload product');
             }
         } catch (error) {
             console.error('Error:', error);
+            alert("Whoops! The product could not be saved.")
         }
-    };    
+    };}    
 
     return (
         <div id='pcontainer'>

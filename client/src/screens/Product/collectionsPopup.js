@@ -35,10 +35,11 @@ const Collection = (props) => {
                 console.log('collection updated successfully');
                 rerenderCollections();
             } else {
-                console.error('Failed to submit collection');
+                throw new Error('Failed to submit collection');
             }
         } catch(err) {
             console.error('Error:', err);
+            alert(`Whoops! We couldn't save this product to your collection.`)
         }
     };
 

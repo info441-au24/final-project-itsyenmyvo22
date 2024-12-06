@@ -51,6 +51,7 @@ const ReviewCard = (props) => {
     const [liked, setLiked] = useState(false);
     const [showReviewText, setShowReviewText] = useState(false);
     const [newComment, setNewComment] = useState({});
+    const [name, setName] = useState('')
 
     const toggleComments = () => {
         setCommentsDisplay(!commentsDisplay)
@@ -72,7 +73,8 @@ const ReviewCard = (props) => {
 
     const submitComment = async (e) => {
         e.preventDefault();
-        setNewComment({...newComment, username: user})
+        setNewComment({...newComment, username: user.userInfo.username})
+        setName(user.userInfo.name)
         try {
             const response = await fetch(`/api/v1/reviews/comments?reviewID=${review._id}`, {
                 method: 'POST',
@@ -83,14 +85,15 @@ const ReviewCard = (props) => {
             });
     
             if (response.ok) {
-                console.log('review uploaded successfully');
+                console.log('comment uploaded successfully');
                 renderReviews();
                 setNewComment({ username: 'test-acc ', comment: ''}); // Reset form
             } else {
-                console.error('Failed to submit review');
+                throw new Error('Failed to submit comment');
             }
         } catch (error) {
             console.error('Error:', error);
+            alert(`Whoops! Your comment could not be saved.`)
         }
     }; 
     
@@ -99,7 +102,7 @@ const ReviewCard = (props) => {
         <div className='review'>
             {/* review body */}
             <div className="review-head">
-                <h4>{review.username}</h4>
+                <h4>{name}</h4>
                 <p className="date">{review.created_date}</p>
             </div>
                     
