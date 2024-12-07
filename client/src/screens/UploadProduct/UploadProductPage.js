@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 const UploadProduct = () => {
     const [product, setProduct] = useState({
@@ -7,16 +8,20 @@ const UploadProduct = () => {
         price: '',
         url: ''
     });
+    const [shouldRedirect, setShouldRedirect] = useState(false)
+    const [newProduct, setNewProduct] = useState({})
 
     const handleChange = (e) => {
         setProduct({...product, [e.target.name]: e.target.value})
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!product.name || !product.category || !product.price || !product.url) {
             alert("You must fill out all fields!")
-        try {
+        } else {
+            try {
             const response = await fetch(`/api/v1/posts`, {
                 method: 'POST',
                 headers: {
@@ -27,16 +32,24 @@ const UploadProduct = () => {
     
             if (response.ok) {
                 console.log('Product uploaded successfully');
+                let product = await response.json()
                 setProduct({ name: '', category: '', price: '', url: '' }); // Reset form
+                setNewProduct(product)
+                setShouldRedirect(true)
+            } else {
+                throw new Error("could not upload product")
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert("Whoops! The product could not be saved.")
-        }
-    };}    
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Whoops! The product could not be saved.")
+            }
+    }};   
 
     return (
-        <div id='pcontainer'>
+        <>
+        {shouldRedirect && <Navigate to={`/product/${newProduct._id}`}/>}
+        {
+            <div id='pcontainer'>
             <h1>Upload Product</h1>
             <form id="uploadproduct" onSubmit={handleSubmit}>
                 <div id="pdiv">
@@ -84,6 +97,8 @@ const UploadProduct = () => {
                 </div>
             </form>
         </div>
+        }
+       </> 
     );
 };
 

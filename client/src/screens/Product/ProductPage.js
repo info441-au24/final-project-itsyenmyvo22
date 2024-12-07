@@ -39,7 +39,7 @@ const Product = (props) => {
 
     useEffect(() => {
         loadProductInfo()
-    }, []);
+    }, [productID]);
 
     useEffect(() => {
         loadReviews()

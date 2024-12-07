@@ -24,7 +24,7 @@ const NewCollectionPopup = (props) => {
             alert("You must fill out all fields!")
         } else {
             try {
-            let response = await fetch(`/api/v1/collections`, {
+            const response = await fetch(`/api/v1/collections`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
