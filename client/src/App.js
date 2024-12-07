@@ -1,5 +1,5 @@
 import './assets/stylesheets/App.css';
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import NavBar from './components/NavBar';
 import Home from './screens/Home/HomePage';
@@ -53,45 +53,4 @@ const App = () => {
   );
 };
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
 export default App;
-
-/////////////////////////////////////
-
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import Home from './Home'; // Import your Home component
-
-// function App() {
-//   return (
-//     <Router>
-//       <div>
-//         <Routes>
-//           <Route path="/" element={<Home />} />
-//         </Routes>
-//       </div>
-//     </Router>
-//   );
-// }
-
-// export default App;
