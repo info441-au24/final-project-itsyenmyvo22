@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from 'react';
+import { NavLink, Link } from 'react-router-dom';
 
 const NavBar = (props) => {
     let user = props.user ? props.user : {status: "loggedout"}
@@ -8,7 +8,7 @@ const NavBar = (props) => {
     return (
         <nav className="navbar">
           <div className="navbar-left">
-            <NavLink to="/" className="navbar-logo">Clé</NavLink>
+            <Link to="/" className="navbar-logo">Clé</Link>
           </div>
 
           <div className="nav-buttons">
